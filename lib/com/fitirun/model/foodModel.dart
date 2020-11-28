@@ -25,7 +25,7 @@ class FoodModel{
      Faker faker = new Faker();
     image = _urls.elementAt(faker.randomGenerator.integer(_urls.length));
     rank = faker.randomGenerator.integer(5);
-    title = faker.lorem.words(5).join(" ").capitalize();
+    title = faker.lorem.words(4).join(" ").capitalize();
     preparationTime = faker.randomGenerator.integer(100)+1;
     numberOfPeople = faker.randomGenerator.integer(4)+1;
     calories = faker.randomGenerator.integer(1000)+1;
