@@ -5,14 +5,16 @@ import 'package:flutter/material.dart';
 class HealthItem extends StatelessWidget {
   const HealthItem({
     Key key,
-    @required this.food,
+    @required this.food, this.onPress,
   }) : super(key: key);
 
   final FoodModel food;
+  final Function onPress;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: onPress,
       child: Column(
         children: [
           ClipRRect(

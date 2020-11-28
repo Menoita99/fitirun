@@ -32,18 +32,24 @@ class _HealthScreenState extends State<HealthScreen> {
         children: [
           ScreenTitle("Be better\nBe healthier"),
           SearchContainer(health_food_color),
+
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 25, 20, 0),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 0,
-                  childAspectRatio: 0.85
-                ),
-                itemBuilder: (context, index) => HealthItem(food: FoodModel.fakeFood()),
-              ),
+            child: PageView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 25, 20, 0),
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 20,
+                        crossAxisSpacing: 0,
+                        childAspectRatio: 0.85),
+                    itemBuilder: (context, index) => HealthItem(
+                        food: FoodModel.fakeFood(),
+                        onPress: () => print("Clicked $index")),
+                  ),
+                )
+              ],
             ),
           )
         ],
@@ -51,6 +57,10 @@ class _HealthScreenState extends State<HealthScreen> {
     );
   }
 }
+
+
+
+
 
 class SearchContainer extends StatefulWidget {
   Color _color;
