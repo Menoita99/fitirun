@@ -1,11 +1,17 @@
+import 'package:fitirun/com/fitirun/resource/routes.dart';
 import 'package:flutter/material.dart';
 
-import 'com/fitirun/view/homeView.dart';
+import 'com/fitirun/screen/home_screen/homeScreen.dart';
 
 void main() {
   runApp(MaterialApp(
     title: 'Flutter Demo',
-    theme: ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity),
-    home: MyHomePage(title: 'Flutter Demo Home Page'),
+    debugShowCheckedModeBanner: false,
+    theme: ThemeData(
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      fontFamily: 'Nunito',
+    ),
+    initialRoute: '/',
+    routes: getRoutes(),
   ));
 }
