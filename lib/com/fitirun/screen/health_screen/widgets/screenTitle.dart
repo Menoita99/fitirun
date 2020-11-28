@@ -14,7 +14,7 @@ class _ScreenTitleState extends State<ScreenTitle> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topLeft,
-      padding: EdgeInsets.all(15.0),
+      padding: EdgeInsets.fromLTRB(20.0,5,0,5),
       child: Text(
         widget._title,
         style: TextStyle(

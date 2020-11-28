@@ -6,7 +6,7 @@ import 'com/fitirun/screen/home_screen/homeScreen.dart';
 void main() {
   runApp(MaterialApp(
     title: 'Flutter Demo',
-    debugShowCheckedModeBanner: false,
+    debugShowCheckedModeBanner: true,
     theme: ThemeData(
       visualDensity: VisualDensity.adaptivePlatformDensity,
       fontFamily: 'Nunito',
