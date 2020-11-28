@@ -55,7 +55,9 @@ class _NavigationBottomBarState extends State<NavigationBottomBar> {
               onTabChange: (index) {
                 if (state._selectedIndex != index) {
                   //            setState(() {
-                  state._selectedIndex = index;
+                  if (this.mounted) {
+                    state._selectedIndex = index;
+                  }
                   Navigator.popAndPushNamed(context, getNavRoute().elementAt(index));
                   //            });
                 }
