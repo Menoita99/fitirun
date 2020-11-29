@@ -4,14 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:logger/logger.dart';
 
-var logger = Logger(
-  printer: PrettyPrinter(),
-);
 
+
+
+
+@immutable
 class NavigationBottomBar extends StatefulWidget {
+
+  Color actualColor;
+
+  NavigationBottomBar();
+
+  NavigationBottomBar.withColor(this.actualColor);
+
   @override
   _NavigationBottomBarState createState() => _NavigationBottomBarState();
 }
+
 
 class _NavigationBottomBarState extends State<NavigationBottomBar> {
 
@@ -32,21 +41,25 @@ class _NavigationBottomBarState extends State<NavigationBottomBar> {
               iconSize: 24,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               duration: Duration(milliseconds: 500),
-              tabBackgroundColor: navColors.elementAt(state._selectedIndex),
+              tabBackgroundColor: widget.actualColor == null ? navColors.elementAt(state._selectedIndex) :  widget.actualColor,
               tabs: [
                 GButton(
+                  iconColor: blackText,
                   icon: Icons.home,
                   text: 'Home',
                 ),
                 GButton(
+                  iconColor: blackText,
                   icon: Icons.lens,
                   text: 'Run',
                 ),
                 GButton(
-                  icon: Icons.search,
-                  text: 'Health',
+                  iconColor: blackText,
+                  icon: Icons.fitness_center,
+                  text: 'Fitness',
                 ),
                 GButton(
+                  iconColor: blackText,
                   icon: Icons.person,
                   text: 'Profile',
                 ),

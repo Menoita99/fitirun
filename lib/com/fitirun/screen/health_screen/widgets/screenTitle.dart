@@ -14,12 +14,13 @@ class _ScreenTitleState extends State<ScreenTitle> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topLeft,
-      padding: EdgeInsets.fromLTRB(20.0,5,0,5),
+      padding: EdgeInsets.fromLTRB(15.0,5,0,5),
       child: Text(
         widget._title,
         style: TextStyle(
+          color: Colors.white,
           fontSize: 35,
-          fontWeight: FontWeight.w300,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );

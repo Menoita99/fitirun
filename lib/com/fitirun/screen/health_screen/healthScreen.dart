@@ -1,8 +1,10 @@
 import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
+import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/healthItem.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/screenTitle.dart';
+import 'package:fitirun/com/fitirun/screen/health_screen/widgets/workoutItem.dart';
 import 'package:flutter/material.dart';
 
 class HealthScreen extends StatefulWidget {
@@ -11,6 +13,11 @@ class HealthScreen extends StatefulWidget {
 }
 
 class _HealthScreenState extends State<HealthScreen> {
+
+  PageController _controller = PageController(initialPage: 0);
+  bool isFoodSelected = true;
+  static const int pageTransictionTime = 1000;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,40 +30,120 @@ class _HealthScreenState extends State<HealthScreen> {
           ),
         ),
         body: getBody(),
-        bottomNavigationBar: NavigationBottomBar());
+        bottomNavigationBar: NavigationBottomBar.withColor(isFoodSelected ? health_food_color : workout_color));
   }
 
   Widget getBody() {
     return SafeArea(
       child: Column(
         children: [
-          ScreenTitle("Be better\nBe healthier"),
-          SearchContainer(health_food_color),
-
+          SearchContainer(isFoodSelected ? health_food_color : workout_color),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                getFoodButton(),
+                getWorkoutButton(),
+              ],
+            ),
+          ),
           Expanded(
             child: PageView(
+              physics:new NeverScrollableScrollPhysics(),
+              controller: _controller,
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 25, 20, 0),
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 20,
-                        crossAxisSpacing: 0,
-                        childAspectRatio: 0.85),
-                    itemBuilder: (context, index) => HealthItem(
-                        food: FoodModel.fakeFood(),
-                        onPress: () => print("Clicked $index")),
-                  ),
-                )
-              ],
+                getHealthFoodItens(), getWorkoutItens()],
             ),
           )
         ],
       ),
     );
   }
+
+
+
+  Container getWorkoutButton() {
+    return Container(
+              width: 120,
+              decoration: BoxDecoration(
+                color: isFoodSelected ? Colors.transparent : workout_color,
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+              ),
+              child: FlatButton.icon(
+                onPressed: () => {
+                  _controller.animateToPage(1, duration: Duration(milliseconds: pageTransictionTime), curve: Curves.easeInOut),
+                  setState(() => isFoodSelected = false)
+                },
+                icon: Icon(Icons.fitness_center),
+                label: Text("Workout"),
+                textColor: isFoodSelected ? blackText : Colors.white ,
+              ),
+            );
+  }
+
+
+
+
+  Container getFoodButton() {
+    return Container(
+              width: 120,
+              decoration: BoxDecoration(
+                color:
+                    isFoodSelected ? health_food_color : Colors.transparent,
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+              ),
+              child: FlatButton.icon(
+                onPressed: () => {
+                  _controller.animateTo(0, duration: Duration(milliseconds: pageTransictionTime), curve: Curves.easeInOut),
+                  setState(() => isFoodSelected = true)
+                },
+                icon: Icon(Icons.favorite),
+                label: Text("Food"),
+                textColor: isFoodSelected ? Colors.white : blackText,
+              ),
+            );
+  }
+
+
+
+
+  Padding getWorkoutItens() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 20,
+            crossAxisSpacing: 0,
+            childAspectRatio: 0.85),
+        itemBuilder: (context, index) => WorkoutItem(
+            workout: getRandomWorkOut(),
+            onPress: () => print("Clicked workout $index")),
+      ),
+    );
+  }
+
+
+
+
+  Widget getHealthFoodItens() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 20,
+            crossAxisSpacing: 0,
+            childAspectRatio: 0.85),
+        itemBuilder: (context, index) => HealthItem(
+            food: FoodModel.fakeFood(),
+            onPress: () => print("Clicked food $index")),
+      ),
+    );
+  }
 }
+
 
 
 
@@ -72,6 +159,9 @@ class SearchContainer extends StatefulWidget {
 }
 
 class _SearchContainerState extends State<SearchContainer> {
+
+
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -83,36 +173,39 @@ class _SearchContainerState extends State<SearchContainer> {
           color: widget._color,
           borderRadius: BorderRadius.all(Radius.circular(border_radius)),
         ),
-        child: Row(
+        child: Column(
           children: [
-            Expanded(
-                child: Container(
-              height: 35,
-              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-              child: TextField(
-                decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(5.0),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.transparent),
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(border_radius)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.white.withOpacity(0.88)),
-                        borderRadius:
-                            BorderRadius.all(Radius.circular(border_radius))),
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: Colors.grey[500],
-                    ),
-                    hintText: 'search',
-                    filled: true,
-                    fillColor: Colors.white.withOpacity(0.88)),
-              ),
-            )),
-            IconButton(
-              icon: Icon(Icons.filter_list),
+            ScreenTitle("Be Better\nBe Healthier"),
+            Row(
+              children: [
+                Expanded(
+                    child: Container(
+                  height: 35,
+                  padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(5.0),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.all(Radius.circular(border_radius)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(  color: Colors.white.withOpacity(0.88)),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(border_radius))),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Colors.grey[500],
+                        ),
+                        hintText: 'search',
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.88)),
+                  ),
+                )),
+                IconButton(
+                  icon: Icon(Icons.filter_list),
+                ),
+              ],
             ),
           ],
         ),

@@ -1,9 +1,13 @@
 
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 //colors
-const primaryColor = Color(0xFFA95EFA);
 const health_food_color =  Color(0xffb5ead7);
+const workout_color =  Color(0xffff9aa2);
+const blackText = Colors.black54;
+
 
 // navigation bar colors
 const List<Color> navColors = [

@@ -14,7 +14,7 @@ class FoodModel{
   String image;
   int rank;
   String title;
-  int preparationTime;
+  int preparationTime; //min
   int numberOfPeople;
   int calories;
   List<String> recipe;
@@ -22,7 +22,7 @@ class FoodModel{
   FoodModel(this.image, this.rank, this.title, this.preparationTime,  this.numberOfPeople, this.calories, this.recipe);
 
   FoodModel.fakeFood(){
-     Faker faker = new Faker();
+    Faker faker = new Faker();
     image = _urls.elementAt(faker.randomGenerator.integer(_urls.length));
     rank = faker.randomGenerator.integer(5);
     title = faker.lorem.words(4).join(" ").capitalize();
@@ -36,8 +36,8 @@ class FoodModel{
   CachedNetworkImage getCachedIamge(String url){
     return CachedNetworkImage(
       imageUrl: url,
-      placeholder: (context, url) => new CircularProgressIndicator(),
-      errorWidget: (context, url, error) => new Icon(Icons.error),
+      placeholder: (context, url) => CircularProgressIndicator(),
+      errorWidget: (context, url, error) => Icon(Icons.error),
     );
   }
 
@@ -48,6 +48,7 @@ class FoodModel{
     'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=700%2C636',
     'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
     'https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjEyMDd9',
-    'https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjEyMDd9',
+    'https://post.healthline.com/wp-content/uploads/2020/09/healthy-eating-ingredients-1200x628-facebook-1200x628.jpg',
+    'https://eatforum.org/content/uploads/2018/05/table_with_food_top_view_900x700.jpg'
   ];
 }
