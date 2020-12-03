@@ -17,19 +17,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.cyan,
-        title: Text(
-          "Be your best version",
-          style: TextStyle(
-              color: Colors.black87,
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-              fontStyle: FontStyle.italic),
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.menu, color: blackText), onPressed: () =>print("something"),
+          ),
         ),
-      ),
       body: getBody(),
       bottomNavigationBar: NavigationBottomBar(),
     );
