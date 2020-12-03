@@ -3,6 +3,7 @@ import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
 
@@ -37,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.fromLTRB(0, 15, 0, 10),
           child: Row(
             children: [
+<<<<<<< Updated upstream
               Text.rich(TextSpan(text: '', children: <TextSpan>[
                 TextSpan(
                     text: "Login ",
@@ -59,6 +61,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     text: "$currentWeight",
                     style: TextStyle(fontWeight: FontWeight.bold))
               ])),
+=======
+              Text.rich(
+                  TextSpan(text: '', children: <TextSpan>[
+                      TextSpan(text: "Login ", style: TextStyle(fontStyle: FontStyle.italic)),
+                      TextSpan(text: "Streak: ", style: TextStyle(fontStyle: FontStyle.italic)),
+                      TextSpan(text: "$loginStreak", style: TextStyle(fontWeight: FontWeight.bold))
+                  ]
+              )),
+              Text.rich(
+                  TextSpan(
+                      text: '', children: <TextSpan>[
+                    TextSpan(text: "Current ", style: TextStyle(fontStyle: FontStyle.italic)),
+                    TextSpan(text: "Weight: ", style: TextStyle(fontStyle: FontStyle.italic)),
+                    TextSpan(text: "$currentWeight", style: TextStyle(fontWeight: FontWeight.bold))
+                  ]
+                  )),
+>>>>>>> Stashed changes
             ],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           ),
