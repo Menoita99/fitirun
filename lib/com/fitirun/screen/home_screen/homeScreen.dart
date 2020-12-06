@@ -41,85 +41,69 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget getBody() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 00, 0, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Be the best", style: TextStyle(fontSize: 25, letterSpacing: 0.5, fontStyle: FontStyle.italic, color: homeScreen_color, fontWeight: FontWeight.bold)),
-          Text("Version of yourself.", style: TextStyle(fontSize: 25, letterSpacing: 0.5, fontStyle: FontStyle.italic, color: homeScreen_color, fontWeight: FontWeight.bold)),
-          ChartContainer(fillData()),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                getWorkoutButton(),
-                getRecipeButton(),
-              ],
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Text("Be the best\nVersion of yourself.", style: TextStyle(fontSize: 25, color: homeScreen_color, fontWeight: FontWeight.bold,),),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: ChartContainer(fillData()),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              getWorkoutButton(),
+              getRecipeButton(),
+            ],
           ),
-          Text("Popular workouts", style: TextStyle(fontSize: 25, letterSpacing: 0.5, fontStyle: FontStyle.italic, color: homeScreen_purple_color, fontWeight: FontWeight.bold)),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Text("Popular workouts", style: TextStyle(fontSize: 25, letterSpacing: 0.5, fontStyle: FontStyle.italic, color: homeScreen_purple_color, fontWeight: FontWeight.bold)),
+        ),
 
-          Container(
-                height: 180.0,
-                child: ListView.separated(
-                  itemBuilder: (BuildContext context, int index) => SingleChildScrollView(child: SizedBox(width: 180,child: WorkoutItem(workout: getRandomWorkOut()))),
-                  itemCount: 10,
-                  separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      width: 10,
-                    );
-                  },
-                  padding: EdgeInsets.only(left: 5),
-                  scrollDirection: Axis.horizontal,
-                )
-            ),
-          Text("Popular recipes", style: TextStyle(fontSize: 25, letterSpacing: 0.5, fontStyle: FontStyle.italic, color: homeScreen_purple_color, fontWeight: FontWeight.bold)),
-          Container(
-                height: 180.0,
-                child: ListView.separated(
-                  itemBuilder: (BuildContext context, int index) => SingleChildScrollView(child: SizedBox(width: 180,child: HealthItem(food: FoodModel.fakeFood()))),
-                  itemCount: 10,
-                  separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      width: 10,
-                    );
-                  },
-                  padding: EdgeInsets.only(left: 5),
-                  scrollDirection: Axis.horizontal,
+        Container(
+              height: 200.0,
+              child: ListView.separated(
+                itemBuilder: (BuildContext context, int index) => SizedBox(width: 180,child: WorkoutItem(workout: getRandomWorkOut())),
+                itemCount: 10,
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    width: 10,
+                  );
+                },
+                padding: EdgeInsets.only(left: 5),
+                scrollDirection: Axis.horizontal,
+              )
+          ),
+        Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Text("Popular recipes", style: TextStyle(fontSize: 25, letterSpacing: 0.5, fontStyle: FontStyle.italic, color: homeScreen_purple_color, fontWeight: FontWeight.bold)),
+        ),
+        Container(
+              height: 200.0,
+              child: ListView.separated(
+                itemBuilder: (BuildContext context, int index) => SizedBox(width: 180,child: HealthItem(food: FoodModel.fakeFood())),
+                itemCount: 10,
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    width: 10,
+                  );
+                },
+                padding: EdgeInsets.only(left: 5),
+                scrollDirection: Axis.horizontal,
 
-                )
-            ),
-          
-        ],
-      ),
+              )
+          ),
+
+      ],
     );
   }
-
-
-
-
-
-  List<Widget> getWorkoutItems() {
-    List<Widget> workouts = new List<Widget>();
-    for(int i = 0; i< 10; i++){
-      workouts.add(new WorkoutItem(workout: getRandomWorkOut()));
-    }
-    return workouts;
-  }
-
-  List<Widget> getRecipesItems() {
-    List<Widget> recipes = new List<Widget>();
-    for(int i = 0; i< 10; i++){
-      recipes.add(new HealthItem(food: FoodModel.fakeFood()));
-    }
-    return recipes;
-  }
-
-
-
-
 
   getWorkoutButton(){
     return Container(
@@ -132,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
           print("Eu sou o Rei == Rui Gei");
         },
         icon: Icon(Icons.fitness_center),
-        label: Text("Random Workout", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+        label: Text("Random Workout", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),),
 
       ),
     );
@@ -149,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
           print("Eu sou o Rei == Rui Gei");
         },
         icon: Icon(Icons.favorite),
-        label: Text("Random recipe", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+        label: Text("Random recipe", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),),
       ),
     );
   }

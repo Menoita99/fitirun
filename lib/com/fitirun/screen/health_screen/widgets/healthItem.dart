@@ -33,7 +33,7 @@ class HealthItem extends StatelessWidget {
           ),
           Container(
             alignment: Alignment.topLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.fromLTRB(20, 5, 0, 0),
             child: Text(
               food.title,
               style: TextStyle(
