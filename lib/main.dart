@@ -13,8 +13,7 @@ void main() {
       visualDensity: VisualDensity.adaptivePlatformDensity,
       fontFamily: 'Nunito',
     ),
-    home: WelcomeScreen(),
-    // initialRoute: '/',
-    // routes: getRoutes(),
+     initialRoute: '/',
+     routes: getRoutes(),
   ));
 }
