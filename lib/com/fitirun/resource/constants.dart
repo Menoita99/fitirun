@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 const health_food_color =  Color(0xffb5ead7);
 const workout_color =  Color(0xffff9aa2);
 const blackText = Colors.black54;
+const homeScreen_color = Color(0xff557571);
+const homeScreen_purple_color = Color(0xff726a95);
 
 
 // navigation bar colors

@@ -1,7 +1,13 @@
+import 'dart:math';
 import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
+import 'package:fitirun/com/fitirun/model/foodModel.dart';
+import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:fitirun/com/fitirun/screen/health_screen/widgets/healthItem.dart';
+import 'package:fitirun/com/fitirun/screen/health_screen/widgets/workoutItem.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_sparkline/flutter_sparkline.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -15,6 +21,9 @@ class _HomeScreenState extends State<HomeScreen> {
   int loginStreak = 15;
   int currentWeight = 65;
 
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,385 +35,209 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.menu, color: blackText), onPressed: () =>print("something"),
           ),
         ),
-      body: getBody(),
+      body:SingleChildScrollView(child: getBody()),
       bottomNavigationBar: NavigationBottomBar(),
     );
   }
 
   Widget getBody() {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(0, 15, 0, 10),
-          child: Row(
-            children: [
-<<<<<<< Updated upstream
-              Text.rich(TextSpan(text: '', children: <TextSpan>[
-                TextSpan(
-                    text: "Login ",
-                    style: TextStyle(fontStyle: FontStyle.italic)),
-                TextSpan(
-                    text: "Streak: ",
-                    style: TextStyle(fontStyle: FontStyle.italic)),
-                TextSpan(
-                    text: "$loginStreak",
-                    style: TextStyle(fontWeight: FontWeight.bold))
-              ])),
-              Text.rich(TextSpan(text: '', children: <TextSpan>[
-                TextSpan(
-                    text: "Current ",
-                    style: TextStyle(fontStyle: FontStyle.italic)),
-                TextSpan(
-                    text: "Weight: ",
-                    style: TextStyle(fontStyle: FontStyle.italic)),
-                TextSpan(
-                    text: "$currentWeight",
-                    style: TextStyle(fontWeight: FontWeight.bold))
-              ])),
-=======
-              Text.rich(
-                  TextSpan(text: '', children: <TextSpan>[
-                      TextSpan(text: "Login ", style: TextStyle(fontStyle: FontStyle.italic)),
-                      TextSpan(text: "Streak: ", style: TextStyle(fontStyle: FontStyle.italic)),
-                      TextSpan(text: "$loginStreak", style: TextStyle(fontWeight: FontWeight.bold))
-                  ]
-              )),
-              Text.rich(
-                  TextSpan(
-                      text: '', children: <TextSpan>[
-                    TextSpan(text: "Current ", style: TextStyle(fontStyle: FontStyle.italic)),
-                    TextSpan(text: "Weight: ", style: TextStyle(fontStyle: FontStyle.italic)),
-                    TextSpan(text: "$currentWeight", style: TextStyle(fontWeight: FontWeight.bold))
-                  ]
-                  )),
->>>>>>> Stashed changes
-            ],
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          ),
-        ),
-        Container(
-          width: 400,
-          height: 200,
-          decoration: BoxDecoration(
-            color: Colors.cyan,
-            borderRadius: BorderRadius.all(Radius.circular(30)),
-          ),
-          child: LineChart(
-            sampleData1(),
-          ),
-        ),
-
-      ],
-    );
-  }
-
-  LineChartData sampleData1() {
-    return LineChartData(
-      lineTouchData: LineTouchData(
-        touchTooltipData: LineTouchTooltipData(
-          tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
-        ),
-        touchCallback: (LineTouchResponse touchResponse) {},
-        handleBuiltInTouches: true,
-      ),
-      gridData: FlGridData(
-        show: false,
-      ),
-      titlesData: FlTitlesData(
-        bottomTitles: SideTitles(
-          showTitles: true,
-          reservedSize: 22,
-          getTextStyles: (value) => const TextStyle(
-            color: Color(0xff72719b),
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
-          margin: 10,
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 2:
-                return 'SEPT';
-              case 7:
-                return 'OCT';
-              case 12:
-                return 'DEC';
-            }
-            return '';
-          },
-        ),
-        leftTitles: SideTitles(
-          showTitles: true,
-          getTextStyles: (value) => const TextStyle(
-            color: Color(0xff75729e),
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
-          ),
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 1:
-                return '1m';
-              case 2:
-                return '2m';
-              case 3:
-                return '3m';
-              case 4:
-                return '5m';
-            }
-            return '';
-          },
-          margin: 8,
-          reservedSize: 30,
-        ),
-      ),
-      borderData: FlBorderData(
-        show: true,
-        border: const Border(
-          bottom: BorderSide(
-            color: Color(0xff4e4965),
-            width: 4,
-          ),
-          left: BorderSide(
-            color: Colors.transparent,
-          ),
-          right: BorderSide(
-            color: Colors.transparent,
-          ),
-          top: BorderSide(
-            color: Colors.transparent,
-          ),
-        ),
-      ),
-      minX: 0,
-      maxX: 14,
-      maxY: 4,
-      minY: 0,
-      lineBarsData: linesBarData1(),
-    );
-  }
-
-  List<LineChartBarData> linesBarData1() {
-    final LineChartBarData lineChartBarData1 = LineChartBarData(
-      spots: [
-        FlSpot(1, 1),
-        FlSpot(3, 1.5),
-        FlSpot(5, 1.4),
-        FlSpot(7, 3.4),
-        FlSpot(10, 2),
-        FlSpot(12, 2.2),
-        FlSpot(13, 1.8),
-      ],
-      isCurved: true,
-      colors: [
-        const Color(0xff4af699),
-      ],
-      barWidth: 8,
-      isStrokeCapRound: true,
-      dotData: FlDotData(
-        show: false,
-      ),
-      belowBarData: BarAreaData(
-        show: false,
-      ),
-    );
-    final LineChartBarData lineChartBarData2 = LineChartBarData(
-      spots: [
-        FlSpot(1, 1),
-        FlSpot(3, 2.8),
-        FlSpot(7, 1.2),
-        FlSpot(10, 2.8),
-        FlSpot(12, 2.6),
-        FlSpot(13, 3.9),
-      ],
-      isCurved: true,
-      colors: [
-        const Color(0xffaa4cfc),
-      ],
-      barWidth: 8,
-      isStrokeCapRound: true,
-      dotData: FlDotData(
-        show: false,
-      ),
-      belowBarData: BarAreaData(show: false, colors: [
-        const Color(0x00aa4cfc),
-      ]),
-    );
-    final LineChartBarData lineChartBarData3 = LineChartBarData(
-      spots: [
-        FlSpot(1, 2.8),
-        FlSpot(3, 1.9),
-        FlSpot(6, 3),
-        FlSpot(10, 1.3),
-        FlSpot(13, 2.5),
-      ],
-      isCurved: true,
-      colors: const [
-        Color(0xff27b6fc),
-      ],
-      barWidth: 8,
-      isStrokeCapRound: true,
-      dotData: FlDotData(
-        show: false,
-      ),
-      belowBarData: BarAreaData(
-        show: false,
-      ),
-    );
-    return [
-      lineChartBarData1,
-      lineChartBarData2,
-      lineChartBarData3,
-    ];
-  }
-
-  LineChartData sampleData2() {
-    return LineChartData(
-      lineTouchData: LineTouchData(
-        enabled: false,
-      ),
-      gridData: FlGridData(
-        show: false,
-      ),
-      titlesData: FlTitlesData(
-        bottomTitles: SideTitles(
-          showTitles: true,
-          reservedSize: 22,
-          getTextStyles: (value) => const TextStyle(
-            color: Color(0xff72719b),
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
-          margin: 10,
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 2:
-                return 'SEPT';
-              case 7:
-                return 'OCT';
-              case 12:
-                return 'DEC';
-            }
-            return '';
-          },
-        ),
-        leftTitles: SideTitles(
-          showTitles: true,
-          getTextStyles: (value) => const TextStyle(
-            color: Color(0xff75729e),
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
-          ),
-          getTitles: (value) {
-            switch (value.toInt()) {
-              case 1:
-                return '1m';
-              case 2:
-                return '2m';
-              case 3:
-                return '3m';
-              case 4:
-                return '5m';
-              case 5:
-                return '6m';
-            }
-            return '';
-          },
-          margin: 8,
-          reservedSize: 30,
-        ),
-      ),
-      borderData: FlBorderData(
-          show: true,
-          border: const Border(
-            bottom: BorderSide(
-              color: Color(0xff4e4965),
-              width: 4,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 00, 0, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Be the best", style: TextStyle(fontSize: 25, letterSpacing: 0.5, fontStyle: FontStyle.italic, color: homeScreen_color, fontWeight: FontWeight.bold)),
+          Text("Version of yourself.", style: TextStyle(fontSize: 25, letterSpacing: 0.5, fontStyle: FontStyle.italic, color: homeScreen_color, fontWeight: FontWeight.bold)),
+          ChartContainer(fillData()),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                getWorkoutButton(),
+                getRecipeButton(),
+              ],
             ),
-            left: BorderSide(
-              color: Colors.transparent,
+          ),
+          Text("Popular workouts", style: TextStyle(fontSize: 25, letterSpacing: 0.5, fontStyle: FontStyle.italic, color: homeScreen_purple_color, fontWeight: FontWeight.bold)),
+
+          Container(
+                height: 180.0,
+                child: ListView.separated(
+                  itemBuilder: (BuildContext context, int index) => SingleChildScrollView(child: SizedBox(width: 180,child: WorkoutItem(workout: getRandomWorkOut()))),
+                  itemCount: 10,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                      width: 10,
+                    );
+                  },
+                  padding: EdgeInsets.only(left: 5),
+                  scrollDirection: Axis.horizontal,
+                )
             ),
-            right: BorderSide(
-              color: Colors.transparent,
+          Text("Popular recipes", style: TextStyle(fontSize: 25, letterSpacing: 0.5, fontStyle: FontStyle.italic, color: homeScreen_purple_color, fontWeight: FontWeight.bold)),
+          Container(
+                height: 180.0,
+                child: ListView.separated(
+                  itemBuilder: (BuildContext context, int index) => SingleChildScrollView(child: SizedBox(width: 180,child: HealthItem(food: FoodModel.fakeFood()))),
+                  itemCount: 10,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                      width: 10,
+                    );
+                  },
+                  padding: EdgeInsets.only(left: 5),
+                  scrollDirection: Axis.horizontal,
+
+                )
             ),
-            top: BorderSide(
-              color: Colors.transparent,
-            ),
-          )),
-      minX: 0,
-      maxX: 14,
-      maxY: 6,
-      minY: 0,
-      lineBarsData: linesBarData2(),
+          
+        ],
+      ),
     );
   }
 
-  List<LineChartBarData> linesBarData2() {
-    return [
-      LineChartBarData(
-        spots: [
-          FlSpot(1, 1),
-          FlSpot(3, 4),
-          FlSpot(5, 1.8),
-          FlSpot(7, 5),
-          FlSpot(10, 2),
-          FlSpot(12, 2.2),
-          FlSpot(13, 1.8),
-        ],
-        isCurved: true,
-        curveSmoothness: 0,
-        colors: const [
-          Color(0x444af699),
-        ],
-        barWidth: 4,
-        isStrokeCapRound: true,
-        dotData: FlDotData(
-          show: false,
-        ),
-        belowBarData: BarAreaData(
-          show: false,
-        ),
-      ),
-      LineChartBarData(
-        spots: [
-          FlSpot(1, 1),
-          FlSpot(3, 2.8),
-          FlSpot(7, 1.2),
-          FlSpot(10, 2.8),
-          FlSpot(12, 2.6),
-          FlSpot(13, 3.9),
-        ],
-        isCurved: true,
-        colors: const [
-          Color(0x99aa4cfc),
-        ],
-        barWidth: 4,
-        isStrokeCapRound: true,
-        dotData: FlDotData(
-          show: false,
-        ),
-        belowBarData: BarAreaData(show: true, colors: [
-          const Color(0x33aa4cfc),
-        ]),
-      ),
-      LineChartBarData(
-        spots: [
-          FlSpot(1, 3.8),
-          FlSpot(3, 1.9),
-          FlSpot(6, 5),
-          FlSpot(10, 3.3),
-          FlSpot(13, 4.5),
-        ],
-        isCurved: true,
-        curveSmoothness: 0,
-        colors: const [
-          Color(0x4427b6fc),
-        ],
-        barWidth: 2,
-        isStrokeCapRound: true,
-        dotData: FlDotData(show: true),
-        belowBarData: BarAreaData(
-          show: false,
-        ),
-      ),
-    ];
+
+
+
+
+  List<Widget> getWorkoutItems() {
+    List<Widget> workouts = new List<Widget>();
+    for(int i = 0; i< 10; i++){
+      workouts.add(new WorkoutItem(workout: getRandomWorkOut()));
+    }
+    return workouts;
   }
+
+  List<Widget> getRecipesItems() {
+    List<Widget> recipes = new List<Widget>();
+    for(int i = 0; i< 10; i++){
+      recipes.add(new HealthItem(food: FoodModel.fakeFood()));
+    }
+    return recipes;
+  }
+
+
+
+
+
+  getWorkoutButton(){
+    return Container(
+      decoration: BoxDecoration(
+          color: workout_color,
+          borderRadius: BorderRadius.all(Radius.circular(20))
+      ),
+      child: FlatButton.icon(
+        onPressed: (){
+          print("Eu sou o Rei == Rui Gei");
+        },
+        icon: Icon(Icons.fitness_center),
+        label: Text("Random Workout", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+
+      ),
+    );
+  }
+
+  getRecipeButton(){
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          color: health_food_color
+      ),
+      child: FlatButton.icon(
+        onPressed: (){
+          print("Eu sou o Rei == Rui Gei");
+        },
+        icon: Icon(Icons.favorite),
+        label: Text("Random recipe", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+      ),
+    );
+  }
+
+
+
+
+
+  List<double> fillData(){
+    List<double> data = new List(7);
+    var rng = new Random();
+    for(int i = 0; i<7; i++){
+      data[i] = 2000.0 +  rng.nextDouble() * 1000;
+    }
+    return data;
+  }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ignore: must_be_immutable
+class ChartContainer extends StatefulWidget {
+  List<double> data = new List(7);
+
+  ChartContainer(this.data);
+
+  @override
+  _ChartContainerState createState() => _ChartContainerState();
+}
+
+class _ChartContainerState extends State<ChartContainer> {
+
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 10, 10, 0),
+      child: Container(
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Color(0xffbedbbb),
+          border: Border.all(
+            color: Color(0xffbedbbb),
+            width: 3
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(20))
+        ),
+        child: new Sparkline(
+          data: widget.data,
+          fillMode: FillMode.below,
+          fillGradient: LinearGradient(
+              colors: [Color(0xff70e1f5), Color(0xffffd194)]),
+          pointsMode: PointsMode.all,
+          pointColor: homeScreen_purple_color,
+          pointSize: 10.0,
+
+        ),
+
+      ),
+    );
+  }
+
+
+
+
+}
+
