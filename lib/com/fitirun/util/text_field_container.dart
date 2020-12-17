@@ -1,3 +1,4 @@
+import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:flutter/material.dart';
 
 class TextFieldContainer extends StatelessWidget {
@@ -15,7 +16,7 @@ class TextFieldContainer extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       width: size.width * 0.8,
       decoration: BoxDecoration(
-        color: Color(0xFFF1E6FF),
+        color: white,
         borderRadius: BorderRadius.circular(29),
       ),
       child: child,

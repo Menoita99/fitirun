@@ -1,6 +1,4 @@
-import 'package:fitirun/com/fitirun/screen/home_screen/homeScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:fitirun/com/fitirun/screen/login_screen/login_screen.dart';
 import 'background.dart';
 import 'or_divider.dart';
 import 'social_icon.dart';
@@ -23,10 +21,6 @@ class Body extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: size.height * 0.03),
-            Image.asset(
-              "assets/images/signup.png",
-              width: size.width * 0.35,
-            ),
             RoundedInputField(
               hintText: "Your Email",
               onChanged: (value) {},
@@ -37,28 +31,14 @@ class Body extends StatelessWidget {
             RoundedButton(
               text: "SIGNUP",
               press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return HomeScreen();
-                    },
-                  ),
-                );
+                Navigator.popAndPushNamed(context, '/home');
               },
             ),
             SizedBox(height: size.height * 0.03),
             AlreadyHaveAnAccountCheck(
               login: false,
               press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return LoginScreen();
-                    },
-                  ),
-                );
+                Navigator.popAndPushNamed(context, '/login');
               },
             ),
             OrDivider(),

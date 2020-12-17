@@ -1,3 +1,4 @@
+import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:flutter/material.dart';
 import 'text_field_container.dart';
 
@@ -14,16 +15,16 @@ class RoundedPasswordField extends StatelessWidget {
       child: TextField(
         obscureText: true,
         onChanged: onChanged,
-        cursorColor: Color(0xFF6F35A5),
+        cursorColor: purple,
         decoration: InputDecoration(
           hintText: "Password",
           icon: Icon(
             Icons.lock,
-            color: Color(0xFF6F35A5),
+            color: purple,
           ),
           suffixIcon: Icon(
             Icons.visibility,
-            color: Color(0xFF6F35A5),
+            color: purple,
           ),
           border: InputBorder.none,
         ),

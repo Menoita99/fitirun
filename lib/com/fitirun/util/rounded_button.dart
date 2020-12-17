@@ -1,3 +1,4 @@
+import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {
@@ -8,8 +9,8 @@ class RoundedButton extends StatelessWidget {
     Key key,
     this.text,
     this.press,
-    this.color = const Color(0xFF6F35A5),
-    this.textColor = Colors.white,
+    this.color = purple,
+    this.textColor = white,
   }) : super(key: key);
 
   @override
