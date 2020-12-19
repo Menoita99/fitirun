@@ -1,3 +1,4 @@
+import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:flutter/material.dart';
 
 class AlreadyHaveAnAccountCheck extends StatelessWidget {
@@ -16,14 +17,14 @@ class AlreadyHaveAnAccountCheck extends StatelessWidget {
       children: <Widget>[
         Text(
           login ? "Don’t have an Account ? " : "Already have an Account ? ",
-          style: TextStyle(color: Color(0xFF6F35A5)),
+          style: TextStyle(color: purple),
         ),
         GestureDetector(
           onTap: press,
           child: Text(
             login ? "Sign Up" : "Sign In",
             style: TextStyle(
-              color: Color(0xFF6F35A5),
+              color: purple,
               fontWeight: FontWeight.bold,
             ),
           ),

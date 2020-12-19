@@ -1,4 +1,4 @@
-import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
+import 'package:fitirun/com/fitirun/custom_widget/navigationBar.dart';
 import 'package:fitirun/com/fitirun/resource/routes.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
 import 'package:flutter/material.dart';

@@ -1,3 +1,4 @@
+import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:flutter/material.dart';
 import 'text_field_container.dart';
 
@@ -17,11 +18,11 @@ class RoundedInputField extends StatelessWidget {
     return TextFieldContainer(
       child: TextField(
         onChanged: onChanged,
-        cursorColor: Color(0xFF6F35A5),
+        cursorColor: purple,
         decoration: InputDecoration(
           icon: Icon(
             icon,
-            color: Color(0xFF6F35A5),
+            color: purple,
           ),
           hintText: hintText,
           border: InputBorder.none,

@@ -1,7 +1,5 @@
-import 'package:fitirun/com/fitirun/screen/home_screen/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'background.dart';
-import 'package:fitirun/com/fitirun/screen/signup_screen/signup_screen.dart';
 import 'package:fitirun/com/fitirun/util/already_have_an_account_acheck.dart';
 import 'package:fitirun/com/fitirun/util/rounded_button.dart';
 import 'package:fitirun/com/fitirun/util/rounded_input_field.dart';
@@ -36,27 +34,13 @@ class Body extends StatelessWidget {
             RoundedButton(
               text: "LOGIN",
               press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return HomeScreen();
-                    },
-                  ),
-                );
+                Navigator.popAndPushNamed(context, '/home');
               },
             ),
             SizedBox(height: size.height * 0.03),
             AlreadyHaveAnAccountCheck(
               press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SignUpScreen();
-                    },
-                  ),
-                );
+                Navigator.popAndPushNamed(context, '/signup');
               },
             ),
           ],

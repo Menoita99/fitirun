@@ -1,8 +1,8 @@
+import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:fitirun/com/fitirun/screen/login_screen/login_screen.dart';
-import 'package:fitirun/com/fitirun/screen/signup_screen/signup_screen.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/components/background.dart';
 import 'package:fitirun/com/fitirun/util/rounded_button.dart';
+
 
 class Body extends StatelessWidget {
   @override
@@ -19,37 +19,23 @@ class Body extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: size.height * 0.05),
-            // Image.asset(
-            //   "assets/icons/Logo.png",
-            //   height: size.height * 0.45,
-            // ),
+            Image.asset(
+              "assets/logos/logo.png",
+              height: size.height * 0.45,
+            ),
             SizedBox(height: size.height * 0.05),
             RoundedButton(
               text: "LOGIN",
               press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return LoginScreen();
-                    },
-                  ),
-                );
+                Navigator.popAndPushNamed(context, '/login');
               },
             ),
             RoundedButton(
               text: "SIGN UP",
-              color: Color(0xFFF1E6FF),
-              textColor: Colors.black,
+              color: white,
+              textColor: blackText,
               press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SignUpScreen();
-                    },
-                  ),
-                );
+                Navigator.popAndPushNamed(context, '/signup');
               },
             ),
           ],

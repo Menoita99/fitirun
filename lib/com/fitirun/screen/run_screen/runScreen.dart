@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
+=======
+import 'package:fitirun/com/fitirun/custom_widget/navigationBar.dart';
+>>>>>>> 27ce3ce597049ebfbb0b89aa051f00038b8d5f04
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';

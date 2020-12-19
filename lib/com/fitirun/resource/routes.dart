@@ -9,6 +9,9 @@ import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
 
 getRoutes() {
   return {
+    '/': (context) => WelcomeScreen(),
+    '/signup': (context) => SignUpScreen(),
+    '/login': (context) => LoginScreen(),
     '/health': (context) => HealthScreen(),
     '/home': (context) => HomeScreen(),
     '/run': (context) => RunScreen(),
