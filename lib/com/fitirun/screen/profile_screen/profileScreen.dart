@@ -1,6 +1,5 @@
-import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
+import 'package:fitirun/com/fitirun/custom_widget/navigationBar.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
-import 'package:fitirun/com/fitirun/resource/routes.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
