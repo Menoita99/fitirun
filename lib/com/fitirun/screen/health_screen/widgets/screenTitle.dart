@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ScreenTitle extends StatefulWidget {
-  String _title;
+  final String _title;
+  final Color _color;
 
-  ScreenTitle(this._title);
+  ScreenTitle(this._title,[this._color =  Colors.white]);
 
   @override
   _ScreenTitleState createState() => _ScreenTitleState();
@@ -18,8 +19,8 @@ class _ScreenTitleState extends State<ScreenTitle> {
       child: Text(
         widget._title,
         style: TextStyle(
-          color: Colors.white,
-          fontSize: 35,
+          color: widget._color,
+          fontSize: 30,
           fontWeight: FontWeight.bold,
         ),
       ),

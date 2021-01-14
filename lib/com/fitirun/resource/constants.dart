@@ -22,6 +22,8 @@ const List<Color> navColors = [
 ];
 
 
-// Radius constante
+// Constants
 const border_radius = 20.0;
+const padding_value = 16.0;
+
 

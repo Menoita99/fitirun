@@ -23,7 +23,7 @@ class HealthItem extends StatelessWidget {
                 topRight: Radius.circular(10),
                 bottomLeft: Radius.circular(10),
                 bottomRight: Radius.circular(10)),
-            child: new CachedNetworkImage(
+            child: CachedNetworkImage(
               imageUrl: food.image,
               height: 140.0,
               width: 140.0,

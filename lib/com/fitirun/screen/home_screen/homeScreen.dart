@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:fitirun/com/fitirun/custom_widget/navigationBar.dart';
+import 'file:///C:/Users/rui.menoita/StudioProjects/fitirun/lib/com/fitirun/costum_widget/navigationBar.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';

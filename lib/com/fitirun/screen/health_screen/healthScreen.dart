@@ -1,7 +1,8 @@
-import 'package:fitirun/com/fitirun/custom_widget/navigationBar.dart';
+import 'file:///C:/Users/rui.menoita/StudioProjects/fitirun/lib/com/fitirun/costum_widget/navigationBar.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
+import 'package:fitirun/com/fitirun/screen/details_screen/DetailsHealthScreen.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/healthItem.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/screenTitle.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/workoutItem.dart';
@@ -13,7 +14,6 @@ class HealthScreen extends StatefulWidget {
 }
 
 class _HealthScreenState extends State<HealthScreen> {
-
   PageController _controller = PageController(initialPage: 0);
   bool isFoodSelected = true;
   static const int pageTransictionTime = 1000;
@@ -30,7 +30,8 @@ class _HealthScreenState extends State<HealthScreen> {
           ),
         ),
         body: getBody(),
-        bottomNavigationBar: NavigationBottomBar.withColor(isFoodSelected ? health_food_color : workout_color));
+        bottomNavigationBar: NavigationBottomBar.withColor(
+            isFoodSelected ? health_food_color : workout_color));
   }
 
   Widget getBody() {
@@ -50,10 +51,9 @@ class _HealthScreenState extends State<HealthScreen> {
           ),
           Expanded(
             child: PageView(
-              physics:new NeverScrollableScrollPhysics(),
+              physics: new NeverScrollableScrollPhysics(),
               controller: _controller,
-              children: [
-                getHealthFoodItens(), getWorkoutItens()],
+              children: [getHealthFoodItens(), getWorkoutItens()],
             ),
           )
         ],
@@ -61,52 +61,47 @@ class _HealthScreenState extends State<HealthScreen> {
     );
   }
 
-
-
   Container getWorkoutButton() {
     return Container(
-              width: 120,
-              decoration: BoxDecoration(
-                color: isFoodSelected ? Colors.transparent : workout_color,
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-              ),
-              child: FlatButton.icon(
-                onPressed: () => {
-                  _controller.animateToPage(1, duration: Duration(milliseconds: pageTransictionTime), curve: Curves.easeInOut),
-                  setState(() => isFoodSelected = false)
-                },
-                icon: Icon(Icons.fitness_center),
-                label: Text("Workout"),
-                textColor: isFoodSelected ? blackText : Colors.white ,
-              ),
-            );
+      width: 120,
+      decoration: BoxDecoration(
+        color: isFoodSelected ? Colors.transparent : workout_color,
+        borderRadius: BorderRadius.all(Radius.circular(30)),
+      ),
+      child: FlatButton.icon(
+        onPressed: () => {
+          _controller.animateToPage(1,
+              duration: Duration(milliseconds: pageTransictionTime),
+              curve: Curves.easeInOut),
+          setState(() => isFoodSelected = false)
+        },
+        icon: Icon(Icons.fitness_center),
+        label: Text("Workout"),
+        textColor: isFoodSelected ? blackText : Colors.white,
+      ),
+    );
   }
-
-
-
 
   Container getFoodButton() {
     return Container(
-              width: 120,
-              decoration: BoxDecoration(
-                color:
-                    isFoodSelected ? health_food_color : Colors.transparent,
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-              ),
-              child: FlatButton.icon(
-                onPressed: () => {
-                  _controller.animateTo(0, duration: Duration(milliseconds: pageTransictionTime), curve: Curves.easeInOut),
-                  setState(() => isFoodSelected = true)
-                },
-                icon: Icon(Icons.favorite),
-                label: Text("Food"),
-                textColor: isFoodSelected ? Colors.white : blackText,
-              ),
-            );
+      width: 120,
+      decoration: BoxDecoration(
+        color: isFoodSelected ? health_food_color : Colors.transparent,
+        borderRadius: BorderRadius.all(Radius.circular(30)),
+      ),
+      child: FlatButton.icon(
+        onPressed: () => {
+          _controller.animateTo(0,
+              duration: Duration(milliseconds: pageTransictionTime),
+              curve: Curves.easeInOut),
+          setState(() => isFoodSelected = true)
+        },
+        icon: Icon(Icons.favorite),
+        label: Text("Food"),
+        textColor: isFoodSelected ? Colors.white : blackText,
+      ),
+    );
   }
-
-
-
 
   Padding getWorkoutItens() {
     return Padding(
@@ -124,10 +119,8 @@ class _HealthScreenState extends State<HealthScreen> {
     );
   }
 
-
-
-
   Widget getHealthFoodItens() {
+    List<FoodModel> food = List<FoodModel>.generate(100, (i) => FoodModel.fakeFood());
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: GridView.builder(
@@ -137,17 +130,16 @@ class _HealthScreenState extends State<HealthScreen> {
             crossAxisSpacing: 0,
             childAspectRatio: 0.85),
         itemBuilder: (context, index) => HealthItem(
-            food: FoodModel.fakeFood(),
-            onPress: () => print("Clicked food $index")),
+            food: food[index],
+            onPress: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailsHealthScreen(item: food[index]),
+                ))),
       ),
     );
   }
 }
-
-
-
-
-
 
 class SearchContainer extends StatefulWidget {
   Color _color;
@@ -159,9 +151,6 @@ class SearchContainer extends StatefulWidget {
 }
 
 class _SearchContainerState extends State<SearchContainer> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -187,10 +176,12 @@ class _SearchContainerState extends State<SearchContainer> {
                         contentPadding: EdgeInsets.all(5.0),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.transparent),
-                          borderRadius: BorderRadius.all(Radius.circular(border_radius)),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(border_radius)),
                         ),
                         focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(  color: Colors.white.withOpacity(0.88)),
+                            borderSide: BorderSide(
+                                color: Colors.white.withOpacity(0.88)),
                             borderRadius: BorderRadius.all(
                                 Radius.circular(border_radius))),
                         prefixIcon: Icon(

@@ -17,6 +17,8 @@ class FoodModel{
   int preparationTime; //min
   int numberOfPeople;
   int calories;
+  int protein;
+  int carbohydrates;
   List<String> recipe;
 
   FoodModel(this.image, this.rank, this.title, this.preparationTime,  this.numberOfPeople, this.calories, this.recipe);
@@ -29,7 +31,9 @@ class FoodModel{
     preparationTime = faker.randomGenerator.integer(100)+1;
     numberOfPeople = faker.randomGenerator.integer(4)+1;
     calories = faker.randomGenerator.integer(1000)+1;
-    recipe = faker.lorem.sentences(2);
+    protein = faker.randomGenerator.integer(100)+1;
+    carbohydrates = faker.randomGenerator.integer(300)+1;
+    recipe = faker.lorem.sentences(7);
   }
 
 
