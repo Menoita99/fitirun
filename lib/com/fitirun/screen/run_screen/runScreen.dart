@@ -1,12 +1,10 @@
-<<<<<<< HEAD
-import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
+import 'dart:async';
+import 'package:flutter/services.dart';
+import 'package:location/location.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
-=======
 import 'package:fitirun/com/fitirun/custom_widget/navigationBar.dart';
->>>>>>> 27ce3ce597049ebfbb0b89aa051f00038b8d5f04
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
 
 class RunScreen extends StatefulWidget {
   @override
@@ -15,7 +13,13 @@ class RunScreen extends StatefulWidget {
 
 
 class _RunScreenState extends State<RunScreen> {
-  
+
+  Completer<GoogleMapController> _controller = Completer();
+  static const LatLng _center = const LatLng(45.521563, -122.677433);
+
+  void _onMapCreated(GoogleMapController controller) {
+    _controller.complete(controller);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +28,14 @@ class _RunScreenState extends State<RunScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-        ),
       ),
       body: getBody(),
       bottomNavigationBar: NavigationBottomBar(),
     );
   }
 
+
   Widget getBody() {
-    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
     return Column(
@@ -60,10 +61,13 @@ class _RunScreenState extends State<RunScreen> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GoogleMap(
-        initialCameraPosition: CameraPosition(target: LatLng(37, 122), zoom: 12),
+        onMapCreated: _onMapCreated,
+        initialCameraPosition: CameraPosition(
+          target: _center,
+          zoom: 11.0,
+        ),
       ),
-    );
+      );
   }
-
 
 }
