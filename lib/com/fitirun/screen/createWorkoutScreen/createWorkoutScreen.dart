@@ -47,5 +47,3 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
     );
   }
 }
-
-

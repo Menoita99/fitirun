@@ -3,7 +3,8 @@ import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
-import 'package:fitirun/com/fitirun/screen/details_screen/DetailsHealthScreen.dart';
+import 'package:fitirun/com/fitirun/screen/details_screen/detailsHealthScreen.dart';
+import 'package:fitirun/com/fitirun/screen/details_screen/detailsTrainScreen.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/healthItem.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/screenTitle.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/workoutItem.dart';
@@ -83,6 +84,7 @@ class _HealthScreenState extends State<HealthScreen> {
     );
   }
 
+
   Container getFoodButton() {
     return Container(
       width: 120,
@@ -104,18 +106,26 @@ class _HealthScreenState extends State<HealthScreen> {
     );
   }
 
+
+
   Padding getWorkoutItens() {
+    List<TrainModel> workouts = List<TrainModel>.generate(100, (i) => TrainModel.fakeModel());
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: GridView.builder(
+        itemCount: workouts.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 20,
             crossAxisSpacing: 0,
             childAspectRatio: 0.85),
         itemBuilder: (context, index) => WorkoutItem(
-            workout: getRandomWorkOut(),
-            onPress: () => print("Clicked workout $index")),
+            workout: workouts[index],
+            onPress: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailsTrainScreen(item: workouts[index]),
+                ))),
       ),
     );
   }
@@ -125,6 +135,7 @@ class _HealthScreenState extends State<HealthScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: GridView.builder(
+        itemCount: food.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 20,

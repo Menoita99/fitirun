@@ -20,14 +20,11 @@ class DetailsHealthScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
-          leading: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Icon(Icons.arrow_back_ios, color: blackText),
-          ),
+          leading: IconButton(onPressed: () => Navigator.pop(context),icon: Icon(Icons.arrow_back_ios, color: blackText)),
           actions: [
             Padding(
                 padding: EdgeInsets.only(right: 16),
-                child: Icon(Icons.favorite_border, color: blackText)),
+                child: IconButton(icon: Icon(Icons.favorite_border, color: blackText))),
           ],
         ),
         body: getBody(context));
