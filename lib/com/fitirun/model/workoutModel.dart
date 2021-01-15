@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:faker/faker.dart';
+import 'package:fitirun/com/fitirun/resource/constants.dart';
 
 extension StringExtension on String {
   String capitalize() {
@@ -51,13 +54,53 @@ class ExerciceModel extends WorkoutModel {
 
 class TrainModel extends WorkoutModel {
   List<ExerciceModel> train = [];
+  int difficulty;
 
-  TrainModel(this.train, String image, String title, List<String> description,int time) : super(image, title, description, time);
+  TrainModel(this.train, String image, String title, List<String> description,int time,this.difficulty) : super(image, title, description, time);
 
   TrainModel.fakeModel() : super.fakeModel() {
+    difficulty = Faker().randomGenerator.integer(3);
     int random = Faker().randomGenerator.integer(5)+3;
     for(int i = 0 ; i <random ; i++)
       train.add(ExerciceModel.fakeModel());
+  }
+
+  static Color getDifficultyColor(int diff){
+    switch(diff) {
+      case 0: {
+        return pastel_green;
+      }
+      break;
+      case 1: {
+        return pastel_orange;
+      }
+      break;
+      case 2: {
+        return pastel_red;
+      }
+      default: {
+        throw("Received wrong number as difficulty $diff");
+      }
+    }
+  }
+
+  static String getDifficultyPhrase(int diff){
+    switch(diff) {
+      case 0: {
+        return "easy";
+      }
+      break;
+      case 1: {
+        return "medium";
+      }
+      break;
+      case 2: {
+        return "hard";
+      }
+      default: {
+        throw("Received wrong number as difficulty $diff");
+      }
+    }
   }
 }
 

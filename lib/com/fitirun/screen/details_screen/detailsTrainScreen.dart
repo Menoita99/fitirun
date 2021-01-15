@@ -13,6 +13,7 @@ class DetailsTrainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -45,7 +46,7 @@ class DetailsTrainScreen extends StatelessWidget {
           DraggableScrollableSheet(
               initialChildSize: 0.5,
               minChildSize: 0.5,
-              maxChildSize: 1,
+              maxChildSize: 0.89,
               builder: (context, controller) {
                 return SingleChildScrollView(
                   controller: controller,
@@ -66,11 +67,11 @@ class DetailsTrainScreen extends StatelessWidget {
                                 Container(
                                   padding: EdgeInsets.all(5),
                                   decoration: BoxDecoration(
-                                    color: health_food_color,
+                                    color: TrainModel.getDifficultyColor(item.difficulty),
                                     borderRadius: BorderRadius.all(Radius.circular(5))
                                   ),
                                   child: Text(
-                                    "easy".toUpperCase(),
+                                    TrainModel.getDifficultyPhrase(item.difficulty).toUpperCase(),
                                     style: TextStyle(
                                         color: Colors.white,
                                       fontSize: 15,
@@ -108,6 +109,25 @@ class DetailsTrainScreen extends StatelessWidget {
                             titleText("Exercises"),
                             SizedBox(height: 20),
                             Column(children: item.train.map((e) => _ExerciseItem(item: e)).toList()),
+                            SizedBox(height: 20),
+                            GestureDetector(
+                              onTap: () => print("Workout starting"),
+                              child: Container(
+                                height: 50,
+                                width: size.width-10,
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: pastel_blue,
+                                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                                ),
+                                child: Center(child: Text("Start Workout",style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  color: Colors.white
+                                ),)),
+                              ),
+                            ),
+                            SizedBox(height: 20),
                           ],
                         ),
                       ),

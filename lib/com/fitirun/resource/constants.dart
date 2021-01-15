@@ -11,6 +11,12 @@ const homeScreen_color = Color(0xff557571);
 const homeScreen_purple_color = Color(0xff726a95);
 const white = Color(0xFFF1E6FF);
 const purple = Color(0xFF6F35A5);
+const pastel_blue = Color(0xFFAFDEFA);
+const pastel_green = health_food_color;
+const pastel_orange = Color(0xFFFFC984);
+const pastel_red = workout_color;
+
+
 
 
 // navigation bar colors
@@ -25,5 +31,6 @@ const List<Color> navColors = [
 // Constants
 const border_radius = 20.0;
 const padding_value = 16.0;
+
 
 
