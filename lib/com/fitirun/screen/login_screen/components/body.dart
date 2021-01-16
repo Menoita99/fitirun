@@ -1,3 +1,4 @@
+import 'package:fitirun/com/fitirun/util/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'background.dart';
 import 'package:fitirun/com/fitirun/util/already_have_an_account_acheck.dart';
@@ -5,10 +6,13 @@ import 'package:fitirun/com/fitirun/util/rounded_button.dart';
 import 'package:fitirun/com/fitirun/util/rounded_input_field.dart';
 import 'package:fitirun/com/fitirun/util/rounded_password_field.dart';
 
-class Body extends StatelessWidget {
-  const Body({
-    Key key,
-  }) : super(key: key);
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,14 @@ class Body extends StatelessWidget {
             ),
             RoundedButton(
               text: "LOGIN",
-              press: () {
+              press: () async {
+                dynamic result = await _authService.signInAnon();
+                if(result == null){
+                  print("error signing in annon");
+                }else {
+                  print("Signed in");
+                  print(result);
+                }
                 Navigator.popAndPushNamed(context, '/home');
               },
             ),
