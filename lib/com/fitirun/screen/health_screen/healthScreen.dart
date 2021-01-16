@@ -23,14 +23,6 @@ class _HealthScreenState extends State<HealthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.menu),
-          ),
-        ),
         body: getBody(),
         bottomNavigationBar: NavigationBottomBar.withColor(
             isFoodSelected ? health_food_color : workout_color));
@@ -38,27 +30,30 @@ class _HealthScreenState extends State<HealthScreen> {
 
   Widget getBody() {
     return SafeArea(
-      child: Column(
-        children: [
-          SearchContainer(isFoodSelected ? health_food_color : workout_color),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                getFoodButton(),
-                getWorkoutButton(),
-              ],
+      child: Padding(
+        padding: const EdgeInsets.only(top:10),
+        child: Column(
+          children: [
+            SearchContainer(isFoodSelected ? health_food_color : workout_color),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  getFoodButton(),
+                  getWorkoutButton(),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: PageView(
-              physics: new NeverScrollableScrollPhysics(),
-              controller: _controller,
-              children: [getHealthFoodItens(), getWorkoutItens()],
-            ),
-          )
-        ],
+            Expanded(
+              child: PageView(
+                physics: new NeverScrollableScrollPhysics(),
+                controller: _controller,
+                children: [getHealthFoodItens(), getWorkoutItens()],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

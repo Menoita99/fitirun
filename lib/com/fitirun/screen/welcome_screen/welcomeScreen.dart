@@ -1,4 +1,4 @@
-import 'package:fitirun/com/fitirun/util/user_model.dart';
+import 'file:///C:/Users/rui.menoita/StudioProjects/fitirun/lib/com/fitirun/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +17,7 @@ class WelcomeScreen extends StatelessWidget {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushNamed("/home");
       });
-      return Container(child: Center( child: Text("Loading...", style: TextStyle(fontSize: 20),),), color: Colors.white);
+      return Container(child: Center( child: Text("Loading...", style: TextStyle(fontSize: 30),),), color: Colors.white);
     }
   }
 }

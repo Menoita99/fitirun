@@ -23,7 +23,7 @@ const dark_blue = Color(0xFF200087);
 // navigation bar colors
 const List<Color> navColors = [
   Color(0xffc7ceea),
-  Color(0xffb7b2ff),
+  pastel_blue,
   health_food_color,
   Color(0xfff2f0cb),
 ];
