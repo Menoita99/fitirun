@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:fitirun/com/fitirun/util/user_model.dart';
 
 class AuthService{
@@ -32,18 +33,39 @@ class AuthService{
   }
 
   //sign in with email and password
-
-  //register with email and password
-
-  //sign out
-  Future signOut() async {
+  Future loginWithEmailAndPassword(String email, String password) async {
     try{
-      return await _auth.signOut();
+      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      User user = result.user;
+      await DatabaseService().updateLoginList(user.uid, DateTime.now().toString());
+      return _userFromFirebaseUser(user);
     }catch(e){
       print(e);
       return null;
     }
   }
 
+  //register with email and password
+  Future registerWithEmailAndPassword(String email, String password) async {
+    try{
+      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      User user = result.user;
+      return _userFromFirebaseUser(user);
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+  //sign out
+  Future signOut(UserModel user) async {
+    try{
+      await DatabaseService().updateLogoutList(user.uid, DateTime.now().toString());
+      return await _auth.signOut();
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
 
 }

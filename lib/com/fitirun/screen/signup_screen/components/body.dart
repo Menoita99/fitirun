@@ -1,3 +1,4 @@
+import 'package:fitirun/com/fitirun/util/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'background.dart';
 import 'or_divider.dart';
@@ -7,7 +8,18 @@ import 'package:fitirun/com/fitirun/util/rounded_button.dart';
 import 'package:fitirun/com/fitirun/util/rounded_input_field.dart';
 import 'package:fitirun/com/fitirun/util/rounded_password_field.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  final AuthService _authService = AuthService();
+
+  String email = '';
+  String password = '';
+  String error = '';
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -23,18 +35,38 @@ class Body extends StatelessWidget {
             SizedBox(height: size.height * 0.03),
             RoundedInputField(
               hintText: "Your Email",
-              onChanged: (value) {},
+              onChanged: (value) {
+                setState(() {
+                  email = value;
+                });
+              },
             ),
             RoundedPasswordField(
-              onChanged: (value) {},
+              onChanged: (value) {
+                setState(() {
+                  password = value;
+                });
+              },
             ),
             RoundedButton(
               text: "SIGNUP",
-              press: () {
-                Navigator.popAndPushNamed(context, '/home');
+              press: () async {
+                if (true) { // TODO: Check if the form is valid
+                  print(email);
+                  print(password);
+                  dynamic user = await _authService.registerWithEmailAndPassword(email, password); // return User if successful, returns null if not
+                  if(user == null){
+                    setState(() {
+                      error = "Error creating account";
+                    });
+                  }else{
+                    Navigator.popAndPushNamed(context, '/home');
+                  }
+                }
               },
             ),
             SizedBox(height: size.height * 0.03),
+            Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0),),
             AlreadyHaveAnAccountCheck(
               login: false,
               press: () {
