@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fitirun/com/fitirun/resource/routes.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
-import 'file:///C:/Users/rui.menoita/StudioProjects/fitirun/lib/com/fitirun/model/user_model.dart';
+import 'com/fitirun/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

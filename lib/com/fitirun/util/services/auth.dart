@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
-import 'package:fitirun/com/fitirun/util/user_model.dart';
 
 class AuthService{
 

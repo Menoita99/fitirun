@@ -1,4 +1,4 @@
-import 'file:///C:/Users/rui.menoita/StudioProjects/fitirun/lib/com/fitirun/model/user_model.dart';
+import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
