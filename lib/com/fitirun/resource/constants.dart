@@ -15,6 +15,7 @@ const pastel_blue = Color(0xFFAFDEFA);
 const pastel_green = health_food_color;
 const pastel_orange = Color(0xFFFFC984);
 const pastel_red = workout_color;
+const dark_blue = Color(0xFF200087);
 
 
 

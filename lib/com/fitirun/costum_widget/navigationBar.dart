@@ -50,7 +50,7 @@ class _NavigationBottomBarState extends State<NavigationBottomBar> {
                 ),
                 GButton(
                   iconColor: blackText,
-                  icon: Icons.lens,
+                  icon: Icons.directions_run,
                   text: 'Run',
                 ),
                 GButton(
