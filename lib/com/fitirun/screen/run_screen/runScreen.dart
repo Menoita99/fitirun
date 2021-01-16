@@ -25,7 +25,7 @@ class _RunScreenState extends State<RunScreen> {
   Position _position = Position(latitude: 38,longitude: -9);
   GoogleMapController _mapController;
   List<LatLng> pos = List();
-
+  Timer _timer;
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +88,6 @@ class _RunScreenState extends State<RunScreen> {
     _mapController.setMapStyle(style);
   }
 
-
   Widget mapView(BuildContext context) {
     return Stack(
       children: [
@@ -127,7 +126,6 @@ class _RunScreenState extends State<RunScreen> {
       ],
     );
   }
-
 
   void getCurrentLocation() async {
     try {
@@ -277,6 +275,7 @@ class _RunScreenState extends State<RunScreen> {
   }
 
   Widget getManagerTimer() {
+    Size size = MediaQuery.of(context).size;
     return Container(
       width: 60,
       height: 60,
@@ -286,12 +285,33 @@ class _RunScreenState extends State<RunScreen> {
           Radius.circular(50),
         ),
       ),
-      child: Center(
-        child: Text(
-          "00:20",
-          style: TextStyle(
-              fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white),
-        ),
+      child: Column(
+        children: [
+          Center(
+            child: Text(
+              "00:20",
+              style: TextStyle(
+                  fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+          ),
+          GestureDetector(
+            onTap: () => print("Workout starting"),
+            child: Container(
+              height: 50,
+              width: size.width-10,
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: pastel_blue,
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+              ),
+              child: Center(child: Text("Start Workout",style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.white
+              ),)),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -418,6 +438,4 @@ class _RunScreenState extends State<RunScreen> {
       ),
     );
   }
-
-
 }
