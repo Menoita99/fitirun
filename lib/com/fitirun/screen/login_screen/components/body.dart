@@ -13,6 +13,9 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final AuthService _authService = AuthService();
+  String email = '';
+  String password = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
@@ -30,25 +33,39 @@ class _BodyState extends State<Body> {
             SizedBox(height: size.height * 0.03),
             RoundedInputField(
               hintText: "Your Email",
-              onChanged: (value) {},
+              onChanged: (value) {
+                setState(
+                    () => email = value
+                );
+              },
             ),
             RoundedPasswordField(
-              onChanged: (value) {},
+              onChanged: (value) {
+                setState(
+                        () => password = value
+                );
+              },
             ),
             RoundedButton(
               text: "LOGIN",
               press: () async {
-                dynamic result = await _authService.signInAnon();
-                if(result == null){
-                  print("error signing in annon");
-                }else {
-                  print("Signed in");
-                  print(result);
+                if (true) { // TODO: Validate the form
+                  print(email);
+                  print(password);
+                  dynamic user = await _authService.loginWithEmailAndPassword(email, password); // return User if successful, returns null if not
+                  if(user == null){
+                    setState(() {
+                      error = "Error login in";
+                    });
+                  }else{
+                    Navigator.popAndPushNamed(context, '/home');
+                    print(user.uid);
+                  }
                 }
-                Navigator.popAndPushNamed(context, '/home');
               },
             ),
             SizedBox(height: size.height * 0.03),
+            Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0),),
             AlreadyHaveAnAccountCheck(
               press: () {
                 Navigator.popAndPushNamed(context, '/signup');

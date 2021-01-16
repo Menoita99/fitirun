@@ -7,9 +7,11 @@ import 'package:fitirun/com/fitirun/screen/health_screen/widgets/healthItem.dart
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/workoutItem.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
+import 'package:fitirun/com/fitirun/util/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -25,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final AuthService _auth = AuthService();
+    final user = Provider.of<UserModel>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -38,7 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: <Widget>[
           FlatButton.icon(
               onPressed: () async {
-                await _auth.signOut();
+
+                await _auth.signOut(user);
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
