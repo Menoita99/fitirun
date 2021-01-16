@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "418475531446",
+    "firebase_url": "https://fitirun-firebase-default-rtdb.firebaseio.com",
+    "project_id": "fitirun-firebase",
+    "storage_bucket": "fitirun-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418475531446:android:a56198f88d88a570545a17",
+        "android_client_info": {
+          "package_name": "com.fitirun"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "418475531446-ssm8uemivmmb05prfqul60f1khguvlka.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAieay-ObW7-h749DD5ayT9FDgsMcABkv0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "418475531446-ssm8uemivmmb05prfqul60f1khguvlka.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
