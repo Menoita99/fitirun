@@ -56,7 +56,8 @@ class TrainModel extends WorkoutModel {
   List<ExerciceModel> train = [];
   int difficulty;
 
-  TrainModel(this.train, String image, String title, List<String> description,int time,this.difficulty) : super(image, title, description, time);
+  TrainModel(this.train, String image, String title, List<String> description,int time,this.difficulty)
+      : super(image, title, description, time);
 
   TrainModel.fakeModel() : super.fakeModel() {
     difficulty = Faker().randomGenerator.integer(3);
