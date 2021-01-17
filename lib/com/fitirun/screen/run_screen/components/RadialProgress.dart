@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 class RadialProgress extends StatefulWidget {
   final double height, width, progress;
+  final Color color;
 
-  const RadialProgress({Key key, this.height, this.width, this.progress}) : super(key: key);
+  const RadialProgress({Key key, this.height, this.width, this.progress, this.color}) : super(key: key);
 
   @override
   _RadialProgressState createState() => _RadialProgressState();
@@ -18,6 +19,7 @@ class _RadialProgressState extends State<RadialProgress> {
     return CustomPaint(
       painter: _RadialPainter(
         progress:  widget.progress,
+        color: widget.color,
       ),
       child: Container(
         height: widget.height,
@@ -32,7 +34,7 @@ class _RadialProgressState extends State<RadialProgress> {
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w700,
-                    color: dark_blue,
+                    color: widget.color,
                   ),
                 ),
                 TextSpan(text: "\n"),
@@ -41,7 +43,7 @@ class _RadialProgressState extends State<RadialProgress> {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
-                    color:dark_blue,
+                    color: widget.color,
                   ),
                 ),
               ],
@@ -55,14 +57,14 @@ class _RadialProgressState extends State<RadialProgress> {
 
 class _RadialPainter extends CustomPainter {
   final double progress;
-
-  _RadialPainter({this.progress});
+  final Color color;
+  _RadialPainter({this.progress,this.color=blackText});
 
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
       ..strokeWidth = 10
-      ..color = dark_blue
+      ..color = color
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 

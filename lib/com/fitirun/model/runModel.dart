@@ -1,5 +1,8 @@
 
+import 'dart:ui';
+
 import 'package:faker/faker.dart';
+import 'package:fitirun/com/fitirun/resource/constants.dart';
 extension StringExtension on String {
   String capitalize() {
     return "${this[0].toUpperCase()}${this.substring(1)}";
@@ -10,6 +13,7 @@ class RunModel{
   String shortDescription;
   int totalDuration = 0;
   List<ExerciseRunModel> exercises= List();
+  int difficulty;
 
   RunModel(this.title,this.exercises){
     for (var i=0; i<exercises.length; i++)
@@ -17,6 +21,7 @@ class RunModel{
   }
 
   RunModel.fakeModel(){
+    difficulty = Faker().randomGenerator.integer(3);
     int random = Faker().randomGenerator.integer(5)+3;
     for(int i = 0 ; i <random ; i++)
       exercises.add(ExerciseRunModel.fakeModel());
@@ -51,5 +56,28 @@ class ExerciseRunModel{
     String mins = (duration~/60).toInt() < 10 ? '0'+(duration~/60).toInt().toString() : (duration~/60).toInt().toString();
     String second = (duration%60).toInt() < 10 ? '0'+(duration%60).toString() : (duration%60).toString();
     return "$mins:$second";
+  }
+}
+
+Color getDifficultyColor(int diff) {
+  switch (diff) {
+    case 0:
+      {
+        return pastel_green;
+      }
+      break;
+    case 1:
+      {
+        return pastel_orange;
+      }
+      break;
+    case 2:
+      {
+        return pastel_red;
+      }
+    default:
+      {
+        throw("Received wrong number as difficulty $diff");
+      }
   }
 }

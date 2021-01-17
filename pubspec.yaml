@@ -41,6 +41,7 @@ dependencies:
   geolocator: ^6.1.13 #calculate speed https://pub.dev/packages/geolocator
   location_permissions: ^3.0.0
   location: ^3.2.1
+  vibration: ^1.7.3
 
 dev_dependencies:
   flutter_test:
