@@ -1,5 +1,6 @@
 import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
+import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           icon: Icon(Icons.menu, color: blackText),
           onPressed: () async {
             setState(() {
-              FoodModel model = FoodModel.fakeFood();
-              _databaseService.addFood(model);
+              FoodModel fmodel = FoodModel.fakeFood();
+              _databaseService.addFood(fmodel);
+              //ExerciceModel emodel = ExerciceModel.fakeModel();
+              //_databaseService.addExercise(emodel);
+              //TrainModel tmodel = TrainModel.fakeModel();
+              //_databaseService.addTrain(tmodel);
             });
           },
         ),

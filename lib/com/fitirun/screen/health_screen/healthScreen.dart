@@ -1,4 +1,4 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
@@ -8,7 +8,9 @@ import 'package:fitirun/com/fitirun/screen/details_screen/detailsTrainScreen.dar
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/healthItem.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/screenTitle.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/workoutItem.dart';
+import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HealthScreen extends StatefulWidget {
   @override
@@ -19,16 +21,18 @@ class _HealthScreenState extends State<HealthScreen> {
   PageController _controller = PageController(initialPage: 0);
   bool isFoodSelected = true;
   static const int pageTransictionTime = 1000;
+  List<FoodModel> food = List();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
         body: getBody(),
         bottomNavigationBar: NavigationBottomBar.withColor(
             isFoodSelected ? health_food_color : workout_color));
   }
 
   Widget getBody() {
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.only(top:10),
@@ -126,28 +130,56 @@ class _HealthScreenState extends State<HealthScreen> {
   }
 
   Widget getHealthFoodItens() {
-    List<FoodModel> food = List<FoodModel>.generate(100, (i) => FoodModel.fakeFood());
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: GridView.builder(
-        itemCount: food.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 20,
-            crossAxisSpacing: 0,
-            childAspectRatio: 0.85),
-        itemBuilder: (context, index) => HealthItem(
-            food: food[index],
-            onPress: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DetailsHealthScreen(item: food[index]),
-                ))),
-      ),
+      child: TestWidget(),
     );
   }
 }
 
+class TestWidget extends StatefulWidget {
+  @override
+  _TestWidgetState createState() => _TestWidgetState();
+}
+
+class _TestWidgetState extends State<TestWidget> {
+  @override
+  Widget build(BuildContext context) {
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: DatabaseService().foods,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text('Something went wrong');
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text("Loading");
+        }
+
+        return GridView.builder(
+          itemCount: snapshot.data.docs.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 20,
+              crossAxisSpacing: 0,
+              childAspectRatio: 0.85),
+          itemBuilder: (context, index) => HealthItem(
+              food: FoodModel.fromDoc(snapshot.data.docs[index]),
+              onPress: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailsHealthScreen(item: FoodModel.fromDoc(snapshot.data.docs[index])),
+                  ))),
+        );
+      },
+    );
+  }
+}
+
+
+// ignore: must_be_immutable
 class SearchContainer extends StatefulWidget {
   Color _color;
 
@@ -202,6 +234,7 @@ class _SearchContainerState extends State<SearchContainer> {
                 )),
                 IconButton(
                   icon: Icon(Icons.filter_list),
+                  onPressed: () {  },
                 ),
               ],
             ),

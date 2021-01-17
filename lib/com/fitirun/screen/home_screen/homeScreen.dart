@@ -8,6 +8,7 @@ import 'package:fitirun/com/fitirun/screen/health_screen/widgets/healthItem.dart
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/workoutItem.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
+import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
@@ -36,12 +37,14 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.menu, color: blackText),
-          onPressed: () => print("something"),
+          onPressed: () {
+
+            print("something");
+          },
         ),
         actions: <Widget>[
           FlatButton.icon(
               onPressed: () async {
-
                 await _auth.signOut(user);
                 Navigator.pushAndRemoveUntil(
                     context,
