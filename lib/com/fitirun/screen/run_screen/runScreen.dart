@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:fitirun/com/fitirun/model/runModel.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/util/Timer.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:location/location.dart';
@@ -34,9 +35,9 @@ class _RunScreenState extends State<RunScreen> {
 
   @override
   void initState(){
+    initLocationListener();
     super.initState();
     askForPermission();
-    initLocationListener();
    // _exerciseTimer = CustomTimer(startAt: 60*1000,stopAt: 0,onTick: () => this.setState(() =>{}));
    // _totalTimer = CustomTimer(startAt: 0,onTick: () => this.setState(() =>{}));
   }
@@ -124,6 +125,7 @@ class _RunScreenState extends State<RunScreen> {
   void setMapStyle(GoogleMapController mapController, BuildContext context) async{
     _mapController = mapController;
     String style =  await DefaultAssetBundle.of(context).loadString('assets/mapStyle/style.json');
+    print(style);
     _mapController.setMapStyle(style);
   }
 
@@ -357,9 +359,6 @@ class _RunScreenState extends State<RunScreen> {
 
 
    Widget managerView(BuildContext context){
-    var s = selectTrainDialog();
-    print(s);
-
     Size size = MediaQuery.of(context).size;
     return Container(
       color: Colors.grey[200],
@@ -542,7 +541,8 @@ class _RunScreenState extends State<RunScreen> {
       },
     );
   }
-
+  
+/*
   Future<RunModel> selectTrainDialog() async{
     List<RunModel> availableTrains = List();
     for(int i = 0; i<6;i++)
@@ -557,7 +557,7 @@ class _RunScreenState extends State<RunScreen> {
             child: Column(
               children: availableTrains.map((e) =>
                 GestureDetector(
-                  onTap: ()=>(Navigator.of(context).pop(e)),
+                  onTap: ()=>(Navigator.pop(context,e)),
                   child: Column(
                     children: [
                       SizedBox(height: 20),
@@ -577,10 +577,11 @@ class _RunScreenState extends State<RunScreen> {
             ),
           ),
           actions: [TextButton(child: Text('Never mind'),onPressed:() {
-            Navigator.pop(context);
+            Navigator.pop(context,"PUTA DA TUA TIA");
         },)],
         );
       },
     ).then((value) => null);
   }
 }
+*/
