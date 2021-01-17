@@ -1,26 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fitirun/com/fitirun/model/foodModel.dart';
 
 class DatabaseService{
 
+  //collection references
+  final CollectionReference foodsCollection = FirebaseFirestore.instance.collection('Foods');
+  final CollectionReference workoutsCollection = FirebaseFirestore.instance.collection('Workouts');
+  final CollectionReference usersCollection = FirebaseFirestore.instance.collection('Users');
+  //final CollectionReference authDetailsCollection = FirebaseFirestore.instance.collection('AuthDetails');
 
 
-  //collection Reference
-  final CollectionReference authDetailsCollection = FirebaseFirestore.instance.collection('AuthDetails');
-
-  Future updateLoginList(String uid, String time) async {
-    return await authDetailsCollection.doc("LoginList").update({
-      'User id' : uid,
-      'Time' : time,
-    });
+  //add workout
+  Future<void> addFood(FoodModel foodModel) async {
+    return foodsCollection.add({
+      'Image url' : foodModel.image,
+      'Rank' : foodModel.rank,
+      'Title' : foodModel.title,
+      'Preparation Time' : foodModel.preparationTime,
+      'Number of people' : foodModel.numberOfPeople,
+      'Calories' : foodModel.calories,
+      'Protein' : foodModel.protein,
+      'Carbohydrates' : foodModel.carbohydrates,
+      'Recipe' : foodModel.recipe
+    })
+        .then((value) => print("Food Added: $value"))
+        .catchError((error) => print("Failed to add food: $error"));
   }
 
-  Future updateLogoutList(String uid, String time) async {
-    return await authDetailsCollection.doc("LogoutList").update({
-      'User id' : uid,
-      'Time' : time,
-    });
-  }
 
+
+  //get ____ Stream
+  /*Stream<QuerySnapshot> get test {
+    return authDetailsCollection.snapshots();
+  } */
 
 
 

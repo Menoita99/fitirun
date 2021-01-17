@@ -37,7 +37,6 @@ class AuthService{
     try{
       UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User user = result.user;
-      await DatabaseService().updateLoginList(user.uid, DateTime.now().toString());
       return _userFromFirebaseUser(user);
     }catch(e){
       print(e);
@@ -60,7 +59,6 @@ class AuthService{
   //sign out
   Future signOut(UserModel user) async {
     try{
-      await DatabaseService().updateLogoutList(user.uid, DateTime.now().toString());
       return await _auth.signOut();
     }catch(e){
       print(e);
