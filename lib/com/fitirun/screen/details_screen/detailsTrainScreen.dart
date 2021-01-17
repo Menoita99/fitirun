@@ -67,21 +67,24 @@ class DetailsTrainScreen extends StatelessWidget {
                                 Container(
                                   padding: EdgeInsets.all(5),
                                   decoration: BoxDecoration(
-                                    color: TrainModel.getDifficultyColor(item.difficulty),
-                                    borderRadius: BorderRadius.all(Radius.circular(5))
-                                  ),
+                                      color: TrainModel.getDifficultyColor(
+                                          item.difficulty),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5))),
                                   child: Text(
-                                    TrainModel.getDifficultyPhrase(item.difficulty).toUpperCase(),
+                                    TrainModel.getDifficultyPhrase(
+                                            item.difficulty)
+                                        .toUpperCase(),
                                     style: TextStyle(
                                         color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold
-                                    ),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 SizedBox(width: 10),
                                 Flexible(
-                                  child: Text(item.title,
+                                  child: Text(
+                                    item.title,
                                     style: TextStyle(
                                       fontSize: 25,
                                       fontWeight: FontWeight.w800,
@@ -93,38 +96,45 @@ class DetailsTrainScreen extends StatelessWidget {
                             SizedBox(height: 15),
                             titleText("Description"),
                             SizedBox(height: 20),
-                            Column(children: item.description.map((e) => Padding(
-                                  padding:const EdgeInsets.only(top: 5),
-                                  child: Align(alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      e.toString(),
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey[500]),
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  ),
-                                )).toList()),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  item.description,
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey[500]),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                            ),
                             SizedBox(height: 15),
                             titleText("Exercises"),
                             SizedBox(height: 20),
-                            Column(children: item.train.map((e) => _ExerciseItem(item: e)).toList()),
+                            Column(
+                                children: item.train
+                                    .map((e) => _ExerciseItem(item: e))
+                                    .toList()),
                             SizedBox(height: 20),
                             GestureDetector(
                               onTap: () => print("Workout starting"),
                               child: Container(
                                 height: 50,
-                                width: size.width-10,
+                                width: size.width - 10,
                                 padding: EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                   color: pastel_blue,
-                                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(50)),
                                 ),
-                                child: Center(child: Text("Start Workout",style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: Colors.white
-                                ),)),
+                                child: Center(
+                                    child: Text(
+                                  "Start Workout",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: Colors.white),
+                                )),
                               ),
                             ),
                             SizedBox(height: 20),
@@ -142,20 +152,17 @@ class DetailsTrainScreen extends StatelessWidget {
 
   Widget titleText(String title) {
     return Align(
-            alignment: Alignment.centerLeft,
-            child: Text(title,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold
-              ),
-            ),
-          );
+      alignment: Alignment.centerLeft,
+      child: Text(
+        title,
+        style: TextStyle(
+            color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
   }
 }
 
 class _ExerciseItem extends StatelessWidget {
-
   final ExerciceModel item;
 
   const _ExerciseItem({
@@ -163,15 +170,14 @@ class _ExerciseItem extends StatelessWidget {
     @required this.item,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.only(left: 5,bottom: 10),
+      padding: const EdgeInsets.only(left: 5, bottom: 10),
       child: Container(
         height: 50,
-        width: size.width-10,
+        width: size.width - 10,
         padding: EdgeInsets.all(5),
         // padding: EdgeInsets.all(8),
         decoration: BoxDecoration(

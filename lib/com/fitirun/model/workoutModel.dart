@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:faker/faker.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
+import 'package:flutter/cupertino.dart';
 
 extension StringExtension on String {
   String capitalize() {
@@ -12,7 +13,7 @@ extension StringExtension on String {
 class WorkoutModel {
   String image;
   String title;
-  List<String> description;
+  String description;
   int time;
 
   WorkoutModel(this.image, this.title, this.description, this.time); //min
@@ -22,19 +23,18 @@ class WorkoutModel {
     image = _urls.elementAt(faker.randomGenerator.integer(_urls.length));
     title = faker.lorem.words(4).join(" ").capitalize();
     time = faker.randomGenerator.integer(100) + 1;
-    description = faker.lorem.sentences(faker.randomGenerator.integer(5) + 1);
+    description =
+        faker.lorem.sentences(faker.randomGenerator.integer(5) + 1).join("\n");
   }
 }
-
-
-
 
 class ExerciceModel extends WorkoutModel {
   String bodyPart;
   int series;
   List<int> repetitions;
 
-  ExerciceModel(this.bodyPart, this.series, this.repetitions, String image, String title, List<String> description, int time)
+  ExerciceModel(this.bodyPart, this.series, this.repetitions, String image,
+      String title, String description, int time)
       : super(image, title, description, time);
 
   ExerciceModel.fakeModel() : super.fakeModel() {
@@ -46,87 +46,121 @@ class ExerciceModel extends WorkoutModel {
       faker.randomGenerator.integer(5) + 10,
       faker.randomGenerator.integer(5) + 10
     ];
+    this.repetitions = repetitions;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'Body part': bodyPart,
+      'Series': series,
+      'Repetitions': repetitions.map((e) => e.toString()).toList(),
+      'Image url': image,
+      'Title': title,
+      'Description': description,
+      'Time': time,
+    };
   }
 }
-
-
-
 
 class TrainModel extends WorkoutModel {
   List<ExerciceModel> train = [];
   int difficulty;
 
-  TrainModel(this.train, String image, String title, List<String> description,int time,this.difficulty)
+  TrainModel(this.train, String image, String title, String description,
+      int time, this.difficulty)
       : super(image, title, description, time);
 
   TrainModel.fakeModel() : super.fakeModel() {
     difficulty = Faker().randomGenerator.integer(3);
-    int random = Faker().randomGenerator.integer(5)+3;
-    for(int i = 0 ; i <random ; i++)
+    int random = Faker().randomGenerator.integer(5) + 3;
+    for (int i = 0; i < random; i++) {
       train.add(ExerciceModel.fakeModel());
+    }
+    print("");
   }
 
-  static Color getDifficultyColor(int diff){
-    switch(diff) {
-      case 0: {
-        return pastel_green;
-      }
-      break;
-      case 1: {
-        return pastel_orange;
-      }
-      break;
-      case 2: {
-        return pastel_red;
-      }
-      default: {
-        throw("Received wrong number as difficulty $diff");
-      }
+  static Color getDifficultyColor(int diff) {
+    switch (diff) {
+      case 0:
+        {
+          return pastel_green;
+        }
+        break;
+      case 1:
+        {
+          return pastel_orange;
+        }
+        break;
+      case 2:
+        {
+          return pastel_red;
+        }
+      default:
+        {
+          throw ("Received wrong number as difficulty $diff");
+        }
     }
   }
 
-  static String getDifficultyPhrase(int diff){
-    switch(diff) {
-      case 0: {
-        return "easy";
-      }
-      break;
-      case 1: {
-        return "medium";
-      }
-      break;
-      case 2: {
-        return "hard";
-      }
-      default: {
-        throw("Received wrong number as difficulty $diff");
-      }
+  static String getDifficultyPhrase(int diff) {
+    switch (diff) {
+      case 0:
+        {
+          return "easy";
+        }
+        break;
+      case 1:
+        {
+          return "medium";
+        }
+        break;
+      case 2:
+        {
+          return "hard";
+        }
+      default:
+        {
+          throw ("Received wrong number as difficulty $diff");
+        }
     }
+  }
+
+  Map<String, dynamic> toJson() {
+    List<Map<String, dynamic>> aux = List();
+    train.forEach((element) {aux.add(element.toJson());});
+    return {
+      'Image url': image,
+      'Difficulty': difficulty,
+      'Title': title,
+      'Train': aux,
+      'Description': description,
+    };
   }
 }
 
-
-WorkoutModel getRandomWorkOut(){
-  switch(Faker().randomGenerator.integer(3,min: 0)) {
-    case 0: {
-      return WorkoutModel.fakeModel();
-    }
-    break;
-    case 1: {
-      return ExerciceModel.fakeModel();
-    }
-    break;
-    case 2: {
-      return TrainModel.fakeModel();
-    }
-    default: {
-      print("WTF");
-      return null;
-    }
+WorkoutModel getRandomWorkOut() {
+  switch (Faker().randomGenerator.integer(3, min: 0)) {
+    case 0:
+      {
+        return WorkoutModel.fakeModel();
+      }
+      break;
+    case 1:
+      {
+        return ExerciceModel.fakeModel();
+      }
+      break;
+    case 2:
+      {
+        return TrainModel.fakeModel();
+      }
+    default:
+      {
+        print("WTF");
+        return null;
+      }
   }
 }
-
-
 
 List<String> _urls = [
   'https://cimg3.ibsrv.net/cimg/www.fitday.com/693x350_85-1/199/home-199199.jpg',

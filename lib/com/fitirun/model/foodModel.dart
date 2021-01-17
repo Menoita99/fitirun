@@ -1,5 +1,6 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,17 @@ class FoodModel{
   List<String> recipe;
 
   FoodModel(this.image, this.rank, this.title, this.preparationTime,  this.numberOfPeople, this.calories, this.recipe);
+  FoodModel.fromDoc(DocumentSnapshot doc){
+    calories = doc.data()['Calories'];
+    carbohydrates = doc.data()['Carbohydrates'];
+    protein = doc.data()['Protein'];
+    numberOfPeople = doc.data()['Number of people'];
+    preparationTime = doc.data()['Preparation Time'];
+    title = doc.data()['Title'];
+    rank = doc.data()['Rank'];
+    image = doc.data()['Image url'];
+    recipe = (doc.data()['Recipe'] as List<dynamic>).map((e) => e.toString()).toList();
+  }
 
   FoodModel.fakeFood(){
     Faker faker = new Faker();
@@ -55,4 +67,18 @@ class FoodModel{
     'https://post.healthline.com/wp-content/uploads/2020/09/healthy-eating-ingredients-1200x628-facebook-1200x628.jpg',
     'https://eatforum.org/content/uploads/2018/05/table_with_food_top_view_900x700.jpg'
   ];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'Image url' : image,
+    'Rank' : rank,
+    'Title' : title,
+    'Preparation Time' : preparationTime,
+    'Number of people' : numberOfPeople,
+    'Calories' : calories,
+    'Protein' : protein,
+    'Carbohydrates' : carbohydrates,
+    'Recipe' : recipe
+  };
+  }
 }
