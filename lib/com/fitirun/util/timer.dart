@@ -17,16 +17,18 @@ class CustomTimer{
     currentTick = startAt;
     if(startAt<0)
       throw('Start condition can\'t be minor then 0');
+
+
+    direction = stopAt > startAt || stopAt<0;
+    stopAt = direction ? stopAt : 0;
+    print("Start $startAt, stop $stopAt, direction $direction");
   }
 
   void start(){
     isActive = true;
-    direction = stopAt > startAt || stopAt<0;
-    stopAt = direction ? stopAt : 0;
 
     timer = Timer.periodic(Duration(milliseconds: tick), (timer) {
       currentTick = direction ? currentTick + tick : currentTick - tick;
-
       if((currentTick >= stopAt && direction && stopAt > 0) || (currentTick <= stopAt && !direction)) {
         if(onFinish!=null)
           onFinish();

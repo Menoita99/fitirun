@@ -42,7 +42,8 @@ dependencies:
   location_permissions: ^3.0.0
   location: ^3.2.1
   vibration: ^1.7.3
-
+  flutter_tts: ^2.1.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

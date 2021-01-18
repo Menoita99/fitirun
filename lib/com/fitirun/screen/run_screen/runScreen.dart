@@ -22,27 +22,40 @@ class _RunScreenState extends State<RunScreen> {
 
   RunManager manager = RunManager();
 
+
+
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
     initManagerListeners();
+  }
+
+  @override
+  void dispose() {
+    manager.stop();
+    super.dispose();
+  }
+
+
+  void vibrate(int duration) async {
+    if (await Vibration.hasVibrator()) {
+      Vibration.vibrate(duration: duration);
+    }
   }
 
 
 
   void initManagerListeners() {
-    manager.onTotalTick = (()=> setState((){}));
-
-    manager.onExerciseTick = ((tick) async {
-      if(tick <= 3 * 1000){
-        if (await Vibration.hasVibrator()) {
-          print("Called vibrator from initial listener");
-          Vibration.vibrate(duration: 200);
-        }
-      }
+    manager.onTotalTick = ((fodase){
+      setState(() {});
     });
 
-    manager.onExerciseDone = ((exerciseDone) async {
+    manager.onExerciseTick = ((tick){
+      if(tick <= 3 * 1000) vibrate(200);
+    });
+
+    manager.onExerciseDone = ((exerciseDone) {
       print("DONE $exerciseDone");
     });
 
@@ -53,18 +66,6 @@ class _RunScreenState extends State<RunScreen> {
         print("O workout não foi terminado");
     });
   }
-
-
-
-  @override
-  void dispose() {
-    manager.stop();
-    super.dispose();
-  }
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +73,6 @@ class _RunScreenState extends State<RunScreen> {
       bottomNavigationBar: NavigationBottomBar(),
     );
   }
-
 
 
 
@@ -406,10 +406,6 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
 
 
 
-
-
-
-
 class ManagerScreen extends StatefulWidget {
 
   final RunManager manager;
@@ -425,6 +421,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
 
   List<RunModel> _availableWorkouts = List();
 
+  String s = "";
 
   @override
   void initState(){
@@ -432,6 +429,9 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
     for(int i = 0; i<6;i++)
       _availableWorkouts.add(RunModel.fakeModel());
   }
+
+
+
 
 
   @override
@@ -556,32 +556,37 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
                     child: RadialProgress(
                         width: size.width * 0.36,
                         height: size.width * 0.36,
-                        progress: 0.6,
-                        color: Colors.white
+                        progress: widget.manager.isActive ? widget.manager.completePercentage() : 0.001,
+                        color: Colors.white,
+                        subtext: "time left",
+                        text: widget.manager.isActive ? widget.manager.timeLeft() : widget.manager.model.getFormatedDuration(),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.sports_football),
-                      SizedBox(width: 10),
-                      Text("3265 steps")
-                    ],
-                  ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.sports_football,color: Colors.white),
+                    SizedBox(width: 10),
+                    Text("3265 steps",style: TextStyle(color: Colors.white),)
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.local_fire_department_outlined),
-                      SizedBox(width: 10),
-                      Text("862 kca")
-                    ],
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.wifi_sharp,color: Colors.white,),
+                    SizedBox(width: 10),
+                    Text("156 meters",style: TextStyle(color: Colors.white))
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.local_fire_department_outlined,color: Colors.white),
+                    SizedBox(width: 10),
+                    Text("862 kca",style: TextStyle(color: Colors.white))
+                  ],
                 ),
               ],
             ),
@@ -685,6 +690,30 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
           ),
           child: Row(
             children: [
+              Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 3,
+                        blurRadius: 5,
+                        offset: Offset(0, 1), // changes position of shadow
+                      )
+                    ]),
+                child: Center(
+                  child: Text(
+                    exercise.duration.toString(),
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 8),
                 child: Column(
@@ -795,7 +824,6 @@ class _CountdownTextState extends State<CountdownText> {
         ),
       ),
     );
-
   }
 }
 
