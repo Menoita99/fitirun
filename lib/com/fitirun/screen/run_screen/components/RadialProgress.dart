@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 class RadialProgress extends StatefulWidget {
   final double height, width, progress;
   final Color color;
+  final String text,subtext;
 
-  const RadialProgress({Key key, this.height, this.width, this.progress, this.color}) : super(key: key);
+  const RadialProgress({Key key, this.height, this.width, this.progress, this.color,this.text,this.subtext}) : super(key: key);
 
   @override
   _RadialProgressState createState() => _RadialProgressState();
@@ -30,7 +31,7 @@ class _RadialProgressState extends State<RadialProgress> {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: "1731",
+                  text: widget.text,
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w700,
@@ -39,7 +40,7 @@ class _RadialProgressState extends State<RadialProgress> {
                 ),
                 TextSpan(text: "\n"),
                 TextSpan(
-                  text: "m left",
+                  text: widget.subtext,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,

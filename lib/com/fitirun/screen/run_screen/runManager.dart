@@ -1,3 +1,4 @@
+import 'package:fitirun/com/fitirun/model/StatisticsModel.dart';
 import 'package:fitirun/com/fitirun/model/runModel.dart';
 import 'package:fitirun/com/fitirun/util/timer.dart';
 
@@ -11,6 +12,7 @@ class RunManager{
 
   int exerciseIndex = 0;
 
+  StatisticsModel statistics;
 
   Function onExerciseDone;
   Function onExerciseStart;
@@ -22,18 +24,20 @@ class RunManager{
 
 
   void start(){
+    //TODO statistics
     if(model == null || model.exercises.isEmpty) throw("Workout null or workout exercises are empty");
     isActive = true;
 
-    totalTimer = CustomTimer(startAt: 0,onFinish:onExerciseDone,onTick: onExerciseTick);
-    exerciseTimer = CustomTimer(startAt: model.exercises[0].duration * 1000,stopAt: 0,onFinish:() => exerciseDone(),onTick: onExerciseTick);
+    totalTimer = CustomTimer(startAt: 0,onFinish:onTotalDone,onTick: onTotalTick);
+    exerciseTimer = CustomTimer(startAt: model.exercises[0].duration * 1000, stopAt: 0,onFinish:() => exerciseDone(),onTick: onExerciseTick);
+
 
     if(onTotalStart!=null)
       onTotalStart();
     totalTimer.start();
 
-    if(onExerciseDone!=null)
-      onExerciseDone();
+    if(onExerciseStart!=null)
+      onExerciseStart();
     exerciseTimer.start();
   }
 
@@ -56,6 +60,7 @@ class RunManager{
     exerciseTimer = null;
     model = null;
     isActive = false;
+    exerciseIndex = 0;
   }
 
 
@@ -78,5 +83,16 @@ class RunManager{
 
   bool isWorkoutFinish(){
     return exerciseIndex >= model.exercises.length;
+  }
+
+  double completePercentage(){
+    return (totalTimer.currentTick/1000) / model.totalDuration;
+  }
+
+  String timeLeft() {
+    int  time = model.totalDuration - (totalTimer.currentTick~/1000).toInt();
+    String mins = (time~/60).toInt() < 10 ? '0'+(time~/60).toInt().toString() : (time~/60).toInt().toString();
+    String second = (time%60).toInt() < 10 ? '0'+(time%60).toString() : (time%60).toString();
+    return "$mins:$second";
   }
 }

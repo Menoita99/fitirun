@@ -13,7 +13,6 @@ class HealthItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(food.image);
     return GestureDetector(
       onTap: onPress,
       child: Column(
