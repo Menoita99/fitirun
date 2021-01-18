@@ -99,13 +99,20 @@ class TrainModel extends WorkoutModel {
 
   }
 
+  TrainModel.fromMap(Map doc) : super.fromMap(doc){
+    difficulty = doc['Difficulty'];
+
+
+    train = (doc['Train'] as List<dynamic>).map((e) => ExerciceModel.fromDoc(e)).toList();
+
+  }
+
   TrainModel.fakeModel() : super.fakeModel() {
     difficulty = Faker().randomGenerator.integer(3);
     int random = Faker().randomGenerator.integer(5) + 3;
     for (int i = 0; i < random; i++) {
       train.add(ExerciceModel.fakeModel());
     }
-    print("");
   }
 
   static Color getDifficultyColor(int diff) {
@@ -155,13 +162,14 @@ class TrainModel extends WorkoutModel {
   }
 
   Map<String, dynamic> toJson() {
-    List<Map<String, dynamic>> aux = List();
-    train.forEach((element) {aux.add(element.toJson());});
+    List<Map<String, dynamic>> exercises = List();
+    train.forEach((element) {exercises.add(element.toJson());});
+    //print(exercises);
     return {
       'Image url': image,
       'Difficulty': difficulty,
       'Title': title,
-      'Train': aux,
+      'Train': exercises,
       'Description': description,
     };
   }

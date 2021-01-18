@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
+import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 
 class DatabaseService{
@@ -13,6 +15,23 @@ class DatabaseService{
   final CollectionReference usersCollection = FirebaseFirestore.instance.collection('Users');
   //final CollectionReference authDetailsCollection = FirebaseFirestore.instance.collection('AuthDetails');
 
+
+  //get UserModel from Firebase
+  Future<UserModel> getUserModel(UserModel user) async{
+    return await DatabaseService().usersCollection.doc(user.uid).get().then((value){
+      print("getUserModel db");
+      print(value);
+      return UserModel.fromDoc(value);
+    }
+    );
+  }
+
+  //add/update user
+  Future<void> addOrUpdateUser(UserModel userModel) async {
+    return usersCollection.doc(userModel.uid).set(
+        userModel.toJson(), SetOptions(merge: true),
+    ).then((_) => print("User added/updated"));
+  }
 
   //add food
   Future<void> addFood(FoodModel foodModel) async {
