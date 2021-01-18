@@ -43,5 +43,11 @@
 	<false/>
 	<key>NSLocationWhenInUsageDescription</key>
 	<string>This app needs access to your location when you are training.</string>
+	<key>NSMotionUsageDescription</key>
+    <string>This application tracks your steps</string>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>processing</string>
+    </array>
 </dict>
 </plist>

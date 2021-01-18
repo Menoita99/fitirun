@@ -5,12 +5,11 @@ import 'com/fitirun/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(StreamProvider<UserModel>.value(
-    value: AuthService().user,
+  runApp(MultiProvider(
+    providers: [StreamProvider<UserModel>.value(value: AuthService().user)],
     child: MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
@@ -18,8 +17,8 @@ void main() async{
         visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: 'Nunito',
       ),
-       initialRoute: '/',
-       routes: getRoutes(),
+      initialRoute: '/',
+      routes: getRoutes(),
     ),
   ));
 }

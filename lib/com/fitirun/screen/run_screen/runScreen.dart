@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:fitirun/com/fitirun/model/runModel.dart';
+import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/screen/run_screen/runManager.dart';
+import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -43,7 +45,6 @@ class _RunScreenState extends State<RunScreen> {
       Vibration.vibrate(duration: duration);
     }
   }
-
 
 
   void initManagerListeners() {
@@ -144,7 +145,6 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
   Polyline _path = Polyline(polylineId: PolylineId("0"), color: dark_blue, width: 10,zIndex: 99);
   List<LatLng> pos = List();
   Location _location = Location();
-  LatLng _position = LatLng(38,-9);
   GoogleMapController _mapController;
 
 
@@ -167,11 +167,15 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
 
   @override
   Widget build(BuildContext context) {
+
+    UserModel v = Provider.of<UserModel>(context);
+    print(v);
+
     return Stack(
       children: [
         GoogleMap(
           initialCameraPosition: CameraPosition(
-            target: LatLng(_position.latitude, _position.longitude),
+            target: LatLng(0,0),
             zoom: 17,
           ),
           onMapCreated: (mapController) => setMapStyle(mapController,context),
@@ -332,6 +336,7 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
                 target: loc,
                 zoom: 17,)));
           if (widget.manager.hasModel()) {
+            widget.manager.updateStats(position);
             setState(() {
               List<LatLng> points = List();
               _path.points.forEach((e) => points.add(e));
@@ -344,7 +349,6 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
                   width: _path.width,
                   points: points,
                   zIndex: _path.zIndex);
-              _position = loc;
             });
           }
         }
@@ -352,7 +356,7 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
     } on PlatformException catch (e) {
       if (e.code == 'PERMISSION_DENIED') {
         debugPrint("Permission Denied");
-        _showMyDialog('Can\'t access to your location','Location services are disabled.','Please enable location use for this app');
+        _showPermissionDialog('Can\'t access to your location','Location services are disabled.','Please enable location use for this app');
       }
     }
   }
@@ -363,13 +367,13 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
     if(await _location.serviceEnabled())
       return;
     if(!await _location.requestService())
-      return _showMyDialog('Can\'t access to your location','Location services are disabled.','Please enable location use for this app');
+      return _showPermissionDialog('Can\'t access to your location','Location services are disabled.','Please enable location use for this app');
   }
 
 
 
 
-  Future<void> _showMyDialog(String title, String description,String solution) async {
+  Future<void> _showPermissionDialog(String title, String description,String solution) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -532,7 +536,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(left: 20,right: 20,top: 15),
           child: Container(
             height: 0.35 * size.height,
             decoration: BoxDecoration(
@@ -550,7 +554,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 40),
+                  padding: const EdgeInsets.only(top: 20),
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: RadialProgress(
@@ -569,7 +573,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
                   children: [
                     Icon(Icons.sports_football,color: Colors.white),
                     SizedBox(width: 10),
-                    Text("3265 steps",style: TextStyle(color: Colors.white),)
+                    Text(widget.manager.totalSteps().toString()+ " steps",style: TextStyle(color: Colors.white),)
                   ],
                 ),
                 Row(
@@ -577,7 +581,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
                   children: [
                     Icon(Icons.wifi_sharp,color: Colors.white,),
                     SizedBox(width: 10),
-                    Text("156 meters",style: TextStyle(color: Colors.white))
+                    Text(widget.manager.totalDistance().toString()+ "meters",style: TextStyle(color: Colors.white))
                   ],
                 ),
                 Row(
@@ -585,7 +589,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
                   children: [
                     Icon(Icons.local_fire_department_outlined,color: Colors.white),
                     SizedBox(width: 10),
-                    Text("862 kca",style: TextStyle(color: Colors.white))
+                    Text(widget.manager.totalCalories().toString()+"kca",style: TextStyle(color: Colors.white))
                   ],
                 ),
               ],
@@ -666,6 +670,8 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
 
   Widget getTrainItem(BuildContext context, ExerciseRunModel exercise, bool bool) {
     Size size = MediaQuery.of(context).size;
+    RunManager manager = widget.manager;
+    int index = manager.getExerciseIndex(exercise);
     return GestureDetector(
       onTap: () => exerciseDescription(exercise),
       child: Padding(
@@ -675,18 +681,10 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
           width: size.width - 10,
           padding: EdgeInsets.all(5),
           decoration: BoxDecoration(
-            color: Colors.grey[50],
-            borderRadius: BorderRadius.all(
-              Radius.circular(25),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 3,
-                blurRadius: 5,
-                offset: Offset(0, 2), // changes position of shadow
-              )
-            ],
+            color: index < manager.exerciseIndex ? pastel_green.withOpacity(0.5) :
+            index == manager.exerciseIndex && manager.isActive ? pastel_blue.withOpacity(0.5) : Colors.grey[100],
+            borderRadius: BorderRadius.all(Radius.circular(25)),
+            border: Border.all(color: blackText.withOpacity(0.2),width: 0.5),
           ),
           child: Row(
             children: [
@@ -694,19 +692,15 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
                 height: 40,
                 width: 40,
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 3,
-                        blurRadius: 5,
-                        offset: Offset(0, 1), // changes position of shadow
-                      )
-                    ]),
+                    border: Border.all(color: blackText.withOpacity(0.2),width: 0.5),
+                    color:index < manager.exerciseIndex ? Colors.grey[300] :
+                    index == manager.exerciseIndex && manager.isActive ?  Colors.grey[100] : Colors.white,
+                    shape: BoxShape.circle),
                 child: Center(
                   child: Text(
-                    exercise.duration.toString(),
+                    index < manager.exerciseIndex ? 0.toString() :
+                      index == manager.exerciseIndex ? (manager.exerciseTimer == null ? exercise.duration.toString() : (manager.exerciseTimer.currentTick~/1000).toInt().toString())
+                        : exercise.duration.toString(),
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,

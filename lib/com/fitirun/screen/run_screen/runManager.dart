@@ -1,6 +1,7 @@
 import 'package:fitirun/com/fitirun/model/StatisticsModel.dart';
 import 'package:fitirun/com/fitirun/model/runModel.dart';
 import 'package:fitirun/com/fitirun/util/timer.dart';
+import 'package:location/location.dart';
 
 class RunManager{
 
@@ -30,7 +31,6 @@ class RunManager{
 
     totalTimer = CustomTimer(startAt: 0,onFinish:onTotalDone,onTick: onTotalTick);
     exerciseTimer = CustomTimer(startAt: model.exercises[0].duration * 1000, stopAt: 0,onFinish:() => exerciseDone(),onTick: onExerciseTick);
-
 
     if(onTotalStart!=null)
       onTotalStart();
@@ -94,5 +94,34 @@ class RunManager{
     String mins = (time~/60).toInt() < 10 ? '0'+(time~/60).toInt().toString() : (time~/60).toInt().toString();
     String second = (time%60).toInt() < 10 ? '0'+(time%60).toString() : (time%60).toString();
     return "$mins:$second";
+  }
+
+  int getExerciseIndex(ExerciseRunModel e) {
+    for(int i = 0; i<model.exercises.length;i++ ){
+      if(e == model.exercises[i])
+        return i;
+    }
+    return -1;
+  }
+
+
+  int totalSteps(){
+    return 0;
+  }
+
+  int totalDistance(){
+    return 0;
+  }
+
+  int totalCalories(){
+    return 0;
+  }
+
+  void updateStats(LocationData position){
+
+  }
+
+  void saveStats(){
+
   }
 }
