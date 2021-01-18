@@ -1,5 +1,3 @@
-import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
-import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
@@ -34,7 +32,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       body: SingleChildScrollView(child: getBody()),
-      bottomNavigationBar: NavigationBottomBar(),
     );
   }
 

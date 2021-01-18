@@ -1,6 +1,4 @@
 import 'dart:math';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
@@ -75,10 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: SingleChildScrollView(child: getBody()),
-      bottomNavigationBar: NavigationBottomBar(),
     );
-
-
   }
 
 

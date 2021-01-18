@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:fitirun/com/fitirun/model/runModel.dart';
 import 'package:fitirun/com/fitirun/screen/run_screen/runManager.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:get_it/get_it.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:location/location.dart';
-import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -22,7 +20,7 @@ class RunScreen extends StatefulWidget {
   _RunScreenState createState() => _RunScreenState();
 }
 
-class _RunScreenState extends State<RunScreen> {
+class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixin {
 
   RunManager manager = GetIt.I<RunManager>();
 
@@ -30,12 +28,6 @@ class _RunScreenState extends State<RunScreen> {
   void initState() {
     super.initState();
     initManagerListeners();
-  }
-
-  @override
-  void dispose() {
-    manager.stop();
-    super.dispose();
   }
 
 
@@ -49,7 +41,8 @@ class _RunScreenState extends State<RunScreen> {
   void initManagerListeners() {
     manager.restart();
     manager.onTotalTick = ((tick){
-      setState(() {});
+      if (!mounted) return;
+        setState(() {});
     });
 
     manager.onExerciseTick = ((tick){
@@ -73,7 +66,6 @@ class _RunScreenState extends State<RunScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: getBody(context),
-      bottomNavigationBar: NavigationBottomBar(),
     );
   }
 
@@ -156,6 +148,9 @@ class _RunScreenState extends State<RunScreen> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 
@@ -892,7 +887,6 @@ class _CountdownTextState extends State<CountdownText> {
     if(t == null) {
       t = Timer.periodic(Duration(seconds: 1), (timer) async{
         if (await Vibration.hasVibrator()) {
-          print("Called vibrator from countdown $count");
           Vibration.vibrate(duration: 200);
         }
         this.setState(() {

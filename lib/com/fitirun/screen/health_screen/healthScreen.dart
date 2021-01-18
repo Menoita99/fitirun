@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
@@ -10,7 +9,6 @@ import 'package:fitirun/com/fitirun/screen/health_screen/widgets/screenTitle.dar
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/workoutItem.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class HealthScreen extends StatefulWidget {
   @override
@@ -26,10 +24,9 @@ class _HealthScreenState extends State<HealthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        body: getBody(),
-        bottomNavigationBar: NavigationBottomBar.withColor(
-            isFoodSelected ? health_food_color : workout_color));
+    return  Scaffold(body: getBody());
+     //   bottomNavigationBar: NavigationBottomBar.withColor(
+     //       isFoodSelected ? health_food_color : workout_color));
   }
 
   Widget getBody() {
