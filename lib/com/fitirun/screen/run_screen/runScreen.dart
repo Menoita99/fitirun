@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:fitirun/com/fitirun/model/runModel.dart';
-import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/screen/run_screen/runManager.dart';
-import 'package:provider/provider.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_sparkline/flutter_sparkline.dart';
+import 'package:get_it/get_it.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:vibration/vibration.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -22,10 +24,7 @@ class RunScreen extends StatefulWidget {
 
 class _RunScreenState extends State<RunScreen> {
 
-  RunManager manager = RunManager();
-
-
-
+  RunManager manager = GetIt.I<RunManager>();
 
   @override
   void initState() {
@@ -48,7 +47,8 @@ class _RunScreenState extends State<RunScreen> {
 
 
   void initManagerListeners() {
-    manager.onTotalTick = ((fodase){
+    manager.restart();
+    manager.onTotalTick = ((tick){
       setState(() {});
     });
 
@@ -61,9 +61,11 @@ class _RunScreenState extends State<RunScreen> {
     });
 
     manager.onTotalDone = ((){
-      if(manager.isWorkoutFinish())
-        print("Save Statistics ");
-      else
+      if(manager.isWorkoutFinish()) {
+        showFinishDialog();
+        manager.saveStats();
+        manager.restart();
+      }else
         print("O workout não foi terminado");
     });
   }
@@ -92,15 +94,6 @@ class _RunScreenState extends State<RunScreen> {
                 tabs: [
                   Tab(
                       icon: Text(
-                    "Map",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: blackText,
-                    ),
-                  )),
-                  Tab(
-                      icon: Text(
                     "Manager",
                     style: TextStyle(
                       fontSize: 20,
@@ -108,6 +101,15 @@ class _RunScreenState extends State<RunScreen> {
                       color: blackText,
                     ),
                   )),
+                  Tab(
+                    icon: Text(
+                      "Map",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: blackText,
+                      ),
+                    )),
                 ],
               ),
             ],
@@ -116,12 +118,43 @@ class _RunScreenState extends State<RunScreen> {
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            MapScreen(manager),
             ManagerScreen(manager),
+            MapScreen(manager),
           ],
         ),
       ),
     ));
+  }
+
+  Future<bool> showFinishDialog() {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Congratulations!!!'),
+          content: Container(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Distance: ',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),)),
+                      Text(manager.totalDistance.toString()+" m",style: TextStyle(fontSize: 16),),
+                    ],
+                  ),
+                  SizedBox(height: 20,),
+                  Text('Congratulations you have completed your workout successfully!!!'),
+                ],
+              ),
+            ),
+          ),
+          actions: [TextButton(child: Text('Nice!'),onPressed: () {manager.restart();Navigator.of(context).pop();})],
+        );
+      },
+    );
   }
 }
 
@@ -167,10 +200,6 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
 
   @override
   Widget build(BuildContext context) {
-
-    UserModel v = Provider.of<UserModel>(context);
-    print(v);
-
     return Stack(
       children: [
         GoogleMap(
@@ -189,7 +218,7 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            widget.manager.totalTimer != null ?
+            widget.manager.isActive ?
             Align(
               alignment: Alignment.centerRight,
               child: Padding(
@@ -285,7 +314,7 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
 
 
   Widget timerContainer() {
-    return widget.manager.exerciseTimer != null ? Container(
+    return widget.manager.isActive ? Container(
       width: 60,
       height: 60,
       decoration: BoxDecoration(
@@ -315,12 +344,10 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
   }
 
 
-  /*
-        print('---------------------------------------------------------------');
-        print(position);
-        print(position.speed);
-        print('---------------------------------------------------------------');
- */
+
+
+
+
   void initLocationListener() async {
     try {
       if (_locationSubscription != null)
@@ -335,7 +362,7 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
                 bearing: position.heading,
                 target: loc,
                 zoom: 17,)));
-          if (widget.manager.hasModel()) {
+          if (widget.manager.isActive) {
             widget.manager.updateStats(position);
             setState(() {
               List<LatLng> points = List();
@@ -350,6 +377,12 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
                   points: points,
                   zIndex: _path.zIndex);
             });
+          }else if(_path.points.isNotEmpty){
+            _path = Polyline(polylineId: PolylineId("0"),
+                color: _path.color,
+                width: _path.width,
+                points: [],
+                zIndex: _path.zIndex);
           }
         }
       });
@@ -364,6 +397,8 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
 
 
   void askForPermission() async {
+    if (! await  Permission.activityRecognition.request().isGranted)
+      return _showPermissionDialog('Can\'t access to your location','Location services are disabled.','Please enable location use for this app');
     if(await _location.serviceEnabled())
       return;
     if(!await _location.requestService())
@@ -408,8 +443,6 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
 
 
 
-
-
 class ManagerScreen extends StatefulWidget {
 
   final RunManager manager;
@@ -422,10 +455,10 @@ class ManagerScreen extends StatefulWidget {
 
 
 class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveClientMixin{
-
+  PageController _controller = PageController(initialPage: 0);
   List<RunModel> _availableWorkouts = List();
 
-  String s = "";
+
 
   @override
   void initState(){
@@ -535,65 +568,16 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
     Size size = MediaQuery.of(context).size;
     return Stack(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 20,right: 20,top: 15),
-          child: Container(
-            height: 0.35 * size.height,
-            decoration: BoxDecoration(
-              color:pastel_blue,
-              borderRadius: BorderRadius.all(Radius.circular(25)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 3,
-                  blurRadius: 5,
-                  offset: Offset(0, 2), // changes position of shadow
-                )
-              ],
-            ),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: RadialProgress(
-                        width: size.width * 0.36,
-                        height: size.width * 0.36,
-                        progress: widget.manager.isActive ? widget.manager.completePercentage() : 0.001,
-                        color: Colors.white,
-                        subtext: "time left",
-                        text: widget.manager.isActive ? widget.manager.timeLeft() : widget.manager.model.getFormatedDuration(),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.sports_football,color: Colors.white),
-                    SizedBox(width: 10),
-                    Text(widget.manager.totalSteps().toString()+ " steps",style: TextStyle(color: Colors.white),)
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.wifi_sharp,color: Colors.white,),
-                    SizedBox(width: 10),
-                    Text(widget.manager.totalDistance().toString()+ "meters",style: TextStyle(color: Colors.white))
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.local_fire_department_outlined,color: Colors.white),
-                    SizedBox(width: 10),
-                    Text(widget.manager.totalCalories().toString()+"kca",style: TextStyle(color: Colors.white))
-                  ],
-                ),
-              ],
-            ),
+        Container(
+          height:  0.36 * size.height,
+          child: PageView(
+            physics: ScrollPhysics(),
+          controller: _controller,
+            children: [getTimerScreen(size),
+              getChartScreen(size,strong_pink,pastel_pink,widget.manager.getDistanceData(),'Distance'),
+              getChartScreen(size,strong_orange,pastel_salmon,widget.manager.getSpeedData(),'Speed'),
+              getChartScreen(size,pastel_dark_grey,suave_pink,widget.manager.getCaloriesData(),'Calories'),
+            ],
           ),
         ),
         DraggableScrollableSheet(
@@ -627,7 +611,11 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
                           height: 50,
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
-                          onPress: () => setState(() => widget.manager.restart()),
+                            onPress: (() => showComfirmFinishWorkoutDialog().then((value) {
+                              print(value);
+                              if (value)
+                                setState(()=>widget.manager.restart());
+                            }))
                         )
                             :
                         Column(
@@ -652,7 +640,8 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
                                 height: 50,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
-                                onPress: () => setState(() => widget.manager.restart())
+                                onPress: () => setState(() => widget.manager.restart()),
+
                             ),
                           ],
                         ),
@@ -663,6 +652,68 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
               );
             }),
       ],
+    );
+  }
+
+  Widget getTimerScreen(Size size) {
+    return Container(
+      margin: const EdgeInsets.only(left: 20,right: 20,top: 15,bottom: 10),
+        height: 0.35 * size.height,
+        decoration: BoxDecoration(
+          color: dark_blue,
+          borderRadius: BorderRadius.all(Radius.circular(25)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 3,
+              blurRadius: 5,
+              offset: Offset(0, 2), // changes position of shadow
+            )
+          ],
+        ),
+        child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: RadialProgress(
+                        width: size.width * 0.36,
+                        height: size.width * 0.36,
+                        progress: widget.manager.isActive ? widget.manager.completePercentage() : 0.001,
+                        color: Colors.white,
+                        subtext: "time left",
+                        text: widget.manager.isActive ? widget.manager.timeLeft() : widget.manager.model.getFormatedDuration(),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.sports_football,color: Colors.white),
+                    SizedBox(width: 10),
+                    Text(widget.manager.totalSteps.toString()+ " steps",style: TextStyle(color: Colors.white),)
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.wifi_sharp,color: Colors.white,),
+                    SizedBox(width: 10),
+                    Text(widget.manager.totalDistance.toString()+ " meters",style: TextStyle(color: Colors.white))
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.local_fire_department_outlined,color: Colors.white),
+                    SizedBox(width: 10),
+                    Text(widget.manager.totalCalories.toInt().toString()+" kca",style: TextStyle(color: Colors.white))
+                  ],
+                ),
+              ],
+            ),
     );
   }
 
@@ -770,8 +821,57 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
 
   @override
   bool get wantKeepAlive => true;
-}
 
+  Widget getChartScreen(Size size,Color mainColor, Color lineColor,List<double> data,String title) {
+    return Container(
+      height: 0.35 * size.height,
+      margin: const EdgeInsets.only(left: 20,right: 20,top: 15,bottom: 10),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: mainColor,
+        borderRadius: BorderRadius.all(Radius.circular(25)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 3,
+            blurRadius: 5,
+            offset: Offset(0, 2), // changes position of shadow
+          )
+        ],
+      ),
+      child: Column(
+        children: [
+          Text(title,style: TextStyle(color: Colors.white,fontSize: 20),),
+          Expanded(
+            child: Sparkline(
+              data: data.isNotEmpty ? data : [0],
+              fillMode: FillMode.none,
+              lineColor: lineColor,
+              pointsMode: PointsMode.none,
+              pointColor: homeScreen_purple_color,
+              lineWidth: 10,
+            ),
+          ),
+        ],
+      ));
+  }
+
+  Future<bool>showComfirmFinishWorkoutDialog() {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Are you sure?'),
+          content: Text('Are you sure you want to give up?\nYou will lose this workout data'),
+          actions: [
+            TextButton(child: Text('Yes'),onPressed: () => Navigator.of(context).pop(true)),
+            TextButton(child: Text('No'),onPressed: () => Navigator.of(context).pop(false))],
+        );
+      },
+    );
+  }
+}
 
 
 
@@ -820,12 +920,6 @@ class _CountdownTextState extends State<CountdownText> {
     );
   }
 }
-
-
-
-
-
-
 
 class RoundButton extends StatelessWidget {
   final String title;

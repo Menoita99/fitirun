@@ -215,8 +215,7 @@ class _ChartContainerState extends State<ChartContainer> {
         child: new Sparkline(
           data: widget.data,
           fillMode: FillMode.below,
-          fillGradient:
-              LinearGradient(colors: [Color(0xff70e1f5), Color(0xffffd194)]),
+          fillGradient: LinearGradient(colors: [Color(0xff70e1f5), Color(0xffffd194)]),
           pointsMode: PointsMode.all,
           pointColor: homeScreen_purple_color,
           pointSize: 10.0,

@@ -15,9 +15,17 @@ const pastel_blue = Color(0xFFAFDEFA);
 const pastel_green = health_food_color;
 const pastel_orange = Color(0xFFFFC984);
 const pastel_red = workout_color;
+const pastel_pink = Color(0xFFE5B3BB);
+const pastel_yellow = Color(0xFFE5DB9C);
+const pastel_brown = Color(0xFFD0BCAC);
+const pastel_brown_orange = Color(0xFFE6A57E);
+const pastel_salmon = Color(0xFFF9968B);
+const pastel_dark_purple = Color(0xFFBEB4C5);
+const pastel_dark_grey = Color(0xFF7B92AA);
+const suave_pink = Color(0xFFDEC4D6);
+const strong_pink = Color(0xFFC54B6C);
+const strong_orange = Color(0xFFF27348);
 const dark_blue = Color(0xFF200087);
-
-
 
 
 // navigation bar colors

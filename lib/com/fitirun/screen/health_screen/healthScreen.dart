@@ -84,7 +84,6 @@ class _HealthScreenState extends State<HealthScreen> {
     );
   }
 
-
   Container getFoodButton() {
     return Container(
       width: 120,
@@ -106,8 +105,6 @@ class _HealthScreenState extends State<HealthScreen> {
     );
   }
 
-
-
   Padding getWorkoutItens() {
     List<TrainModel> workouts = List<TrainModel>.generate(100, (i) => TrainModel.fakeModel());
     return Padding(
@@ -117,7 +114,6 @@ class _HealthScreenState extends State<HealthScreen> {
   }
 
   Widget getHealthFoodItens() {
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: foodItems(search),
