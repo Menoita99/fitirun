@@ -23,12 +23,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           icon: Icon(Icons.menu, color: blackText),
           onPressed: () async {
             setState(() {
-              FoodModel fmodel = FoodModel.fakeFood();
-              _databaseService.addFood(fmodel);
+              //FoodModel fmodel = FoodModel.fakeFood();
+              //_databaseService.addFood(fmodel);
               //ExerciceModel emodel = ExerciceModel.fakeModel();
               //_databaseService.addExercise(emodel);
-              //TrainModel tmodel = TrainModel.fakeModel();
-              //_databaseService.addTrain(tmodel);
+              TrainModel tmodel = TrainModel.fakeModel();
+              _databaseService.addTrain(tmodel);
             });
           },
         ),

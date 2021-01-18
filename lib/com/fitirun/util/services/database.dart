@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
@@ -49,7 +51,22 @@ class DatabaseService{
   Stream<QuerySnapshot> get workouts {
     return trainCollection.snapshots();
   }
+  
+  Future<List<FoodModel>> searchFood(String title) async {
+    print("Title: " + title);
+    List<FoodModel> foodList = List();
+    Future f = foodsCollection.snapshots().listen((snapshot)  {
+      for(int i = 0; i< snapshot.docs.length; i++){
+        if(snapshot.docs[i].data()['Title'].toString().contains(title)){
+          print(snapshot.docs[i].data()['Image url'].toString());
+          foodList.add(FoodModel.fromDoc(snapshot.docs[i]));
+        }
+      }
+    }).asFuture();
 
+    print("Food list size: " + foodList.length.toString());
+    return Future.wait([f]).then((_) => foodList );
+  }
 
 
 

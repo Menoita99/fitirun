@@ -22,6 +22,7 @@ class _HealthScreenState extends State<HealthScreen> {
   bool isFoodSelected = true;
   static const int pageTransictionTime = 1000;
   List<FoodModel> food = List();
+  String search = "";
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class _HealthScreenState extends State<HealthScreen> {
         padding: const EdgeInsets.only(top:10),
         child: Column(
           children: [
-            SearchContainer(isFoodSelected ? health_food_color : workout_color),
+            searchContainer(isFoodSelected ? health_food_color : workout_color),
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: Row(
@@ -111,21 +112,7 @@ class _HealthScreenState extends State<HealthScreen> {
     List<TrainModel> workouts = List<TrainModel>.generate(100, (i) => TrainModel.fakeModel());
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: GridView.builder(
-        itemCount: workouts.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 20,
-            crossAxisSpacing: 0,
-            childAspectRatio: 0.85),
-        itemBuilder: (context, index) => WorkoutItem(
-            workout: workouts[index],
-            onPress: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DetailsTrainScreen(item: workouts[index]),
-                ))),
-      ),
+      child: workoutItems(search)
     );
   }
 
@@ -133,20 +120,67 @@ class _HealthScreenState extends State<HealthScreen> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: TestWidget(),
+      child: foodItems(search),
     );
   }
-}
 
-class TestWidget extends StatefulWidget {
-  @override
-  _TestWidgetState createState() => _TestWidgetState();
-}
+  Widget searchContainer(Color color) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        padding: EdgeInsets.all(10.0),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.all(Radius.circular(border_radius)),
+        ),
+        child: Column(
+          children: [
+            ScreenTitle("Be Better\nBe Healthier"),
+            Row(
+              children: [
+                Expanded(
+                    child: Container(
+                      height: 35,
+                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: TextField(
+                        onChanged: (value) => {
+                          print(value)
+                        },
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(5.0),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.transparent),
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(border_radius)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.white.withOpacity(0.88)),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(border_radius))),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: Colors.grey[500],
+                            ),
+                            hintText: 'search',
+                            filled: true,
+                            fillColor: Colors.white.withOpacity(0.88)),
+                      ),
+                    )),
+                IconButton(
+                  icon: Icon(Icons.filter_list),
+                  onPressed: () {  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-class _TestWidgetState extends State<TestWidget> {
-  @override
-  Widget build(BuildContext context) {
-
+  Widget foodItems(String search) {
     return StreamBuilder<QuerySnapshot>(
       stream: DatabaseService().foods,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -176,71 +210,33 @@ class _TestWidgetState extends State<TestWidget> {
       },
     );
   }
-}
 
-
-// ignore: must_be_immutable
-class SearchContainer extends StatefulWidget {
-  Color _color;
-
-  SearchContainer(this._color);
-
-  @override
-  _SearchContainerState createState() => _SearchContainerState();
-}
-
-class _SearchContainerState extends State<SearchContainer> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        padding: EdgeInsets.all(10.0),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: widget._color,
-          borderRadius: BorderRadius.all(Radius.circular(border_radius)),
-        ),
-        child: Column(
-          children: [
-            ScreenTitle("Be Better\nBe Healthier"),
-            Row(
-              children: [
-                Expanded(
-                    child: Container(
-                  height: 35,
-                  padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(5.0),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(border_radius)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors.white.withOpacity(0.88)),
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(border_radius))),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.grey[500],
-                        ),
-                        hintText: 'search',
-                        filled: true,
-                        fillColor: Colors.white.withOpacity(0.88)),
-                  ),
-                )),
-                IconButton(
-                  icon: Icon(Icons.filter_list),
-                  onPressed: () {  },
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+  Widget workoutItems(String search) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: DatabaseService().workouts,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text('Something went wrong');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text("Loading");
+        }
+        return GridView.builder(
+          itemCount: snapshot.data.docs.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 20,
+              crossAxisSpacing: 0,
+              childAspectRatio: 0.85),
+          itemBuilder: (context, index) => WorkoutItem(
+              workout: TrainModel.fromDoc(snapshot.data.docs[index]),
+              onPress: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailsTrainScreen(item: TrainModel.fromDoc(snapshot.data.docs[index])),
+                  ))),
+        );
+      },
     );
   }
 }
