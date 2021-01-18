@@ -1,4 +1,6 @@
+import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
+import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/material.dart';
 import 'background.dart';
 import 'or_divider.dart';
@@ -54,12 +56,13 @@ class _BodyState extends State<Body> {
                 if (true) { // TODO: Check if the form is valid
                   print(email);
                   print(password);
-                  dynamic user = await _authService.registerWithEmailAndPassword(email, password); // return User if successful, returns null if not
+                  dynamic user = await _authService.registerWithEmailAndPassword(email, password); // return UserModel if successful, returns null if not
                   if(user == null){
                     setState(() {
                       error = "Error creating account";
                     });
                   }else{
+                    DatabaseService().addOrUpdateUser(user);
                     Navigator.popAndPushNamed(context, '/home');
                   }
                 }

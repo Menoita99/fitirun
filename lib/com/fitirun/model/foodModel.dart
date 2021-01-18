@@ -35,6 +35,19 @@ class FoodModel{
     recipe = (doc.data()['Recipe'] as List<dynamic>).map((e) => e.toString()).toList();
   }
 
+  FoodModel.fromMap(Map doc){
+    numberOfPeople = doc['Number of people'];
+    image = doc['Image url'];
+    rank = doc['rank'];
+    preparationTime = doc['Preparation Time'];
+    calories = doc['Calories'];
+    carbohydrates = doc['Carbohydrates'];
+    title = doc['Title'];
+    protein = doc['Protein'];
+    recipe = (doc['Recipe'] as List<dynamic>).map((e) => e.toString()).toList();
+
+  }
+
   FoodModel.fakeFood(){
     Faker faker = new Faker();
     image = _urls.elementAt(faker.randomGenerator.integer(_urls.length));

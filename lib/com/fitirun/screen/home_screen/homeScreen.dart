@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
@@ -24,12 +25,23 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int loginStreak = 15;
   int currentWeight = 65;
+  final AuthService _auth = AuthService();
+  final DatabaseService _database = DatabaseService();
+  UserModel userModel;
+
+  void getUserModel(UserModel user) async{
+    _database.getUserModel(user).then((value)  {
+      setState(() {userModel = value;});
+      //print("Usermodel");
+      //print(userModel);
+    });
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
-    final AuthService _auth = AuthService();
     final user = Provider.of<UserModel>(context);
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -37,9 +49,12 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.menu, color: blackText),
-          onPressed: () {
-
-            print("something");
+          onPressed: () async {
+            getUserModel(user);
+            TrainModel fav = TrainModel.fakeModel();
+            user.favWorkouts.add(fav);
+            user.favFoods.add(FoodModel.fakeFood());
+            _database.addOrUpdateUser(user);
           },
         ),
         actions: <Widget>[
@@ -62,7 +77,11 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(child: getBody()),
       bottomNavigationBar: NavigationBottomBar(),
     );
+
+
   }
+
+
 
   Widget getBody() {
     return Column(
@@ -152,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.all(Radius.circular(20))),
       child: FlatButton.icon(
         onPressed: () {
-          print("Eu sou o Rei == Rui Gei");
+          print("nothing");
         },
         icon: Icon(Icons.fitness_center),
         label: Text(
@@ -170,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
           color: health_food_color),
       child: FlatButton.icon(
         onPressed: () {
-          print("Eu sou o Rei == Rui Gei");
+          print("Nothing");
         },
         icon: Icon(Icons.favorite),
         label: Text(
@@ -189,6 +208,9 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     return data;
   }
+
+
+
 }
 
 // ignore: must_be_immutable
