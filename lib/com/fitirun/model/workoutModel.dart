@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faker/faker.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +18,20 @@ class WorkoutModel {
   int time;
 
   WorkoutModel(this.image, this.title, this.description, this.time); //min
+
+  WorkoutModel.fromDoc(DocumentSnapshot doc){
+    image = doc.data()['Image url'];
+    time = doc.data()['Time'];
+    description = doc.data()['Description'];
+    title = doc.data()['Title'];
+  }
+
+  WorkoutModel.fromMap(Map doc){
+    image = doc['Image url'];
+    time = doc['Time'];
+    description = doc['Description'];
+    title = doc['Title'];
+  }
 
   WorkoutModel.fakeModel() {
     Faker faker = new Faker();
@@ -36,6 +51,11 @@ class ExerciceModel extends WorkoutModel {
   ExerciceModel(this.bodyPart, this.series, this.repetitions, String image,
       String title, String description, int time)
       : super(image, title, description, time);
+  ExerciceModel.fromDoc(Map doc) : super.fromMap(doc) {
+    bodyPart = doc['Body part'];
+    series = doc['Series'];
+    repetitions =  (doc['Repetitions'] as List<dynamic>).map((e) => int.parse(e)).toList();
+  }
 
   ExerciceModel.fakeModel() : super.fakeModel() {
     Faker faker = new Faker();
@@ -69,6 +89,15 @@ class TrainModel extends WorkoutModel {
   TrainModel(this.train, String image, String title, String description,
       int time, this.difficulty)
       : super(image, title, description, time);
+
+  TrainModel.fromDoc(DocumentSnapshot doc) : super.fromDoc(doc) {
+    difficulty = doc.data()['Difficulty'];
+    //var rep = doc.data()['Train']['Repetitions'];
+
+    var aux = doc.data()['Train'] as List;
+    train = aux.map((e) => ExerciceModel.fromDoc(e as Map)).toList();
+
+  }
 
   TrainModel.fakeModel() : super.fakeModel() {
     difficulty = Faker().randomGenerator.integer(3);
