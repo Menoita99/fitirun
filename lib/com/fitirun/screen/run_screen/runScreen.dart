@@ -29,7 +29,9 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
   @override
   void initState() {
     super.initState();
-    initManagerListeners();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      initManagerListeners();
+    });
   }
 
 
@@ -862,7 +864,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Are you sure?'),
-          content: Text('Are you sure you want to give up?\nYou will lose this workout data'),
+          content: Text('Are you sure you want to give up?\nWe will save this workout data'),
           actions: [
             TextButton(child: Text('Yes'),onPressed: () {
               widget.manager.saveStats(userModel);
