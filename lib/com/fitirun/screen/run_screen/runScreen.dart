@@ -29,7 +29,9 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
   @override
   void initState() {
     super.initState();
-    initManagerListeners();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      initManagerListeners();
+    });
   }
 
 
@@ -41,7 +43,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
 
 
   void initManagerListeners() {
-    UserModel userModel = Provider.of<UserModel>(context);
+    UserModel userModel = Provider.of<UserModel>(context,listen: false);
     manager.restart();
     manager.onTotalTick = ((tick){
       if (!mounted) return;
@@ -855,14 +857,14 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
   }
 
   Future<bool>showComfirmFinishWorkoutDialog() {
-    UserModel userModel = Provider.of<UserModel>(context);
+    UserModel userModel = Provider.of<UserModel>(context,listen: false);
     return showDialog<bool>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Are you sure?'),
-          content: Text('Are you sure you want to give up?\nYou will lose this workout data'),
+          content: Text('Are you sure you want to give up?\nWe will save this workout data'),
           actions: [
             TextButton(child: Text('Yes'),onPressed: () {
               widget.manager.saveStats(userModel);
