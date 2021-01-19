@@ -84,14 +84,23 @@ class FoodModel{
   Map<String, dynamic> toJson() {
     return {
       'Image url' : image,
-    'Rank' : rank,
-    'Title' : title,
-    'Preparation Time' : preparationTime,
-    'Number of people' : numberOfPeople,
-    'Calories' : calories,
-    'Protein' : protein,
-    'Carbohydrates' : carbohydrates,
-    'Recipe' : recipe
+      'Rank' : rank,
+      'Title' : title,
+      'Preparation Time' : preparationTime,
+      'Number of people' : numberOfPeople,
+      'Calories' : calories,
+      'Protein' : protein,
+      'Carbohydrates' : carbohydrates,
+      'Recipe' : recipe
   };
   }
+
+  @override
+  bool operator ==(Object other) {
+    if(other is FoodModel) {
+      return this.title == other.title;
+    }
+    return false;
+  }
+
 }

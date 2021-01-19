@@ -16,15 +16,16 @@ class DatabaseService{
   //final CollectionReference authDetailsCollection = FirebaseFirestore.instance.collection('AuthDetails');
 
 
-  //get UserModel from Firebase
-  Future<UserModel> getUserModel(UserModel user) async{
-    return await DatabaseService().usersCollection.doc(user.uid).get().then((value){
-      print("getUserModel db");
-      print(value);
-      return UserModel.fromDoc(value);
-    }
-    );
+  //get UserModel
+  Future<DocumentSnapshot> getUserModel(UserModel user) {
+    return DatabaseService().usersCollection.doc(user.uid).get();
   }
+
+  //get UserModel
+  Future<DocumentSnapshot> getUserModelFromUid(String uid) {
+    return DatabaseService().usersCollection.doc(uid).get();
+  }
+
 
   //add/update user
   Future<void> addOrUpdateUser(UserModel userModel) async {

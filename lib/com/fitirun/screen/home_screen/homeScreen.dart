@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:fitirun/com/fitirun/model/StatisticsModel.dart';
+import 'package:fitirun/com/fitirun/model/armazem.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
@@ -12,7 +13,6 @@ import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,17 +22,30 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>{
   int loginStreak = 15;
   int currentWeight = 65;
   final AuthService _auth = AuthService();
   final DatabaseService _database = DatabaseService();
   UserModel userModel;
 
+
+  @override
+  void initState() {
+    super.initState();
+    Warehouse().addListener((userModel) => {
+      if(!mounted){
+      setState((){
+        this.userModel = userModel;
+        print(userModel);
+      })}
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel>(context);
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -41,15 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: IconButton(
           icon: Icon(Icons.menu, color: blackText),
           onPressed: () {
-            _database.getUserModel(user).then((value) {
-              setState(() {
-                userModel = value;
-                //StatisticsModel statisticsModel = StatisticsModel.fakeModel();
-                //print(statisticsModel.model.model.exercises);
-                //userModel.statistics.add(statisticsModel);
-                //_database.addOrUpdateUser(userModel);
-              });
-            });
+            print(Warehouse().userModel.toJson());
           },
         ),
         actions: <Widget>[

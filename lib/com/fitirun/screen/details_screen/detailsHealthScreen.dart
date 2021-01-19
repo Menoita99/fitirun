@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fitirun/com/fitirun/model/armazem.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
@@ -25,7 +26,7 @@ class _DetailsHealthScreenState extends State<DetailsHealthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    UserModel userModel = Provider.of<UserModel>(context, listen: false);
+    UserModel userModel = Warehouse().userModel;
     bool isFav = userModel.favFoods.contains(widget.item);
     return Scaffold(
         backgroundColor: Colors.white,

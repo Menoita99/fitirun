@@ -41,6 +41,14 @@ class WorkoutModel {
     description =
         faker.lorem.sentences(faker.randomGenerator.integer(5) + 1).join("\n");
   }
+
+  @override
+  bool operator ==(Object other) {
+    if(other is WorkoutModel) {
+      return this.title == other.title;
+    }
+    return false;
+  }
 }
 
 class ExerciceModel extends WorkoutModel {

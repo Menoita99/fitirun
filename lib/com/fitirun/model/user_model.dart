@@ -17,16 +17,17 @@ class UserModel{
   UserModel({this.uid, this.email});
 
   UserModel.fromDoc(DocumentSnapshot doc){
+    favFoods = List();
     uid = doc.data()['uid'];
     age = doc.data()['age'];
     email = doc.data()['email'];
     name = doc.data()['name'];
     var auxFoods = doc.data()['fav foods'] as List;
-    favFoods = auxFoods.map((e) {FoodModel.fromMap(e);}).toList();
+    auxFoods.forEach((e) => favFoods.add(FoodModel.fromMap(e)));
     var auxWorkouts = doc.data()['fav workouts'] as List;
-    favWorkouts = auxWorkouts.map((e) => TrainModel.fromMap(e)).toList();
-    //var auxStatistics = doc.data()['statistics'] as List;
-    //statistics = auxStatistics.map((e) => StatisticsModel.fromMap(e)).toList();
+    auxWorkouts.forEach((e) => favWorkouts.add(TrainModel.fromMap(e)));
+    var auxStatistics = doc.data()['statistics'] as List;
+    auxStatistics.forEach((e) => statistics.add(StatisticsModel.fromMap(e)));
   }
 
   UserModel.fromUser(User user){
@@ -48,6 +49,7 @@ class UserModel{
         foodAux.add(element.toJson())
       ;}});
     statistics.forEach((element) {statisticsAux.add(element.toJson());});
+
     return {
       'uid' : uid,
       'email' : email,

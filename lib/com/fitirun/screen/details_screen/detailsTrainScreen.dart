@@ -1,19 +1,32 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fitirun/com/fitirun/model/armazem.dart';
+import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
+import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class DetailsTrainScreen extends StatelessWidget {
+
+class DetailsTrainScreen extends StatefulWidget {
   const DetailsTrainScreen({
     Key key,
     @required this.item,
   }) : super(key: key);
 
   final TrainModel item;
+  static const double leftColumnWidth = 120;
+  @override
+  _DetailsTrainScreenState createState() => _DetailsTrainScreenState();
+}
 
+class _DetailsTrainScreenState extends State<DetailsTrainScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    UserModel userModel = Warehouse().userModel;
+    bool isFav = userModel.favWorkouts.contains(widget.item);
+    print(isFav);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -22,7 +35,7 @@ class DetailsTrainScreen extends StatelessWidget {
             height: 400,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: CachedNetworkImageProvider(item.image),
+                image: CachedNetworkImageProvider(widget.item.image),
                 fit: BoxFit.cover,
               ),
             ),
@@ -37,7 +50,19 @@ class DetailsTrainScreen extends StatelessWidget {
                         onPressed: () => Navigator.pop(context),
                         icon: Icon(Icons.arrow_back_ios, color: Colors.white)),
                     IconButton(
-                        icon: Icon(Icons.favorite_border, color: Colors.white)),
+                        icon: isFav ? Icon(Icons.favorite, color: pastel_red) : Icon(Icons.favorite_border, color: blackText),
+                      onPressed: (){
+
+                        setState(() {if(isFav){
+                          userModel.favWorkouts.remove(widget.item);
+                        }else{
+                          userModel.favWorkouts.add(widget.item);
+                        }
+                        DatabaseService().addOrUpdateUser(userModel);});
+
+
+                      },),
+
                   ],
                 ),
               ),
@@ -68,12 +93,12 @@ class DetailsTrainScreen extends StatelessWidget {
                                   padding: EdgeInsets.all(5),
                                   decoration: BoxDecoration(
                                       color: TrainModel.getDifficultyColor(
-                                          item.difficulty),
+                                          widget.item.difficulty),
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(5))),
+                                      BorderRadius.all(Radius.circular(5))),
                                   child: Text(
                                     TrainModel.getDifficultyPhrase(
-                                            item.difficulty)
+                                        widget.item.difficulty)
                                         .toUpperCase(),
                                     style: TextStyle(
                                         color: Colors.white,
@@ -84,7 +109,7 @@ class DetailsTrainScreen extends StatelessWidget {
                                 SizedBox(width: 10),
                                 Flexible(
                                   child: Text(
-                                    item.title,
+                                    widget.item.title,
                                     style: TextStyle(
                                       fontSize: 25,
                                       fontWeight: FontWeight.w800,
@@ -101,7 +126,7 @@ class DetailsTrainScreen extends StatelessWidget {
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  item.description,
+                                  widget.item.description,
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.grey[500]),
                                   textAlign: TextAlign.start,
@@ -112,7 +137,7 @@ class DetailsTrainScreen extends StatelessWidget {
                             titleText("Exercises"),
                             SizedBox(height: 20),
                             Column(
-                                children: item.train
+                                children: widget.item.train
                                     .map((e) => _ExerciseItem(item: e))
                                     .toList()),
                             SizedBox(height: 20),
@@ -125,16 +150,16 @@ class DetailsTrainScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   color: pastel_blue,
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(50)),
+                                  BorderRadius.all(Radius.circular(50)),
                                 ),
                                 child: Center(
                                     child: Text(
-                                  "Start Workout",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      color: Colors.white),
-                                )),
+                                      "Start Workout",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          color: Colors.white),
+                                    )),
                               ),
                             ),
                             SizedBox(height: 20),
