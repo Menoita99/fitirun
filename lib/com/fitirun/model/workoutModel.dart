@@ -101,8 +101,6 @@ class TrainModel extends WorkoutModel {
 
   TrainModel.fromMap(Map doc) : super.fromMap(doc){
     difficulty = doc['Difficulty'];
-
-
     train = (doc['Train'] as List<dynamic>).map((e) => ExerciceModel.fromDoc(e)).toList();
 
   }

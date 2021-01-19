@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitirun/com/fitirun/model/StatisticsModel.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 
@@ -11,6 +12,7 @@ class UserModel{
   List<TrainModel> favWorkouts = List();
   List<FoodModel> favFoods = List();
   Map<DateTime, int> steps = Map();
+  List<StatisticsModel> statistics = List();
 
   UserModel({this.uid, this.email});
 
@@ -23,6 +25,8 @@ class UserModel{
     favFoods = auxFoods.map((e) {FoodModel.fromMap(e);}).toList();
     var auxWorkouts = doc.data()['fav workouts'] as List;
     favWorkouts = auxWorkouts.map((e) => TrainModel.fromMap(e)).toList();
+    //var auxStatistics = doc.data()['statistics'] as List;
+    //statistics = auxStatistics.map((e) => StatisticsModel.fromMap(e)).toList();
   }
 
   UserModel.fromUser(User user){
@@ -33,13 +37,23 @@ class UserModel{
   Map<String, dynamic> toJson() {
     List<Map<String, dynamic>> foodAux = List();
     List<Map<String, dynamic>> workoutAux = List();
-    favWorkouts.forEach((element) {workoutAux.add(element.toJson());});
-    favFoods.forEach((element) {foodAux.add(element.toJson());});
+    List<Map<String, dynamic>> statisticsAux = List();
+    favWorkouts.forEach((element) {
+      if(element != null) {
+        workoutAux.add(element.toJson());
+      }
+    });
+    favFoods.forEach((element) {
+      if(element != null){
+        foodAux.add(element.toJson())
+      ;}});
+    statistics.forEach((element) {statisticsAux.add(element.toJson());});
     return {
       'uid' : uid,
       'email' : email,
       'fav workouts' : workoutAux,
       'fav foods' : foodAux,
+      'statistics' : statisticsAux,
       'name' : name,
       'age' : age,
     };

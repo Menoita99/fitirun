@@ -1,18 +1,30 @@
+import 'package:faker/faker.dart';
 import 'package:fitirun/com/fitirun/model/runModel.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 
 class StatisticsModel{
 
-  Map<WorkoutData,List<RunData>> data = new Map();
+  List<RunData> data = new List();
 
-  WorkoutData model;//ignore this attribute when putting in firebase
+  WorkoutData model;
 
   StatisticsModel(this.model);
 
+  StatisticsModel.fakeModel(){
+    model = WorkoutData.fakeModel();
+    for(int i = 0; i < 10; i++){
+      data.add(RunData.fakeModel());
+    }
+  }
+
+  StatisticsModel.fromMap(Map doc){
+    //data = (doc['data'] as List<dynamic>).map((e) => RunData.fromMap(e)).toList();
+  }
+
   void add(RunData rdata){
-    if(data[model] == null)
-      data[model] = List();
-    data[model].add(rdata);
+    if(data == null)
+      data = List();
+    data.add(rdata);
   }
 
   StatisticsModel clone() {
@@ -21,28 +33,74 @@ class StatisticsModel{
     return clone;
   }
 
+  Map<String, dynamic> toJson() {
+    List<Map<String, dynamic>> dataAux = List();
+    data.forEach((element) {
+      print(element);
+      dataAux.add(element.toJson());});
+    return {
+      'model': model.toJson(),
+      'data' : dataAux,
+    };
+  }
+
 }
 
 class RunData {
 
-  final DateTime time;
-  final int steps;
-  final double distance;
-  final double  speed;
-  final double calories;
+   DateTime time;
+   int steps;
+   double distance;
+   double  speed;
+   double calories;
 
-  const RunData({this.time , this.steps, this.distance, this.speed, this.calories});
+  RunData({this.time , this.steps, this.distance, this.speed, this.calories});
+  RunData.fakeModel(){
+    Faker f =  Faker();
+    RunData(calories: Faker().randomGenerator.decimal() * 100,
+    distance: Faker().randomGenerator.decimal() * 1000,
+    speed: Faker().randomGenerator.decimal() * 50,
+    steps: Faker().randomGenerator.integer(5) + 3,
+    time: DateTime.now());
+
+  }
 
   @override
   String toString() {
     return "time:"+time.toString()+" steps:"+steps.toString()+" distance:"+distance.toString()+" speed:"+speed.toString()+" calories:"+calories.toString();
   }
+
+
+  Map<String, dynamic> toJson() {
+    return {
+      'time' : time.toString(),
+      'steps' : steps.toString(),
+      'distance' : distance.toString(),
+      'speed' : speed.toString(),
+      'calories' : calories.toString()
+    };
+  }
+
 }
 
 class WorkoutData{
 
-  final RunModel model;
-  final DateTime time;
+  RunModel model;
+  DateTime time;
 
-  const WorkoutData(this.time , this.model);
+  WorkoutData(this.time , this.model);
+
+  WorkoutData.fakeModel(){
+    time = DateTime.now();
+    model = RunModel.fakeModel();
+  }
+
+  Map<String, dynamic> toJson() {
+
+    return {
+      'run model' : model.toJson(),
+      'time' : time.toString()
+    };
+  }
+
 }

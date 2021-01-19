@@ -36,6 +36,19 @@ class RunModel{
     String second = (totalDuration%60).toInt() < 10 ? '0'+(totalDuration%60).toString() : (totalDuration%60).toString();
     return "$mins:$second";
   }
+
+  Map<String, dynamic> toJson() {
+    List<Map<String, dynamic>> auxExercises = List();
+    exercises.forEach((element) {auxExercises.add(element.toJson());});
+    //print(exercises);
+    return {
+      'title': title,
+      'Difficulty': difficulty,
+      'short description': shortDescription,
+      'exercises': auxExercises,
+      'total duration': totalDuration,
+    };
+  }
 }
 
 class ExerciseRunModel{
@@ -56,6 +69,15 @@ class ExerciseRunModel{
     String mins = (duration~/60).toInt() < 10 ? '0'+(duration~/60).toInt().toString() : (duration~/60).toInt().toString();
     String second = (duration%60).toInt() < 10 ? '0'+(duration%60).toString() : (duration%60).toString();
     return "$mins:$second";
+  }
+
+
+  Map<String, dynamic> toJson() {
+    return {
+      'duration' : duration.toString(),
+      'title' : title,
+      'description' : description,
+    };
   }
 }
 

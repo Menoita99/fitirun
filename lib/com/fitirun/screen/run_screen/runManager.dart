@@ -1,5 +1,6 @@
 import 'package:fitirun/com/fitirun/model/StatisticsModel.dart';
 import 'package:fitirun/com/fitirun/model/runModel.dart';
+import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/util/PedometerUtil.dart';
 import 'package:fitirun/com/fitirun/util/timer.dart';
 import 'package:get_it/get_it.dart';
@@ -183,8 +184,8 @@ class RunManager{
     List<double> output = List();
     double sum = 0;
     output.add(0);
-    if(statistics != null && statistics.data[workOutKey] != null) {
-      for (RunData d in statistics.data[workOutKey]) {
+    if(statistics != null && statistics.data != null) {
+      for (RunData d in statistics.data) {
         sum += d.distance;
         output.add(sum);
       }
@@ -197,8 +198,8 @@ class RunManager{
     List<double> output = List();
     double sum = 0;
     output.add(0);
-    if(statistics != null && statistics.data[workOutKey] != null) {
-      for (RunData d in statistics.data[workOutKey]) {
+    if(statistics != null && statistics.data != null) {
+      for (RunData d in statistics.data) {
         sum += d.calories;
         output.add(sum);
       }
@@ -209,8 +210,8 @@ class RunManager{
 
   List<double> getSpeedData() {
     List<double> output = List();
-    if(statistics != null && statistics.data[workOutKey] != null)
-      for (RunData d in statistics.data[workOutKey])
+    if(statistics != null && statistics.data != null)
+      for (RunData d in statistics.data)
         output.add(d.speed);
     return output;
   }

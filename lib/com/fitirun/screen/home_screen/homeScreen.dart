@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
+import 'package:fitirun/com/fitirun/model/StatisticsModel.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
@@ -29,19 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
   final DatabaseService _database = DatabaseService();
   UserModel userModel;
 
-  void getUserModel(UserModel user) async{
-    _database.getUserModel(user).then((value)  {
-      setState(() {userModel = value;});
-      //print("Usermodel");
-      //print(userModel);
-    });
-
-
-  }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel>(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -49,12 +42,18 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.menu, color: blackText),
-          onPressed: () async {
-            getUserModel(user);
-            TrainModel fav = TrainModel.fakeModel();
-            user.favWorkouts.add(fav);
-            user.favFoods.add(FoodModel.fakeFood());
-            _database.addOrUpdateUser(user);
+          onPressed: () {
+            _database.getUserModel(user).then((value)  {
+              setState(() {
+                userModel = value;
+                StatisticsModel statisticsModel = StatisticsModel.fakeModel();
+                print(statisticsModel.model.model.exercises);
+                userModel.statistics.add(statisticsModel);
+                _database.addOrUpdateUser(userModel);
+              });
+            });
+
+
           },
         ),
         actions: <Widget>[
