@@ -1,6 +1,4 @@
 import 'dart:math';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitirun/com/fitirun/costum_widget/navigationBar.dart';
 import 'package:fitirun/com/fitirun/model/StatisticsModel.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
@@ -14,6 +12,7 @@ import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final DatabaseService _database = DatabaseService();
   UserModel userModel;
 
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel>(context);
@@ -43,28 +41,27 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: IconButton(
           icon: Icon(Icons.menu, color: blackText),
           onPressed: () {
-            _database.getUserModel(user).then((value)  {
+            _database.getUserModel(user).then((value) {
               setState(() {
                 userModel = value;
-                StatisticsModel statisticsModel = StatisticsModel.fakeModel();
-                print(statisticsModel.model.model.exercises);
-                userModel.statistics.add(statisticsModel);
-                _database.addOrUpdateUser(userModel);
+                //StatisticsModel statisticsModel = StatisticsModel.fakeModel();
+                //print(statisticsModel.model.model.exercises);
+                //userModel.statistics.add(statisticsModel);
+                //_database.addOrUpdateUser(userModel);
               });
             });
-
-
           },
         ),
         actions: <Widget>[
           FlatButton.icon(
-              onPressed: () async {
-                await _auth.signOut(user);
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => WelcomeScreen()),
-                    (route) => false);
+              onPressed: () {
+                _auth.signOut().then((value) {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => WelcomeScreen()),
+                      (route) => false);
+                });
               },
               icon: Icon(Icons.logout),
               label: Text(
@@ -76,8 +73,6 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(child: getBody()),
     );
   }
-
-
 
   Widget getBody() {
     return Column(
@@ -204,9 +199,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     return data;
   }
-
-
-
 }
 
 // ignore: must_be_immutable
@@ -233,7 +225,8 @@ class _ChartContainerState extends State<ChartContainer> {
         child: new Sparkline(
           data: widget.data,
           fillMode: FillMode.below,
-          fillGradient: LinearGradient(colors: [Color(0xff70e1f5), Color(0xffffd194)]),
+          fillGradient:
+              LinearGradient(colors: [Color(0xff70e1f5), Color(0xffffd194)]),
           pointsMode: PointsMode.all,
           pointColor: homeScreen_purple_color,
           pointSize: 10.0,

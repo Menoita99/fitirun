@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:fitirun/com/fitirun/model/runModel.dart';
+import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/screen/run_screen/runManager.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:get_it/get_it.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -39,6 +41,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
 
 
   void initManagerListeners() {
+    UserModel userModel = Provider.of<UserModel>(context);
     manager.restart();
     manager.onTotalTick = ((tick){
       if (!mounted) return;
@@ -56,7 +59,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
     manager.onTotalDone = ((){
       if(manager.isWorkoutFinish()) {
         showFinishDialog();
-        manager.saveStats();
+        manager.saveStats(userModel);
         manager.restart();
       }else
         print("O workout não foi terminado");
@@ -852,6 +855,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
   }
 
   Future<bool>showComfirmFinishWorkoutDialog() {
+    UserModel userModel = Provider.of<UserModel>(context);
     return showDialog<bool>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -860,7 +864,9 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
           title: Text('Are you sure?'),
           content: Text('Are you sure you want to give up?\nYou will lose this workout data'),
           actions: [
-            TextButton(child: Text('Yes'),onPressed: () => Navigator.of(context).pop(true)),
+            TextButton(child: Text('Yes'),onPressed: () {
+              widget.manager.saveStats(userModel);
+              Navigator.of(context).pop(true); }),
             TextButton(child: Text('No'),onPressed: () => Navigator.of(context).pop(false))],
         );
       },

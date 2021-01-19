@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
-import 'package:fitirun/com/fitirun/util/services/database.dart';
+import 'package:get_it/get_it.dart';
 
 class AuthService{
 
@@ -8,7 +8,9 @@ class AuthService{
 
   //create UserModel based on Firebase user
   UserModel _userFromFirebaseUser(User user){
-    return user != null ? UserModel(uid: user.uid, email: user.email) : null;
+    UserModel userModel = user != null ? UserModel(uid: user.uid, email: user.email) : null;
+    print("Autenticado $userModel");
+    return userModel;
   }
 
   //auth change user stream
@@ -55,9 +57,9 @@ class AuthService{
   }
 
   //sign out
-  Future signOut(UserModel user) async {
+  Future signOut() {
     try{
-      return await _auth.signOut();
+      return _auth.signOut();
     }catch(e){
       print(e);
       return null;

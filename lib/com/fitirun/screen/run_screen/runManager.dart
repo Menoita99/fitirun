@@ -2,13 +2,16 @@ import 'package:fitirun/com/fitirun/model/StatisticsModel.dart';
 import 'package:fitirun/com/fitirun/model/runModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/util/PedometerUtil.dart';
+import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:fitirun/com/fitirun/util/timer.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get_it/get_it.dart';
 import 'package:latlong/latlong.dart';
 import 'package:location/location.dart';
 import 'dart:math';
 
 import 'package:pedometer/pedometer.dart';
+import 'package:provider/provider.dart';
 
 class RunManager{
 
@@ -166,8 +169,10 @@ class RunManager{
     _lastPosition = position;
   }
 
-  void saveStats(){
-      statistics.clone();
+  void saveStats(UserModel userModel){
+    //UserModel userModel = GetIt.I<UserModel>();
+    userModel.statistics.add(statistics.clone());
+    DatabaseService().addOrUpdateUser(userModel);
   }
 
   calculateDistance(LocationData lastPosition, LocationData position) {
