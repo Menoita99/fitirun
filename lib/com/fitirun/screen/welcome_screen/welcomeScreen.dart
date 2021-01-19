@@ -14,10 +14,8 @@ class WelcomeScreen extends StatelessWidget {
         body: Body(),
       );
     } else {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).pushNamed("/home");
-      });
-      return Container(child: Center( child: Text("Loading...", style: TextStyle(fontSize: 30),),), color: Colors.white);
+      SchedulerBinding.instance.addPostFrameCallback((_) => Navigator.of(context).pushNamedAndRemoveUntil("/home", (route) => false));
+      return Container(child: Center( child: Text("Loading...", style: TextStyle(fontSize: 30,color: Colors.black),),), color: Colors.white);
     }
   }
 }

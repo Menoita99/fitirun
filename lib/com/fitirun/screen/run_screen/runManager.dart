@@ -78,6 +78,7 @@ class RunManager{
 }
 
   void stop(){
+    print("Called stop");
     if(exerciseTimer != null)
       exerciseTimer.stop();
 
