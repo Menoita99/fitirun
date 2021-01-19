@@ -43,7 +43,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
 
 
   void initManagerListeners() {
-    UserModel userModel = Provider.of<UserModel>(context,listen: false);
+    UserModel userModel = Provider.of<UserModel>(context, listen: false);
     manager.restart();
     manager.onTotalTick = ((tick){
       if (!mounted) return;
@@ -857,7 +857,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
   }
 
   Future<bool>showComfirmFinishWorkoutDialog() {
-    UserModel userModel = Provider.of<UserModel>(context,listen: false);
+    UserModel userModel = Provider.of<UserModel>(context, listen: false);
     return showDialog<bool>(
       context: context,
       barrierDismissible: false, // user must tap button!
