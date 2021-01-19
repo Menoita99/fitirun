@@ -1,10 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
+import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/screenTitle.dart';
+import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class DetailsHealthScreen extends StatelessWidget {
+
+class DetailsHealthScreen extends StatefulWidget {
   const DetailsHealthScreen({
     Key key,
     @required this.item,
@@ -12,9 +16,17 @@ class DetailsHealthScreen extends StatelessWidget {
 
   final FoodModel item;
   static const double leftColumnWidth = 120;
+  @override
+  _DetailsHealthScreenState createState() => _DetailsHealthScreenState();
+}
+
+class _DetailsHealthScreenState extends State<DetailsHealthScreen> {
+
 
   @override
   Widget build(BuildContext context) {
+    UserModel userModel = Provider.of<UserModel>(context, listen: false);
+    bool isFav = userModel.favFoods.contains(widget.item);
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -24,7 +36,17 @@ class DetailsHealthScreen extends StatelessWidget {
           actions: [
             Padding(
                 padding: EdgeInsets.only(right: 16),
-                child: IconButton(icon: Icon(Icons.favorite_border, color: blackText))),
+                child: IconButton(icon: isFav ? Icon(Icons.favorite, color: pastel_red) : Icon(Icons.favorite_border, color: blackText),
+                  onPressed: () {
+                    setState(() {if(isFav){
+                      userModel.favFoods.remove(widget.item);
+                    }else{
+                      userModel.favFoods.add(widget.item);
+                    }
+                    DatabaseService().addOrUpdateUser(userModel);});
+
+                  },)),
+
           ],
         ),
         body: getBody(context));
@@ -41,13 +63,13 @@ class DetailsHealthScreen extends StatelessWidget {
               Container(
                 child: Column(
                   children: [
-                    ScreenTitle(item.title, blackText),
+                    ScreenTitle(widget.item.title, blackText),
                     Container(
                       height: 310,
                       //  width: size.width -  leftColumnWidth - 15, //10 from this padding and 5 from buildStatusBox
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: CachedNetworkImageProvider(item.image),
+                            image: CachedNetworkImageProvider(widget.item.image),
                             fit: BoxFit.cover),
                       ),
                       child: Column(
@@ -63,13 +85,13 @@ class DetailsHealthScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  buildStatusBox( item.calories, 'Calories', 'Kca'),
+                                  buildStatusBox( widget.item.calories, 'Calories', 'Kca'),
                                   SizedBox(height: 25),
-                                  buildStatusBox(item.carbohydrates, 'Carbo', 'g'),
+                                  buildStatusBox(widget.item.carbohydrates, 'Carbo', 'g'),
                                   SizedBox(height: 25),
-                                  buildStatusBox( item.protein, 'Protein', 'g'),
+                                  buildStatusBox( widget.item.protein, 'Protein', 'g'),
                                   SizedBox(height: 25),
-                                  buildStatusBox( item.preparationTime, 'Time', 'min'),
+                                  buildStatusBox( widget.item.preparationTime, 'Time', 'min'),
                                 ],
                               ),
                             ),
@@ -83,22 +105,22 @@ class DetailsHealthScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: 10, right: 8,top:20),
                 child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text("Recipe",
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            )),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Recipe",
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              )),
+                        ),
                       ),
-                    ),
-                    recipeText(),
-                  ]
+                      recipeText(),
+                    ]
                 ),
-                )
+              )
             ],
           ),
         ],
@@ -107,15 +129,15 @@ class DetailsHealthScreen extends StatelessWidget {
   }
 
   Column recipeText() {
-    return Column(children: item.recipe.map((e) =>
+    return Column(children: widget.item.recipe.map((e) =>
         Padding(
           padding: const EdgeInsets.only(top:5),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(e.toString(),
               style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[500]),
+                  fontSize: 16,
+                  color: Colors.grey[500]),
               textAlign: TextAlign.start,
             ),
           ),
@@ -131,7 +153,7 @@ class DetailsHealthScreen extends StatelessWidget {
       padding: const EdgeInsets.only(left: 5),
       child: Container(
         height: 50,
-        width: leftColumnWidth,
+        width: DetailsHealthScreen.leftColumnWidth,
         padding: EdgeInsets.all(5),
         // padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
