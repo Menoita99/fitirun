@@ -1,4 +1,4 @@
-import 'package:fitirun/com/fitirun/model/StatisticsModel.dart';
+import 'package:fitirun/com/fitirun/model/statisticsModel.dart';
 import 'package:fitirun/com/fitirun/model/runModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/util/PedometerUtil.dart';
