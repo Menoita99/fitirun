@@ -39,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         SafeArea(
           child: Container(
-            height: 0.34 * size.height,
+            height:size.height,
             color:Color(0xffdddddd),
             child: Padding(
               padding: const EdgeInsets.only(left: 15.0, top: 8.0),
@@ -50,10 +50,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(20),
-                        child: Text("My profile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                        child: Text("My Profile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                       ),
                       IconButton(
-                        icon: Icon(Icons.settings, color: Colors.blueGrey),
+                        icon: Icon(Icons.settings, color: blackText),
                         onPressed: () {
                             Navigator.push( context, MaterialPageRoute( builder: (context) => SettingsScreen())).then((value) => setState(() {}));
                         },
@@ -114,50 +114,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
             maxChildSize: 1,
             builder: (context, controller) {
               return SafeArea(
-                child: Container(
-                  color: white,
-                  child: Column(
-                    children: [
-                    Container(
-                      height: 1,
-                      width: 75,
-                      margin: EdgeInsets.only(bottom: 10,top: 10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        color: pastel_dark_grey,
+                child: GestureDetector(
+                  onTap: ((){
+                    controller.position.moveTo(0,duration: Duration(seconds: 1));
+                  }),
+                  child: Container(
+                    color: white,
+                    child: Column(
+                      children: [
+                      Container(
+                        height: 1,
+                        width: 75,
+                        margin: EdgeInsets.only(bottom: 10,top: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          color: pastel_dark_grey,
+                        ),
                       ),
-                    ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          controller: controller,
-                          child: Container(
-                            color: Colors.white,
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                  tabButton('Statistics',0),
-                                  tabButton('Food',1),
-                                  tabButton('Workout',2),
-                                ],),
-                                Container(
-                                  height: size.height,
-                                  child: PageView(
-                                    controller: _controller,
+                        Expanded(
+                          child: SingleChildScrollView(
+                            controller: controller,
+                            child: Container(
+                              color: Colors.white,
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
-                                      StatisticsView(),
-                                      FavFoodView(),
-                                      FavWorkoutView(),
-                                    ],
-                                  ),
-                                )
-                              ],
+                                    tabButton('Statistics',0),
+                                    tabButton('Food',1),
+                                    tabButton('Workout',2),
+                                  ],),
+                                  Container(
+                                    height: size.height,
+                                    child: PageView(
+                                      controller: _controller,
+                                      children: [
+                                        StatisticsView(),
+                                        FavFoodView(),
+                                        FavWorkoutView(),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -402,6 +407,41 @@ class _StatisticsViewState extends State<StatisticsView> {//with AutomaticKeepAl
         margin: EdgeInsets.only(top:35),
         child: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  width: 0.4 * size.width,
+                  height: 170,
+                  decoration: BoxDecoration(
+                    color: white,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    boxShadow:[BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 3,
+                      blurRadius: 5,
+                      offset: Offset(0, 2), // changes position of shadow
+                    )],
+                  ),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text('Calories burnt this week',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                        ),
+                      ),
+                      Center(child: Container(
+                          height: 100,
+                          child: WeeklyBarChartWidget(weeklyData: [1,5,6,5,9,6,6],maximumValueOnYAxis: 15,
+                          ))),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10,),
             Container(
               width: 0.9 * size.width,
               height: 150,
@@ -430,7 +470,7 @@ class _StatisticsViewState extends State<StatisticsView> {//with AutomaticKeepAl
                       ))),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

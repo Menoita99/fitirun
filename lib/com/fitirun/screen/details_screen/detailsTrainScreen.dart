@@ -49,7 +49,7 @@ class _DetailsTrainScreenState extends State<DetailsTrainScreen> {
                         onPressed: () => Navigator.pop(context),
                         icon: Icon(Icons.arrow_back_ios, color: Colors.white)),
                     IconButton(
-                        icon: isFav ? Icon(Icons.favorite, color: pastel_red) : Icon(Icons.favorite_border, color: blackText),
+                        icon: isFav ? Icon(Icons.favorite, color: pastel_red) : Icon(Icons.favorite_border, color: white),
                       onPressed: (){
 
                         setState(() {if(isFav){

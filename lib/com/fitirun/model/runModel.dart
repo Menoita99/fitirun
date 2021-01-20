@@ -1,6 +1,7 @@
 
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faker/faker.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 extension StringExtension on String {
@@ -37,6 +38,23 @@ class RunModel{
     return "$mins:$second";
   }
 
+  RunModel.fromMap(Map doc){
+    title = doc['title'];
+    shortDescription = doc['shortDescription'];
+    totalDuration = doc['totalDuration'];
+    //exercises = (doc['exercises'] as List<dynamic>).map((e) => e.toString()).toList();
+    difficulty = doc['difficulty'];
+  }
+
+  RunModel.fromDoc(DocumentSnapshot doc){
+    title = doc['title'];
+    shortDescription = doc.data()['shortDescription'];
+    totalDuration = doc.data()['totalDuration'];
+    //exercises = (doc.data()['exercises'] as List<dynamic>).map((e) => e.toString()).toList();
+    difficulty = doc.data()['difficulty'];
+  }
+
+
   Map<String, dynamic> toJson() {
     List<Map<String, dynamic>> auxExercises = List();
     exercises.forEach((element) {auxExercises.add(element.toJson());});
@@ -49,6 +67,8 @@ class RunModel{
       'total duration': totalDuration,
     };
   }
+
+
 }
 
 class ExerciseRunModel{

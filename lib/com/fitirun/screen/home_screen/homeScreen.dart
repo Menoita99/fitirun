@@ -43,37 +43,45 @@ class _HomeScreenState extends State<HomeScreen>{
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: blackText),
-          onPressed: () {
-            print(Warehouse().userModel.toJson());
-          },
-        ),
-        actions: <Widget>[
-          FlatButton.icon(
-              onPressed: () {
-                _auth.signOut().then((value) {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => WelcomeScreen()),
-                      (route) => false);
-                });
-              },
-              icon: Icon(Icons.logout),
-              label: Text(
-                "Logout",
-                style: TextStyle(fontSize: 15),
-              ))
+      body: SafeArea(child: Column(
+        children: [
+          _buildDaysBar(),
+          Expanded(child: SingleChildScrollView(child: DashboardScreen())),
         ],
-      ),
-      body: SingleChildScrollView(child: DashboardScreen()),
+      )),
     );
   }
 
+  Container _buildDaysBar() {
+    return Container(
+      margin: EdgeInsets.only(
+        top: SizeConfig.blockSizeVertical * 2,
+        bottom: SizeConfig.blockSizeVertical * 2,
+      ),
+      width: double.infinity,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text(
+            'Today',
+            style: CustomTextStyle.dayTabBarStyleActive,
+          ),
+          Text(
+            'Week',
+            style: CustomTextStyle.dayTabBarStyleInactive,
+          ),
+          Text(
+            'Month',
+            style: CustomTextStyle.dayTabBarStyleInactive,
+          ),
+          Text(
+            'Year',
+            style: CustomTextStyle.dayTabBarStyleInactive,
+          )
+        ],
+      ),
+    );
+  }
   /*
   Widget getBody() {
     return Column(
