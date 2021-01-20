@@ -24,7 +24,8 @@ class RunScreen extends StatefulWidget {
 
 class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixin {
 
-  RunManager manager = GetIt.I<RunManager>();
+  static RunManager manager = GetIt.I<RunManager>();
+  MapScreen map = MapScreen(manager);
 
   @override
   void initState() {
@@ -91,7 +92,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
                 tabs: [
                   Tab(
                       icon: Text(
-                    "Manager",
+                    "Map",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -100,7 +101,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
                   )),
                   Tab(
                     icon: Text(
-                      "Map",
+                      "Manager",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -115,8 +116,8 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            ManagerScreen(manager),
             MapScreen(manager),
+            ManagerScreen(manager),
           ],
         ),
       ),
@@ -185,7 +186,7 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
   void initState(){
     super.initState();
     askForPermission();
-    SchedulerBinding.instance.addPostFrameCallback((_) => initLocationListener());
+   // SchedulerBinding.instance.addPostFrameCallback((_) => initLocationListener());
   }
 
 
