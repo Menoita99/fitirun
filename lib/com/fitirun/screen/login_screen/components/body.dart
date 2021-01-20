@@ -34,16 +34,16 @@ class _BodyState extends State<Body> {
             RoundedInputField(
               hintText: "Your Email",
               onChanged: (value) {
-                setState(
-                    () => email = value
-                );
+                setState(() {
+                  email = value;
+                });
               },
             ),
             RoundedPasswordField(
               onChanged: (value) {
-                setState(
-                        () => password = value
-                );
+                setState(() {
+                  password = value;
+                });
               },
             ),
             RoundedButton(
