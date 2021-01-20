@@ -105,7 +105,7 @@ class _HealthScreenState extends State<HealthScreen> {
   }
 
   Padding getWorkoutItens() {
-    List<TrainModel> workouts = List<TrainModel>.generate(100, (i) => TrainModel.fakeModel());
+    //List<TrainModel> workouts = List<TrainModel>.generate(100, (i) => TrainModel.fakeModel());
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: workoutItems(search)
