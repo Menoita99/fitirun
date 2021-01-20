@@ -3,6 +3,7 @@ import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fitirun/com/fitirun/screen/profile_screen/profileScreen.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
 import 'package:fitirun/com/fitirun/util/rounded_input_field.dart';
+import 'package:fitirun/com/fitirun/util/rounded_input_field_costumicon.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
 import 'package:flutter/material.dart';
 
@@ -16,12 +17,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String age =  Warehouse().userModel.age.toString();
 
 
+
   @override
   Widget build(BuildContext context) {
+    print(name);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white70,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.blueGrey,
         elevation: 0,
         title: Text("Settings"),
         leading: FlatButton(
@@ -51,9 +54,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       children: [
         Row(
           children: [
-            Text("Name", style: TextStyle(fontSize: 20),),
-            RoundedInputField(
-              hintText: name == "" ? "type your name here" : name,
+            Text("Name: ", style: TextStyle(fontSize: 20),),
+            RoundedInputFieldCostumIcon(
+              icon: Icons.drive_file_rename_outline,
+              hintText: name == null ? "Enter your name" : name,
             )
           ],
         )
