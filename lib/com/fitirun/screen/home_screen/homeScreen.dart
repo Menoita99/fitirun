@@ -37,12 +37,12 @@ class _HomeScreenState extends State<HomeScreen>{
   @override
   void initState() {
     super.initState();
-    Warehouse().addListener((userModel) => {
-      if(!mounted){
-        setState((){
-          this.userModel = userModel;
-      })}
+
+      Warehouse().addListener((userModel) => {
+          if(!mounted)
+            setState(() =>this.userModel = userModel)
     });
+
   }
 
 

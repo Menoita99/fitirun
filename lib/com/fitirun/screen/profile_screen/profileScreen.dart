@@ -9,7 +9,6 @@ import 'package:fitirun/com/fitirun/screen/details_screen/detailsTrainScreen.dar
 import 'package:fitirun/com/fitirun/screen/profile_screen/components/BarChart.dart';
 import 'package:fitirun/com/fitirun/screen/setting_screen/settings_screen.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -67,13 +66,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Column(
                         children: [
-                          CircleAvatar(
-                            radius: size.width * 0.16, //change
-                            backgroundColor: Color(0xffe19999),
-                            child: Padding(
+                          GestureDetector(
+                            onTap: ((){
+                              Navigator.push( context, MaterialPageRoute( builder: (context) => SettingsScreen()));
+                              /*
+                              for(int i = 0; i < 50; i++) {
+                                DatabaseService().addFood(FoodModel.fakeFood());
+                                DatabaseService().addTrain(TrainModel.fakeModel());
+                              }
+                              print('Done');*/
+                            }),
+                            child: Container(
+                              width: 125,
+                              height: 125,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                color: pastel_brown
+                              ) ,
+                              child: Icon(FontAwesome5.user,color: white,size: 90,),
 
-                              padding: const EdgeInsets.only(bottom: 10,left: 1.5),
-                              child: Center(child: Icon(FontAwesome5.user_circle,color: white,size: 115,)),
                             ),
                           ),
                         ],),
@@ -254,8 +265,8 @@ class _FavWorkoutViewState extends State<FavWorkoutView> {
                     padding: const EdgeInsets.only(top:8,left: 8),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(user.favWorkouts[index].description.toString().length > 80 ? user.favWorkouts[index].description.toString().substring(0,80)+"..." :
-                      user.favWorkouts[index].description.toString()
+                      child: Text(user.favWorkouts[index].description.toString().length > 80 ? user.favWorkouts[index].description.toString().substring(0,80).replaceAll("\n", "")+"..." :
+                      user.favWorkouts[index].description.toString().replaceAll("\n", "")
                         ,style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal,color: blackText),),
                     ),
                   ),
