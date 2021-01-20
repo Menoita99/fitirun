@@ -31,57 +31,103 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget getBody(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Stack(
-      children: [
-        Container(
-          height: 0.34 * size.height,
-          color: Colors.black,
-        ),
-        DraggableScrollableSheet(
-            initialChildSize: 0.60,
-            minChildSize: 0.60,
-            maxChildSize: 1,
-            builder: (context, controller) {
-              return SingleChildScrollView(
-                controller: controller,
-                child: Container(
-                  color: Colors.white,
-                  child: Column(
+    return SafeArea(
+      child: Stack(
+        children: [
+          Container(
+            height: 0.34 * size.height,
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15.0, top: 8.0),
+              child: Column(
+                children: [
+                  Align( alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Text("My profile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blueAccent),),
+                  ),
+                ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        height: 1,
-                        width: 75,
-                        margin: EdgeInsets.only(bottom: 10,top: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          color: pastel_dark_grey,
+                    Column(
+                      children: [
+
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: CircleAvatar(
+                          radius: size.width * 0.115, //change
+                          backgroundColor: Colors.brown.shade800,
+                          child: Text('RM'),
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                        tabButton('Statistics',0),
-                        tabButton('Food',1),
-                        tabButton('Workout',2),
-                      ],),
-                      Container(
-                        height: size.height,
-                        child: PageView(
-                          controller: _controller,
+                    ],),
+                    Column(
+                      children: [
+                      Padding(padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                          child: Text("Rui Menoita", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),)),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        child: Column(
                           children: [
                             StatisticsView(),
                             FavFoodView(),
                             FavWorkoutView(),
                           ],
                         ),
-                      )
-                    ],
+                      ),
+                    ],)
+                  ],),
+                ],
+              ),
+            ),
+          ),
+          DraggableScrollableSheet(
+              initialChildSize: 0.60,
+              minChildSize: 0.60,
+              maxChildSize: 1,
+              builder: (context, controller) {
+                return SingleChildScrollView(
+                  controller: controller,
+                  child: Container(
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 1,
+                          width: 75,
+                          margin: EdgeInsets.only(bottom: 10,top: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            color: pastel_dark_grey,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                          tabButton('Statistics',0),
+                          tabButton('Food',1),
+                          tabButton('Workout',2),
+                        ],),
+                        Container(
+                          height: size.height,
+                          child: PageView(
+                            controller: _controller,
+                            children: [
+                              StatisticsView(),
+                              FavFoodView(),
+                              getView(),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              );
-            }
-        )
-      ],
+                );
+              }
+          )
+        ],
+      ),
     );
   }
 
