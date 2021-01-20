@@ -4,6 +4,40 @@ import 'package:fitirun/com/fitirun/model/StatisticsModel.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 
+class StepModel{
+  DateTime time;
+  int steps;
+
+  StepModel({this.time, this.steps});
+
+  StepModel.fromDoc(DocumentSnapshot doc){
+    time = doc.data()['time'];
+    steps = doc.data()['steps'];
+  }
+
+  StepModel.fromMap(DocumentSnapshot doc){
+    time = doc['time'];
+    steps = doc['steps'];
+  }
+
+
+  Map<String, dynamic> toJson() {
+    return {
+      'time' : time,
+      'steps' : steps,
+    };
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if(other is StepModel) {
+      return this.time == other.time;
+    }
+    return false;
+  }
+}
+
+
 class UserModel{
   String uid;
   String name;
@@ -11,7 +45,8 @@ class UserModel{
   int age;
   List<TrainModel> favWorkouts = List();
   List<FoodModel> favFoods = List();
-  Map<DateTime, int> steps = Map();
+  List<StepModel> steps = List();
+
   List<StatisticsModel> statistics = List();
 
   UserModel({this.uid, this.email});
@@ -28,6 +63,9 @@ class UserModel{
     auxWorkouts.forEach((e) => favWorkouts.add(TrainModel.fromMap(e)));
     var auxStatistics = doc.data()['statistics'] as List;
     auxStatistics.forEach((e) => statistics.add(StatisticsModel.fromMap(e)));
+    var auxSteps = doc.data()['steps'] as List;
+    if(auxSteps != null)
+      auxSteps.forEach((e) => steps.add(StepModel.fromMap(e)));
   }
 
   UserModel.fromUser(User user){
@@ -39,6 +77,8 @@ class UserModel{
     List<Map<String, dynamic>> foodAux = List();
     List<Map<String, dynamic>> workoutAux = List();
     List<Map<String, dynamic>> statisticsAux = List();
+    List<Map<String, dynamic>> stepsAux = List();
+
     favWorkouts.forEach((element) {
       if(element != null) {
         workoutAux.add(element.toJson());
@@ -50,6 +90,19 @@ class UserModel{
       ;}});
     statistics.forEach((element) {statisticsAux.add(element.toJson());});
 
+    /*favWorkouts.forEach((element) {
+      if(element != null) {
+        workoutAux.add(element.toJson());
+      }
+    });*/
+
+    steps.forEach((element) {
+      if(element != null) {
+        stepsAux.add(element.toJson());
+      }
+    });
+
+
     return {
       'uid' : uid,
       'email' : email,
@@ -58,6 +111,7 @@ class UserModel{
       'statistics' : statisticsAux,
       'name' : name,
       'age' : age,
+      'steps' : steps,
     };
   }
 

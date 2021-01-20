@@ -4,41 +4,26 @@ import 'package:flutter/material.dart';
 
 class WeeklyBarChartWidget extends StatelessWidget {
   final List<int> weeklyData;
-  final double
-  maximumValueOnYAxis; // This is needed because the background or the maximum value on y axis is represente by this.
-  WeeklyBarChartWidget({this.weeklyData, this.maximumValueOnYAxis});
+  final double maximumValueOnYAxis,spacing; // This is needed because the background or the maximum value on y axis is represente by this.
+  final Color barBackgroundColor, barColor;
+
+  WeeklyBarChartWidget({this.weeklyData, this.maximumValueOnYAxis,this.spacing = 30, this.barBackgroundColor = pastel_blue, this.barColor = dark_blue});
 
 
-  // GREAT WORK WATCHING TILL NOW, JUST LAST PART REMAINING ;)
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 3,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Card(
-          color: Colors.white,
-          elevation: 0,
-          child: Container(
-            margin: EdgeInsets.only(top: 15.0),
-            child: BarChart(
-                mainBarData() // All the code for bar chart return from this function!
-            ),
-          ),
-        ),
-      ),
-    );
+    return BarChart(mainBarData());
   }
 
   BarChartGroupData makeGroupData(int x, double y) {
     return BarChartGroupData(x: x, barRods: [
       BarChartRodData(
         y: y,
-        colors:[pastel_blue], // Color of the bar which is filled
+        colors:[barColor], // Color of the bar which is filled
         width: 15.0,
         backDrawRodData: BackgroundBarChartRodData(
             show: true,
-            colors: [pastel_blue.withOpacity(0.2)],
+            colors: [barBackgroundColor],
             y: maximumValueOnYAxis // background max value.
         ),
       )
@@ -60,7 +45,7 @@ class WeeklyBarChartWidget extends StatelessWidget {
         bottomTitles: SideTitles(
             showTitles: true,
             getTextStyles: ((value) => TextStyle( color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 14)),
-            margin: 12, // space from bars starting position
+            margin: 8, // space from bars starting position
             getTitles: (double value) {
               switch (value.toInt()) {
                 case 0:
@@ -90,7 +75,7 @@ class WeeklyBarChartWidget extends StatelessWidget {
       borderData: FlBorderData(
         show: false,
       ),
-      groupsSpace: 40,
+      groupsSpace: spacing,
       titlesData: _buildAxes(), // To build x and y axis.
       alignment: BarChartAlignment.center, // To put it in center
       barGroups: showingGroups(), // This function would draw the actual bars!

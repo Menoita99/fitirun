@@ -100,7 +100,7 @@ class TrainModel extends WorkoutModel {
 
   TrainModel.fromDoc(DocumentSnapshot doc) : super.fromDoc(doc) {
     difficulty = doc.data()['Difficulty'];
-    //var rep = doc.data()['Train']['Repetitions'];
+    train = (doc['Train'] as List<dynamic>).map((e) => ExerciceModel.fromDoc(e)).toList();
 
     var aux = doc.data()['Train'] as List;
     train = aux.map((e) => ExerciceModel.fromDoc(e as Map)).toList();
@@ -110,7 +110,6 @@ class TrainModel extends WorkoutModel {
   TrainModel.fromMap(Map doc) : super.fromMap(doc){
     difficulty = doc['Difficulty'];
     train = (doc['Train'] as List<dynamic>).map((e) => ExerciceModel.fromDoc(e)).toList();
-
   }
 
   TrainModel.fakeModel() : super.fakeModel() {
