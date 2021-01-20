@@ -55,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       IconButton(
                         icon: Icon(Icons.settings, color: Colors.blueGrey),
                         onPressed: () {
-                            Navigator.push( context, MaterialPageRoute( builder: (context) => SettingsScreen()));
+                            Navigator.push( context, MaterialPageRoute( builder: (context) => SettingsScreen())).then((value) => setState(() {}));
                         },
                       ),
                     ],
@@ -68,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           GestureDetector(
                             onTap: ((){
-                              Navigator.push( context, MaterialPageRoute( builder: (context) => SettingsScreen()));
+                              Navigator.push( context, MaterialPageRoute( builder: (context) => SettingsScreen())).then((value) => setState(() {}));
                               /*
                               for(int i = 0; i < 50; i++) {
                                 DatabaseService().addFood(FoodModel.fakeFood());
