@@ -15,6 +15,7 @@ class FoodModel{
   String image;
   int rank;
   String title;
+  String description;
   int preparationTime; //min
   int numberOfPeople;
   int calories;
@@ -33,6 +34,7 @@ class FoodModel{
     rank = doc.data()['Rank'];
     image = doc.data()['Image url'];
     recipe = (doc.data()['Recipe'] as List<dynamic>).map((e) => e.toString()).toList();
+    description = doc.data()['Description'];
   }
 
   FoodModel.fromMap(Map doc){
@@ -45,7 +47,7 @@ class FoodModel{
     title = doc['Title'];
     protein = doc['Protein'];
     recipe = (doc['Recipe'] as List<dynamic>).map((e) => e.toString()).toList();
-
+    description = doc['Description'];
   }
 
   FoodModel.fakeFood(){
@@ -59,6 +61,7 @@ class FoodModel{
     protein = faker.randomGenerator.integer(100)+1;
     carbohydrates = faker.randomGenerator.integer(300)+1;
     recipe = faker.lorem.sentences(7);
+    description = faker.lorem.sentence();
   }
 
 
@@ -91,7 +94,8 @@ class FoodModel{
       'Calories' : calories,
       'Protein' : protein,
       'Carbohydrates' : carbohydrates,
-      'Recipe' : recipe
+      'Recipe' : recipe,
+      'Description' : description
   };
   }
 
