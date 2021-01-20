@@ -1,21 +1,12 @@
-import 'dart:math';
-import 'package:fitirun/com/fitirun/model/StatisticsModel.dart';
 import 'package:fitirun/com/fitirun/model/armazem.dart';
-import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
-import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fitirun/com/fitirun/resource/size_config.dart';
-import 'package:fitirun/com/fitirun/screen/health_screen/widgets/healthItem.dart';
-import 'package:fitirun/com/fitirun/screen/health_screen/widgets/workoutItem.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
 import 'package:fitirun/com/fitirun/screen/home_screen/widgets/dashboard_screen.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
-import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_sparkline/flutter_sparkline.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);

@@ -13,14 +13,17 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   String name = Warehouse().userModel.name == null ? "" : Warehouse().userModel.name;
-  int age =  Warehouse().userModel.age == null ? 18 : Warehouse().userModel.age;
+  String nameAux = "";
+  int age =  Warehouse().userModel.age == null ? 0 : Warehouse().userModel.age;
   int ageAux = 0;
-
+  int weight = 0;
+  int auxWeight = 0;
+  int height = 0;
+  int auxHeight = 0;
 
 
   @override
   Widget build(BuildContext context) {
-    print(age);
     return Scaffold(
       backgroundColor: Colors.white70,
       appBar: AppBar(
@@ -49,10 +52,57 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget getBody() {
+    print(age);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        Row(
+          children: [
+            Text("Name: ", style: TextStyle(fontSize: 20),),
+            RoundedInputFieldCustomIcon(
+              type: TextInputType.name,
+              icon: Icons.drive_file_rename_outline,
+              hintText: name == "" ? "Enter your name" : name,
+              onChanged: (value) {
+                setState(() {
+                  name = value;
+                  print(name);
+                });
+               },
+            )
+          ],
+        ),
+        Row(
+          children: [
+            Text("Age: ", style: TextStyle(fontSize: 20),),
+            RoundedInputFieldCustomIcon(
+              type: TextInputType.number,
+              icon: Icons.drive_file_rename_outline,
+              hintText: age == 0 ? "Enter your age" : age,
+              onChanged: (value) {
+                setState(() {
+                  ageAux = int.parse(value);
+                });
+              },
+            )
+          ],
+        ),
+        Row(
+          children: [
+            Text("Height: ", style: TextStyle(fontSize: 20),),
+            RoundedInputFieldCustomIcon(
+              type: TextInputType.numberWithOptions(decimal: false),
+              icon: Icons.drive_file_rename_outline,
+              hintText: height == 0 ? "Enter your height" : height,
+              onChanged: (value) {
+                setState(() {
+                  name = value;
+                });
+              },
+            )
+          ],
+        ),
         Row(
           children: [
             Text("Name: ", style: TextStyle(fontSize: 20),),
@@ -63,10 +113,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 setState(() {
                   name = value;
                 });
-               },
+              },
             )
           ],
         ),
+
 
       ],
 
