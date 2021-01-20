@@ -96,8 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                             child: Column(
                               children: [
-                                Text("15000"),
-                                Text("Steps")
+                                Text((user.steps.isNotEmpty ? user.steps.last.toString() : "0") + " Steps"),
                               ],
                             ),
                           ),
@@ -188,14 +187,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         child: Text('$title', style: TextStyle(fontSize: 20),),
       ),
-    );
-  }
-
-  Widget getView() {
-    return Container(
-      height: 600,
-      color:Colors.blue,
-      child: Text(''),
     );
   }
 }
@@ -407,40 +398,7 @@ class _StatisticsViewState extends State<StatisticsView> {//with AutomaticKeepAl
         margin: EdgeInsets.only(top:35),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  width: 0.4 * size.width,
-                  height: 170,
-                  decoration: BoxDecoration(
-                    color: white,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    boxShadow:[BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 3,
-                      blurRadius: 5,
-                      offset: Offset(0, 2), // changes position of shadow
-                    )],
-                  ),
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text('Calories burnt this week',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
-                        ),
-                      ),
-                      Center(child: Container(
-                          height: 100,
-                          child: WeeklyBarChartWidget(weeklyData: [1,5,6,5,9,6,6],maximumValueOnYAxis: 15,
-                          ))),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            topStatisticsWidget(size),
             SizedBox(height: 10,),
             Container(
               width: 0.9 * size.width,
@@ -475,5 +433,71 @@ class _StatisticsViewState extends State<StatisticsView> {//with AutomaticKeepAl
         ),
       ),
     );
+  }
+
+  Widget topStatisticsWidget(Size size) {
+    return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                width: 0.43 * size.width,
+                height: 150,
+                decoration: BoxDecoration(
+                  color: white,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  boxShadow:[BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 3,
+                    blurRadius: 5,
+                    offset: Offset(0, 2), // changes position of shadow
+                  )],
+                ),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text('Workout levels ',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                      ),
+                    ),
+                    Center(child: Container(
+                        height: 100,
+                        child: WeeklyBarChartWidget(weeklyData: [1,5,6,5,9,6,6],maximumValueOnYAxis: 15,spacing: 4,
+                        ))),
+                  ],
+                ),
+              ),
+              Container(
+                width: 0.4 * size.width,
+                height: 150,
+                decoration: BoxDecoration(
+                  color: white,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  boxShadow:[BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 3,
+                    blurRadius: 5,
+                    offset: Offset(0, 2), // changes position of shadow
+                  )],
+                ),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text('Workout levels ',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                      ),
+                    ),
+                    Center(child: Container(
+                        height: 100,
+                        child: WeeklyBarChartWidget(weeklyData: [1,5,6,5,9,6,6],maximumValueOnYAxis: 15,spacing: 4,
+                        ))),
+                  ],
+                ),
+              ),
+            ],
+          );
   }
 }
