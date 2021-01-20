@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
+import 'package:fitirun/com/fitirun/model/runModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 
@@ -13,7 +14,7 @@ class DatabaseService{
   final CollectionReference exerciseCollection = FirebaseFirestore.instance.collection('Exercises');
   final CollectionReference trainCollection = FirebaseFirestore.instance.collection('Trains'); //workouts
   final CollectionReference usersCollection = FirebaseFirestore.instance.collection('Users');
-  //final CollectionReference authDetailsCollection = FirebaseFirestore.instance.collection('AuthDetails');
+  final CollectionReference runModelsCollection = FirebaseFirestore.instance.collection('Runs');
 
 
   //get UserModel
@@ -63,6 +64,15 @@ class DatabaseService{
           .catchError((error) => print("Failed to add Train: $error"));
   }
 
+  //add Train
+  Future<void> addRun(RunModel runModel) {
+    return trainCollection.add(
+        runModel.toJson()
+    )
+        .then((value) => print("Train Added: $value"))
+        .catchError((error) => print("Failed to add Train: $error"));
+  }
+
   //get Food Stream
   Stream<QuerySnapshot> get foods {
     return foodsCollection.snapshots();
@@ -72,22 +82,13 @@ class DatabaseService{
   Stream<QuerySnapshot> get workouts {
     return trainCollection.snapshots();
   }
-  
-  Future<List<FoodModel>> searchFood(String title) async {
-    print("Title: " + title);
-    List<FoodModel> foodList = List();
-    Future f = foodsCollection.snapshots().listen((snapshot)  {
-      for(int i = 0; i< snapshot.docs.length; i++){
-        if(snapshot.docs[i].data()['Title'].toString().contains(title)){
-          print(snapshot.docs[i].data()['Image url'].toString());
-          foodList.add(FoodModel.fromDoc(snapshot.docs[i]));
-        }
-      }
-    }).asFuture();
 
-    print("Food list size: " + foodList.length.toString());
-    return Future.wait([f]).then((_) => foodList );
+  //get Run Stream
+  Stream<QuerySnapshot> get runs {
+    return runModelsCollection.snapshots();
   }
+  
+
 
 
 
