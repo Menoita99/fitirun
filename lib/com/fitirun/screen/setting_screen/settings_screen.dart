@@ -1,8 +1,7 @@
 import 'package:fitirun/com/fitirun/model/armazem.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
 import 'package:fitirun/com/fitirun/util/rounded_button.dart';
-import 'package:fitirun/com/fitirun/util/rounded_input_field.dart';
-import 'package:fitirun/com/fitirun/util/rounded_input_field_costumicon.dart';
+import 'package:fitirun/com/fitirun/util/rounded_input_field_costum_icon.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -25,16 +24,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       backgroundColor: Colors.white70,
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Colors.white,
         elevation: 0,
         title: Text("Settings"),
         leading: FlatButton(
           textColor: Colors.white,
           child: Icon(Icons.arrow_back, color: Colors.blueAccent),
-          onPressed: () {
-            print(name);
-            //Navigator.pop(context);
-            },
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           FlatButton.icon(onPressed: () {
@@ -60,7 +56,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Row(
           children: [
             Text("Name: ", style: TextStyle(fontSize: 20),),
-            RoundedInputFieldCostumIcon(
+            RoundedInputFieldCustomIcon(
               icon: Icons.drive_file_rename_outline,
               hintText: name == "" ? "Enter your name" : name,
               onChanged: (value) {
@@ -71,19 +67,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             )
           ],
         ),
-        RoundedButton(
-          text: "Update your age",
-          color: Colors.blueGrey,
-          press: () => NumberPickerDialog.integer(minValue: 10, maxValue: 100, initialIntegerValue: 50),
-        )
-
 
       ],
 
     );
   }
 
-  
+
 
 
   }

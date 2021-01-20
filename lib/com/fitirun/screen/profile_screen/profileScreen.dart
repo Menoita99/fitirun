@@ -1,11 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fitirun/com/fitirun/model/armazem.dart';
+import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
+import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fitirun/com/fitirun/screen/details_screen/detailsHealthScreen.dart';
 import 'package:fitirun/com/fitirun/screen/details_screen/detailsTrainScreen.dart';
 import 'package:fitirun/com/fitirun/screen/profile_screen/components/BarChart.dart';
 import 'package:fitirun/com/fitirun/screen/setting_screen/settings_screen.dart';
+import 'package:fitirun/com/fitirun/util/services/database.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -18,6 +22,8 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   PageController _controller = PageController(initialPage: 0);
+
+  DatabaseService _databaseService = DatabaseService();
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +53,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.all(20),
                         child: Text("My profile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: IconButton(
-                          icon: Icon(Icons.settings, color: Colors.blueGrey),
-                          onPressed: () {
-                              Navigator.push( context, MaterialPageRoute( builder: (context) => SettingsScreen()));
-                          },
-                        ),
+                      IconButton(
+                        icon: Icon(Icons.settings, color: Colors.blueGrey),
+                        onPressed: () {
+                            Navigator.push( context, MaterialPageRoute( builder: (context) => SettingsScreen()));
+                        },
                       ),
                     ],
 
@@ -64,20 +67,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Column(
                         children: [
-                          Container(
-                            width: 125,
-                            height: 125,
-                            decoration: BoxDecoration(
-                              color: blackText,
-                              borderRadius: BorderRadius.all(Radius.circular(100)),
+                          CircleAvatar(
+                            radius: size.width * 0.16, //change
+                            backgroundColor: Color(0xffe19999),
+                            child: Padding(
+
+                              padding: const EdgeInsets.only(bottom: 10,left: 1.5),
+                              child: Center(child: Icon(FontAwesome5.user_circle,color: white,size: 115,)),
                             ),
-                            child: Icon(FontAwesome5.user),
-                          )
+                          ),
                         ],),
                       Column(
                         children: [
                           Padding(padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                              child: Text(user == null || user.name == null ? 'User' : user.name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),)),
+                              child: Text(user.name == null ? 'User' : user.name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),)),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                             child: Column(
@@ -172,6 +175,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Widget getView() {
+    return Container(
+      height: 600,
+      color:Colors.blue,
+      child: Text(''),
+    );
+  }
 }
 
 
@@ -375,14 +385,49 @@ class _StatisticsViewState extends State<StatisticsView> {//with AutomaticKeepAl
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.only(top:35),
         child: Column(
           children: [
-            Center(
-              child: WeeklyBarChartWidget(weeklyData: [1,5,6,5,9,6,6],maximumValueOnYAxis: 15,),
-            )
+            Container(
+              height: 0.3 * size.height,
+              width: 0.9 * size.width,
+              decoration: BoxDecoration(
+                color: dark_blue,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      height: size.height*0.12,
+                      width: size.width*0.23,
+                      decoration: BoxDecoration(
+                        color: suave_pink,
+                        borderRadius: BorderRadius.only(topRight: Radius.circular(20),bottomLeft: Radius.circular(130)),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      height: size.height*0.12,
+                      width: size.width*0.12,
+                      decoration: BoxDecoration(
+                        color: pastel_brown_orange,
+                        borderRadius: BorderRadius.only(topRight: Radius.circular(130),bottomRight: Radius.circular(130)),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: WeeklyBarChartWidget(weeklyData: [1,5,6,5,9,6,6],maximumValueOnYAxis: 15,),
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),

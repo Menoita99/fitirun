@@ -2,14 +2,14 @@ import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:flutter/material.dart';
 import 'text_field_container.dart';
 
-class RoundedInputFieldCostumIcon extends StatelessWidget {
+class RoundedInputField extends StatelessWidget {
   final String hintText;
   final IconData icon;
   final ValueChanged<String> onChanged;
-  const RoundedInputFieldCostumIcon({
+  const RoundedInputField({
     Key key,
     this.hintText,
-    this.icon,
+    this.icon = Icons.person,
     this.onChanged,
   }) : super(key: key);
 

@@ -1,5 +1,5 @@
-import 'package:fitirun/com/fitirun/model/armazem.dart';
-import 'package:fitirun/com/fitirun/util/services/database.dart';
+import 'dart:async';
+
 import 'package:pedometer/pedometer.dart';
 
 class PedometerUtil{
@@ -14,13 +14,12 @@ class PedometerUtil{
   bool isAvailable = true;
 
   PedometerUtil(){
-    initPlatformState();
-    _registerBackgroundListener();
+    initPlatformState().then((value) => value);
   }
 
-  void initPlatformState() {
-    Pedometer.pedestrianStatusStream.listen(_handlePedestrianStatusChanged) .onError(_handlePedestrianStatusError);
-    Pedometer.stepCountStream.listen(_handleStepCount).onError(_handleStepCountError);
+  Future<void> initPlatformState() async {
+    await Pedometer.pedestrianStatusStream.listen(_handlePedestrianStatusChanged) .onError(_handlePedestrianStatusError);
+    await Pedometer.stepCountStream.listen(_handleStepCount).onError(_handleStepCountError);
   }
 
   void _handleStepCount(StepCount event) {
@@ -56,14 +55,5 @@ class PedometerUtil{
       if(func!=null)
         func(error);
     }
-  }
-
-  void _registerBackgroundListener() {
-    onStepCountListeners[this] = ((step){
-      print("STEP!!! "+step.steps.toString()+" time: "+step.timeStamp.toString());
-      DateTime date = new DateTime.utc(step.timeStamp.year,step.timeStamp.month,step.timeStamp.day);
-      Warehouse().userModel.steps[date] = step.steps;
-      DatabaseService().addOrUpdateUser(Warehouse().userModel);
-    });
   }
 }
