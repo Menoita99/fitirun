@@ -6,6 +6,7 @@ import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/screenTitle.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class DetailsHealthScreen extends StatefulWidget {
@@ -53,6 +54,7 @@ class _DetailsHealthScreenState extends State<DetailsHealthScreen> {
   }
 
   Widget getBody(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Stack(
         children: [
