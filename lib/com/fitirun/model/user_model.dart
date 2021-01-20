@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitirun/com/fitirun/model/StatisticsModel.dart';
+import 'package:fitirun/com/fitirun/model/statisticsModel.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 
@@ -20,7 +20,6 @@ class StepModel{
     steps = doc['steps'];
   }
 
-
   Map<String, dynamic> toJson() {
     return {
       'time' : time,
@@ -29,7 +28,7 @@ class StepModel{
   }
 
   @override
-  bool operator ==(Object other) {
+  bool operator == (Object other) {
     if(other is StepModel) {
       return this.time == other.time;
     }

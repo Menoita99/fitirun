@@ -1,4 +1,4 @@
-import 'package:fitirun/com/fitirun/model/armazem.dart';
+import 'package:fitirun/com/fitirun/model/warehouse.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
 import 'package:fitirun/com/fitirun/util/rounded_input_field_costum_icon.dart';
