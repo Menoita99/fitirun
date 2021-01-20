@@ -101,7 +101,7 @@ class UserModel{
 
     statistics.forEach((element) {
       if(element != null) {
-        workoutAux.add(element.toJson());
+        statisticsAux.add(element.toJson());
       }
     });
 

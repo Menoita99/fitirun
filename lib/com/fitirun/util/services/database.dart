@@ -30,7 +30,6 @@ class DatabaseService{
 
   //add/update user
   Future<void> addOrUpdateUser(UserModel userModel) async {
-    print("Aqui $userModel");
     return usersCollection.doc(userModel.uid).set(
         userModel.toJson(), SetOptions(merge: true),
     ).then((_) => print("User added/updated"));
