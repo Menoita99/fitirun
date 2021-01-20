@@ -5,7 +5,6 @@ import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 
 class DetailsTrainScreen extends StatefulWidget {
@@ -23,7 +22,6 @@ class DetailsTrainScreen extends StatefulWidget {
 class _DetailsTrainScreenState extends State<DetailsTrainScreen> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     UserModel userModel = Warehouse().userModel;
     bool isFav = userModel.favWorkouts.contains(widget.item);
     return Scaffold(

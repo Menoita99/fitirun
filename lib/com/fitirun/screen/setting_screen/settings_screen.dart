@@ -1,5 +1,3 @@
-import 'package:fitirun/com/fitirun/resource/constants.dart';
-import 'package:fitirun/com/fitirun/screen/profile_screen/profileScreen.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
 import 'package:flutter/material.dart';

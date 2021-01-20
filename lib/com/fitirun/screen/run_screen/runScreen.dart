@@ -68,7 +68,9 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
     });
   }
   @override
+
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: getBody(context),
     );
@@ -200,6 +202,7 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Stack(
       children: [
         GoogleMap(
@@ -473,6 +476,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     Size size = MediaQuery.of(context).size;
     return  widget.manager.hasModel() ? getTrainExercisesContainer(context) : SingleChildScrollView(
       child: Column(

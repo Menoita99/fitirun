@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:fitirun/com/fitirun/model/armazem.dart';
-import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:pedometer/pedometer.dart';
 
@@ -17,13 +14,13 @@ class PedometerUtil{
   bool isAvailable = true;
 
   PedometerUtil(){
-    initPlatformState().then((value) => value);
-    _registBackgroundListner();
+    initPlatformState();
+    _registerBackgroundListener();
   }
 
-  Future<void> initPlatformState() async {
-    await Pedometer.pedestrianStatusStream.listen(_handlePedestrianStatusChanged) .onError(_handlePedestrianStatusError);
-    await Pedometer.stepCountStream.listen(_handleStepCount).onError(_handleStepCountError);
+  void initPlatformState() {
+    Pedometer.pedestrianStatusStream.listen(_handlePedestrianStatusChanged) .onError(_handlePedestrianStatusError);
+    Pedometer.stepCountStream.listen(_handleStepCount).onError(_handleStepCountError);
   }
 
   void _handleStepCount(StepCount event) {
@@ -61,7 +58,7 @@ class PedometerUtil{
     }
   }
 
-  void _registBackgroundListner() {
+  void _registerBackgroundListener() {
     onStepCountListeners[this] = ((step){
       print("STEP!!! "+step.steps.toString()+" time: "+step.timeStamp.toString());
       DateTime date = new DateTime.utc(step.timeStamp.year,step.timeStamp.month,step.timeStamp.day);
