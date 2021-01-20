@@ -493,7 +493,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
               child: Text('Speak mother fucker'),
               onPressed: () => speak()),
           buildRuns(),
-          SizedBox(height: 10),
+          SizedBox(height: 100),
         ],
       ),
     );
@@ -519,9 +519,8 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
         return runs.isNotEmpty ? Container(
           height: size.height,
           child: ListView.builder(
-            shrinkWrap: true,
+
             physics: NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
             itemCount: runs.length,
             itemBuilder: (context, index) => Padding(
               padding: const EdgeInsets.all(8.0),
@@ -535,7 +534,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
   }
 
    Widget _makeContainer(RunModel e){
-     Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: (){
         setState(() {
