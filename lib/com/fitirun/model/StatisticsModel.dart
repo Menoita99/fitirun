@@ -39,7 +39,7 @@ class StatisticsModel{
       print(element);
       dataAux.add(element.toJson());});
     return {
-      'model': model.toJson(),
+      'model': model == null ? [] :  model.toJson(),
       'data' : dataAux,
     };
   }
