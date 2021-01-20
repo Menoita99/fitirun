@@ -1,16 +1,21 @@
 import 'dart:math';
+import 'package:fitirun/com/fitirun/model/StatisticsModel.dart';
 import 'package:fitirun/com/fitirun/model/armazem.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
+import 'package:fitirun/com/fitirun/resource/size_config.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/healthItem.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/workoutItem.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
+import 'package:fitirun/com/fitirun/screen/home_screen/widgets/dashboard_screen.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
+import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -24,6 +29,9 @@ class _HomeScreenState extends State<HomeScreen>{
   int currentWeight = 65;
   final AuthService _auth = AuthService();
   UserModel userModel;
+
+
+  /*here*/
 
 
   @override
@@ -40,6 +48,8 @@ class _HomeScreenState extends State<HomeScreen>{
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -69,14 +79,16 @@ class _HomeScreenState extends State<HomeScreen>{
               ))
         ],
       ),
-      body: SingleChildScrollView(child: getBody()),
+      body: SingleChildScrollView(child: DashboardScreen()),
     );
   }
 
+  /*
   Widget getBody() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        //Text
         Padding(
           padding: const EdgeInsets.only(left: 20),
           child: Text(
@@ -88,10 +100,12 @@ class _HomeScreenState extends State<HomeScreen>{
             ),
           ),
         ),
+        //Chart
         Padding(
           padding: const EdgeInsets.only(left: 20),
           child: ChartContainer(fillData()),
         ),
+        //Random buttons
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
           child: Row(
@@ -102,6 +116,7 @@ class _HomeScreenState extends State<HomeScreen>{
             ],
           ),
         ),
+        //Workouts
         Padding(
           padding: const EdgeInsets.only(left: 20),
           child: Text("Popular workouts",
@@ -126,6 +141,7 @@ class _HomeScreenState extends State<HomeScreen>{
               padding: EdgeInsets.only(left: 5),
               scrollDirection: Axis.horizontal,
             )),
+        //recipes
         Padding(
           padding: const EdgeInsets.only(left: 20),
           child: Text("Popular recipes",
@@ -198,8 +214,11 @@ class _HomeScreenState extends State<HomeScreen>{
     }
     return data;
   }
+  */
+
 }
 
+/*
 // ignore: must_be_immutable
 class ChartContainer extends StatefulWidget {
   List<double> data = new List(7);
@@ -233,4 +252,7 @@ class _ChartContainerState extends State<ChartContainer> {
       ),
     );
   }
+
 }
+
+ */

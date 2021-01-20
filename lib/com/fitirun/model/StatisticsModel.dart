@@ -1,5 +1,6 @@
 import 'package:faker/faker.dart';
 import 'package:fitirun/com/fitirun/model/runModel.dart';
+import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 
 class StatisticsModel{
 
@@ -55,6 +56,7 @@ class RunData {
 
   RunData({this.time , this.steps, this.distance, this.speed, this.calories});
   RunData.fakeModel(){
+    Faker f =  Faker();
     RunData(calories: Faker().randomGenerator.decimal() * 100,
     distance: Faker().randomGenerator.decimal() * 1000,
     speed: Faker().randomGenerator.decimal() * 50,

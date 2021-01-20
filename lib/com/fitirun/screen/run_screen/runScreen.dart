@@ -68,9 +68,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
     });
   }
   @override
-
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
       body: getBody(context),
     );
@@ -93,7 +91,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
                 tabs: [
                   Tab(
                       icon: Text(
-                    "Map",
+                    "Manager",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -102,7 +100,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
                   )),
                   Tab(
                     icon: Text(
-                      "Manager",
+                      "Map",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -117,8 +115,8 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            MapScreen(manager),
             ManagerScreen(manager),
+            MapScreen(manager),
           ],
         ),
       ),
@@ -202,7 +200,6 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Stack(
       children: [
         GoogleMap(
@@ -476,7 +473,6 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     Size size = MediaQuery.of(context).size;
     return  widget.manager.hasModel() ? getTrainExercisesContainer(context) : SingleChildScrollView(
       child: Column(
