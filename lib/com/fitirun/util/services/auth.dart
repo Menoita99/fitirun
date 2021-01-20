@@ -43,6 +43,9 @@ class AuthService{
   //sign in with email and password
   Future loginWithEmailAndPassword(String email, String password) async {
     try{
+      print("Dentro do login");
+      print(email);
+      print(password);
       UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User user = result.user;
       return _userFromFirebaseUser(user);

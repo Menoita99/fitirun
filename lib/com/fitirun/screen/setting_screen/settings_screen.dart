@@ -1,4 +1,6 @@
+import 'package:fitirun/com/fitirun/model/armazem.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
+import 'package:fitirun/com/fitirun/util/rounded_input_field.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
 import 'package:flutter/material.dart';
 
@@ -8,14 +10,14 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  String name = Warehouse().userModel.name;
+  String age =  Warehouse().userModel.age.toString();
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFAFAF),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -42,6 +44,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget getBody() {
-    return SizedBox();
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Row(
+          children: [
+            Text("Name", style: TextStyle(fontSize: 20),),
+            RoundedInputField(
+              hintText: name == "" ? "type your name here" : name,
+            )
+          ],
+        )
+
+      ],
+
+    );
   }
 }
