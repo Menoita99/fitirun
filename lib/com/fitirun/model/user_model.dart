@@ -46,7 +46,6 @@ class UserModel{
   List<TrainModel> favWorkouts = List();
   List<FoodModel> favFoods = List();
   List<StepModel> steps = List();
-
   List<StatisticsModel> statistics = List();
 
   UserModel({this.uid, this.email});
@@ -57,12 +56,19 @@ class UserModel{
     age = doc.data()['age'];
     email = doc.data()['email'];
     name = doc.data()['name'];
+
     var auxFoods = doc.data()['fav foods'] as List;
-    auxFoods.forEach((e) => favFoods.add(FoodModel.fromMap(e)));
+    if(auxFoods != null)
+      auxFoods.forEach((e) => favFoods.add(FoodModel.fromMap(e)));
+
     var auxWorkouts = doc.data()['fav workouts'] as List;
-    auxWorkouts.forEach((e) => favWorkouts.add(TrainModel.fromMap(e)));
+    if(auxWorkouts != null)
+      auxWorkouts.forEach((e) => favWorkouts.add(TrainModel.fromMap(e)));
+
     var auxStatistics = doc.data()['statistics'] as List;
-    auxStatistics.forEach((e) => statistics.add(StatisticsModel.fromMap(e)));
+    if(auxStatistics != null)
+      auxStatistics.forEach((e) => statistics.add(StatisticsModel.fromMap(e)));
+
     var auxSteps = doc.data()['steps'] as List;
     if(auxSteps != null)
       auxSteps.forEach((e) => steps.add(StepModel.fromMap(e)));
@@ -84,24 +90,23 @@ class UserModel{
         workoutAux.add(element.toJson());
       }
     });
+
     favFoods.forEach((element) {
       if(element != null){
         foodAux.add(element.toJson())
       ;}});
-    statistics.forEach((element) {statisticsAux.add(element.toJson());});
 
-    /*favWorkouts.forEach((element) {
+    statistics.forEach((element) {
       if(element != null) {
         workoutAux.add(element.toJson());
       }
-    });*/
+    });
 
     steps.forEach((element) {
       if(element != null) {
         stepsAux.add(element.toJson());
       }
     });
-
 
     return {
       'uid' : uid,

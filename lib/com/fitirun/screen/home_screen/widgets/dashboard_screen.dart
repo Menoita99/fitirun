@@ -10,43 +10,12 @@ class DashboardScreen extends StatelessWidget {
       height: SizeConfig.blockSizeVertical * 90,
       child: Column(
         children: [
-          _buildDaysBar(),
           _buildDashboardCards()
         ],
       ),
     );
   }
 
-  Container _buildDaysBar() {
-    return Container(
-      margin: EdgeInsets.only(
-        top: SizeConfig.blockSizeVertical * 2,
-        bottom: SizeConfig.blockSizeVertical * 2,
-      ),
-      width: double.infinity,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            'Today',
-            style: CustomTextStyle.dayTabBarStyleActive,
-          ),
-          Text(
-            'Week',
-            style: CustomTextStyle.dayTabBarStyleInactive,
-          ),
-          Text(
-            'Month',
-            style: CustomTextStyle.dayTabBarStyleInactive,
-          ),
-          Text(
-            'Year',
-            style: CustomTextStyle.dayTabBarStyleInactive,
-          )
-        ],
-      ),
-    );
-  }
 
   Widget _buildDashboardCards() {
     return Expanded(

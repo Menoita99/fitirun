@@ -1,10 +1,8 @@
 import 'package:fitirun/com/fitirun/model/armazem.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
-import 'package:fitirun/com/fitirun/util/rounded_button.dart';
 import 'package:fitirun/com/fitirun/util/rounded_input_field_costum_icon.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:numberpicker/numberpicker.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -117,14 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             )
           ],
         ),
-
-
       ],
-
     );
   }
-
-
-
-
   }
