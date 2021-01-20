@@ -91,7 +91,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
                 tabs: [
                   Tab(
                       icon: Text(
-                    "Manager",
+                    "Map",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -100,7 +100,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
                   )),
                   Tab(
                     icon: Text(
-                      "Map",
+                      "Manager",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -115,8 +115,8 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            ManagerScreen(manager),
             MapScreen(manager),
+            ManagerScreen(manager),
           ],
         ),
       ),
