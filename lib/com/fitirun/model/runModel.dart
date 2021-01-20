@@ -39,11 +39,13 @@ class RunModel{
   }
 
   RunModel.fromMap(Map doc){
-    title = doc['title'];
-    shortDescription = doc['short description'];
-    totalDuration = doc['total duration'];
-    //exercises = (doc['exercises'] as List<dynamic>).map((e) => e.toString()).toList();
-    difficulty = doc['Difficulty'];
+    if(doc != null) {
+      title = doc['title'];
+      shortDescription = doc['short description'];
+      totalDuration = doc['total duration'];
+      //exercises = (doc['exercises'] as List<dynamic>).map((e) => e.toString()).toList();
+      difficulty = doc['Difficulty'];
+    }
   }
 
   RunModel.fromDoc(DocumentSnapshot doc){

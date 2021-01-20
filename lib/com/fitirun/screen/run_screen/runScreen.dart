@@ -6,6 +6,7 @@ import 'package:fitirun/com/fitirun/model/warehouse.dart';
 import 'package:fitirun/com/fitirun/screen/run_screen/runManager.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -466,7 +467,7 @@ class ManagerScreen extends StatefulWidget {
 class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveClientMixin{
   PageController _controller = PageController(initialPage: 0);
   List<RunModel> _availableWorkouts = List();
-
+  FlutterTts tts = FlutterTts();
 
   @override
   void initState(){
@@ -488,6 +489,9 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
             padding: const EdgeInsets.all(10.0),
             child: Text('Choose your workout',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
           ),
+          RaisedButton(
+              child: Text('Speak mother fucker'),
+              onPressed: () => speak()),
           buildRuns(),
           SizedBox(height: 10),
         ],
@@ -605,7 +609,6 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
       ),
     );
   }
-
 
   Widget getTrainExercisesContainer(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -760,8 +763,6 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
     );
   }
 
-
-
   Widget getTrainItem(BuildContext context, ExerciseRunModel exercise, bool bool) {
     Size size = MediaQuery.of(context).size;
     RunManager manager = widget.manager;
@@ -828,8 +829,6 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
       ),
     );
   }
-
-
 
   Future<void> exerciseDescription(ExerciseRunModel exercise) async {
     return showDialog<void>(
@@ -916,6 +915,10 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
         );
       },
     );
+  }
+
+  void speak() async {
+    await tts.speak("Speak mother fucker");
   }
 }
 

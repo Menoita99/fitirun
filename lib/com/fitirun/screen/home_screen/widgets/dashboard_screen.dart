@@ -206,8 +206,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     var now = new DateTime.now();
     switch (s) {
       case 'running':
-          if (user != null && user.steps.length > 0) {
-            for (int i; i < user.steps.length; i++) {
+          if (user != null && user.steps!= null &&  user.steps.length > 0) {
+            for (int i = 0; i < user.steps.length; i++) {
               if (user.steps[i].time.day == now.day)
                 sum += user.steps[i].steps;
               else
