@@ -35,9 +35,8 @@ class _HomeScreenState extends State<HomeScreen>{
     super.initState();
     Warehouse().addListener((userModel) => {
       if(!mounted){
-      setState((){
-        this.userModel = userModel;
-        print(userModel);
+        setState((){
+          this.userModel = userModel;
       })}
     });
   }

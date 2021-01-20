@@ -6,6 +6,7 @@ import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fitirun/com/fitirun/screen/details_screen/detailsHealthScreen.dart';
 import 'package:fitirun/com/fitirun/screen/details_screen/detailsTrainScreen.dart';
+import 'package:fitirun/com/fitirun/screen/setting_screen/settings_screen.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -42,11 +43,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
               padding: const EdgeInsets.only(left: 15.0, top: 8.0),
               child: Column(
                 children: [
-                  Align( alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Text("My profile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Text("My profile", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.settings, color: Colors.blueGrey),
+                        onPressed: () {
+                            Navigator.push( context, MaterialPageRoute( builder: (context) => SettingsScreen()));
+                        },
+                      ),
+                    ],
+
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
