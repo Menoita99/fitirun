@@ -26,7 +26,6 @@ class _DetailsTrainScreenState extends State<DetailsTrainScreen> {
     Size size = MediaQuery.of(context).size;
     UserModel userModel = Warehouse().userModel;
     bool isFav = userModel.favWorkouts.contains(widget.item);
-    print(isFav);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -140,29 +139,6 @@ class _DetailsTrainScreenState extends State<DetailsTrainScreen> {
                                 children: widget.item.train
                                     .map((e) => _ExerciseItem(item: e))
                                     .toList()),
-                            SizedBox(height: 20),
-                            GestureDetector(
-                              onTap: () => print("Workout starting"),
-                              child: Container(
-                                height: 50,
-                                width: size.width - 10,
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  color: pastel_blue,
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
-                                ),
-                                child: Center(
-                                    child: Text(
-                                      "Start Workout",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                          color: Colors.white),
-                                    )),
-                              ),
-                            ),
-                            SizedBox(height: 20),
                           ],
                         ),
                       ),

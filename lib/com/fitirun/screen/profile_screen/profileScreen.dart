@@ -19,19 +19,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: blackText),
-          onPressed: () async {
-            setState(() {
-              TrainModel tmodel = TrainModel.fakeModel();
-              _databaseService.addTrain(tmodel);
-            });
-          },
-        ),
-      ),
       body: getBody(context),
     );
   }
