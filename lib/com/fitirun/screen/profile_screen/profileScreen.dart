@@ -6,9 +6,12 @@ import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fitirun/com/fitirun/screen/details_screen/detailsHealthScreen.dart';
 import 'package:fitirun/com/fitirun/screen/details_screen/detailsTrainScreen.dart';
+import 'package:fitirun/com/fitirun/screen/profile_screen/components/BarChart.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 
 class ProfileScreen extends StatefulWidget {
@@ -56,7 +59,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           CircleAvatar(
                             radius: size.width * 0.16, //change
                             backgroundColor: Color(0xffe19999),
-                            child: Text('RM',style: TextStyle(color: white),),
+                            child: Padding(
+
+                              padding: const EdgeInsets.only(bottom: 10,left: 1.5),
+                              child: Center(child: Icon(FontAwesome5.user_circle,color: white,size: 115,)),
+                            ),
                           ),
                         ],),
                       Column(
@@ -84,39 +91,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
             minChildSize: 0.60,
             maxChildSize: 1,
             builder: (context, controller) {
-              return SingleChildScrollView(
-                controller: controller,
+              return SafeArea(
                 child: Container(
-                  color: Colors.white,
+                  color: white,
                   child: Column(
                     children: [
-                      Container(
-                        height: 1,
-                        width: 75,
-                        margin: EdgeInsets.only(bottom: 10,top: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          color: pastel_dark_grey,
+                    Container(
+                      height: 1,
+                      width: 75,
+                      margin: EdgeInsets.only(bottom: 10,top: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        color: pastel_dark_grey,
+                      ),
+                    ),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          controller: controller,
+                          child: Container(
+                            color: Colors.white,
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                  tabButton('Statistics',0),
+                                  tabButton('Food',1),
+                                  tabButton('Workout',2),
+                                ],),
+                                Container(
+                                  height: size.height,
+                                  child: PageView(
+                                    controller: _controller,
+                                    children: [
+                                      StatisticsView(),
+                                      FavFoodView(),
+                                      FavWorkoutView(),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                        tabButton('Statistics',0),
-                        tabButton('Food',1),
-                        tabButton('Workout',2),
-                      ],),
-                      Container(
-                        height: size.height,
-                        child: PageView(
-                          controller: _controller,
-                          children: [
-                            StatisticsView(),
-                            FavFoodView(),
-                            FavWorkoutView(),
-                          ],
-                        ),
-                      )
                     ],
                   ),
                 ),
@@ -174,7 +192,9 @@ class _FavWorkoutViewState extends State<FavWorkoutView> {
       itemCount: user.favWorkouts.length,
       itemBuilder: (context, index) {
         return GestureDetector(
-          onTap: () => (Navigator.push( context, MaterialPageRoute( builder: (context) => DetailsTrainScreen(item: user.favWorkouts[index],)))),
+          onTap: () => (Navigator.push( context, MaterialPageRoute( builder: (context) => DetailsTrainScreen(item: user.favWorkouts[index],))).then((value) {
+            setState(() {});
+          })),
           child: Container(
             margin: EdgeInsets.only(top:25,left: 15,right: 15),
             height:230,
@@ -390,6 +410,9 @@ class _StatisticsViewState extends State<StatisticsView> {//with AutomaticKeepAl
                         borderRadius: BorderRadius.only(topRight: Radius.circular(130),bottomRight: Radius.circular(130)),
                       ),
                     ),
+                  ),
+                  Center(
+                    child: WeeklyBarChartWidget(weeklyData: [1,5,6,5,9,6,6],maximumValueOnYAxis: 15,),
                   )
                 ],
               ),
