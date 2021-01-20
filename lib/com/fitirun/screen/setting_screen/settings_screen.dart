@@ -1,9 +1,11 @@
 import 'package:fitirun/com/fitirun/model/armazem.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
+import 'package:fitirun/com/fitirun/util/rounded_button.dart';
 import 'package:fitirun/com/fitirun/util/rounded_input_field.dart';
 import 'package:fitirun/com/fitirun/util/rounded_input_field_costumicon.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -13,11 +15,13 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   String name = Warehouse().userModel.name == null ? "" : Warehouse().userModel.name;
   int age =  Warehouse().userModel.age == null ? 18 : Warehouse().userModel.age;
+  int ageAux = 0;
 
 
 
   @override
   Widget build(BuildContext context) {
+    print(age);
     return Scaffold(
       backgroundColor: Colors.white70,
       appBar: AppBar(
@@ -50,6 +54,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget getBody() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Row(
@@ -57,7 +62,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Text("Name: ", style: TextStyle(fontSize: 20),),
             RoundedInputFieldCostumIcon(
               icon: Icons.drive_file_rename_outline,
-              hintText: name == null ? "Enter your name" : name,
+              hintText: name == "" ? "Enter your name" : name,
               onChanged: (value) {
                 setState(() {
                   name = value;
@@ -65,10 +70,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                },
             )
           ],
+        ),
+        RoundedButton(
+          text: "Update your age",
+          color: Colors.blueGrey,
+          press: () => NumberPickerDialog.integer(minValue: 10, maxValue: 100, initialIntegerValue: 50),
         )
+
 
       ],
 
     );
   }
-}
+
+  
+
+
+  }
