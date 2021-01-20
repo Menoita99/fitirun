@@ -13,14 +13,13 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  String name = Warehouse().userModel.name;
-  String age =  Warehouse().userModel.age.toString();
+  String name = Warehouse().userModel.name == null ? "" : Warehouse().userModel.name;
+  int age =  Warehouse().userModel.age == null ? 18 : Warehouse().userModel.age;
 
 
 
   @override
   Widget build(BuildContext context) {
-    print(name);
     return Scaffold(
       backgroundColor: Colors.white70,
       appBar: AppBar(
@@ -30,7 +29,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         leading: FlatButton(
           textColor: Colors.white,
           child: Icon(Icons.arrow_back, color: Colors.blueAccent),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            print(name);
+            //Navigator.pop(context);
+            },
         ),
         actions: [
           FlatButton.icon(onPressed: () {
@@ -58,6 +60,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             RoundedInputFieldCostumIcon(
               icon: Icons.drive_file_rename_outline,
               hintText: name == null ? "Enter your name" : name,
+              onChanged: (value) {
+                setState(() {
+                  name = value;
+                });
+               },
             )
           ],
         )
