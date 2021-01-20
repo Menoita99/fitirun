@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitirun/com/fitirun/model/runModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
+import 'package:fitirun/com/fitirun/model/warehouse.dart';
 import 'package:fitirun/com/fitirun/screen/run_screen/runManager.dart';
+import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:get_it/get_it.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -30,7 +33,8 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      print("Entrei no initState");
       initManagerListeners();
     });
   }
@@ -44,15 +48,17 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
 
 
   void initManagerListeners() {
-    UserModel userModel = Provider.of<UserModel>(context, listen: false);
+    UserModel userModel = Warehouse().userModel;
     manager.restart();
     manager.onTotalTick = ((tick){
-      if (!mounted)
-        setState(() {});
+      //if (!mounted)
+        setState(() {
+        });
     });
 
+
     manager.onExerciseTick = ((tick){
-      if (!mounted)
+      //if (!mounted)
         if(tick <= 3 * 1000) vibrate(200);
     });
 
@@ -61,7 +67,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
     });
 
     manager.onTotalDone = ((){
-      if (!mounted)
+      //if (!mounted)
         if(manager.isWorkoutFinish()) {
           showFinishDialog();
           manager.saveStats(userModel);
@@ -465,17 +471,16 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
   @override
   void initState(){
     super.initState();
-    for(int i = 0; i<6;i++)
-      _availableWorkouts.add(RunModel.fakeModel());
+    /*for(int i = 0; i<6;i++){
+      print("Aqui");
+      DatabaseService().addRun(RunModel.fakeModel());
+    }*/
+      //_availableWorkouts.add(RunModel.fakeModel());
   }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    super.build(context);
     return  widget.manager.hasModel() ? getTrainExercisesContainer(context) : SingleChildScrollView(
       child: Column(
         children: [
@@ -483,84 +488,120 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
             padding: const EdgeInsets.all(10.0),
             child: Text('Choose your workout',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
           ),
-          Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: _availableWorkouts.map((e) =>
-                  GestureDetector(
-                    onTap: (){
-                      setState(() {
-                        widget.manager.model = e;
-                      });
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(top:10),
-                      child: Container(
-                        width: size.width*0.9,
-                        height:  e.title.length*5 < size.width*0.8 ? 130 : 155,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 1,
-                                blurRadius: 1,
-                                offset: Offset(0, 1), // changes position of shadow
-                              )
-                            ]
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(width: 5),
-                            Container(
-                                width: 5,
-                                height:  e.title.length*5 < size.width*0.8 ? 100 : 130,
-                                decoration: BoxDecoration(
-                                    color: getDifficultyColor(e.difficulty),
-                                    borderRadius: BorderRadius.all(Radius.circular(20))
-                                )
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width:size.width*0.8,
-                                    height: e.title.length*5 < size.width*0.8 ? 25 : 50,
-                                    child: Text(e.title,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                                  ),
-                                  Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Icon(FontAwesome5.clock,size: 16,color: Colors.grey[500],),
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 2),
-                                          child: Text(' '+e.getFormatedDuration(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16,color: Colors.grey[500]),),
-                                        )
-                                      ]),
-                                  SizedBox(height: 5),
-                                  Container(
-                                    width:size.width*0.8,
-                                    height: 55,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(child: Text(e.shortDescription,style: TextStyle(fontWeight: FontWeight.normal,fontSize: 14),)),
-                                      ],
-                                    )),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-              ).toList()),
+          buildRuns(),
           SizedBox(height: 10),
         ],
+      ),
+    );
+  }
+
+  Widget buildRuns(){
+    Size size = MediaQuery.of(context).size;
+    return StreamBuilder<QuerySnapshot>(
+      stream: DatabaseService().runs,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+        if (snapshot.hasError) {
+          return Text('Something went wrong');
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: Text("Loading..."));
+        }
+        List<RunModel> runs = List();
+        for(int i = 0; i<snapshot.data.docs.length; i++){
+          RunModel run = RunModel.fromDoc(snapshot.data.docs[i]);
+          runs.add(run);
+        }
+
+        return runs.isNotEmpty ? Container(
+          height: size.height,
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemCount: runs.length,
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _makeContainer(runs[index]),
+            ),
+          ),
+        ) : Center(child: Text("No runs available"),);
+      },
+
+    );
+  }
+
+   Widget _makeContainer(RunModel e){
+     Size size = MediaQuery.of(context).size;
+    return GestureDetector(
+      onTap: (){
+        setState(() {
+          widget.manager.model = e;
+        });
+      },
+      child: Padding(
+        padding: EdgeInsets.only(top:10),
+        child: Container(
+          width: size.width*0.9,
+          height:  e.title.length*5 < size.width*0.8 ? 130 : 155,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: Offset(0, 1), // changes position of shadow
+                )
+              ]
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(width: 5),
+              Container(
+                  width: 5,
+                  height:  e.title.length*5 < size.width*0.8 ? 100 : 130,
+                  decoration: BoxDecoration(
+                      color: getDifficultyColor(e.difficulty),
+                      borderRadius: BorderRadius.all(Radius.circular(20))
+                  )
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width:size.width*0.8,
+                      height: e.title.length*5 < size.width*0.8 ? 25 : 50,
+                      child: Text(e.title,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                    ),
+                    Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(FontAwesome5.clock,size: 16,color: Colors.grey[500],),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: Text(' '+e.getFormatedDuration(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16,color: Colors.grey[500]),),
+                          )
+                        ]),
+                    SizedBox(height: 5),
+                    Container(
+                        width:size.width*0.8,
+                        height: 55,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(child: Text(e.shortDescription,style: TextStyle(fontWeight: FontWeight.normal,fontSize: 14),)),
+                          ],
+                        )),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

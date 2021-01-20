@@ -35,8 +35,9 @@ class CustomTimer{
         stop();
       }
 
-      if(onTick!= null)
+      if(onTick!= null) {
         onTick(currentTick);
+      }
     });
   }
 
