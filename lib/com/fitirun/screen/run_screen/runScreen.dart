@@ -24,8 +24,7 @@ class RunScreen extends StatefulWidget {
 
 class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixin {
 
-  static RunManager manager = GetIt.I<RunManager>();
-  MapScreen map = MapScreen(manager);
+  RunManager manager = GetIt.I<RunManager>();
 
   @override
   void initState() {
@@ -186,7 +185,7 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
   void initState(){
     super.initState();
     askForPermission();
-   // SchedulerBinding.instance.addPostFrameCallback((_) => initLocationListener());
+    SchedulerBinding.instance.addPostFrameCallback((_) => initLocationListener());
   }
 
 

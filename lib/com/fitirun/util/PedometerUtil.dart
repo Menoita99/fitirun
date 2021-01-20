@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:fitirun/com/fitirun/model/armazem.dart';
+import 'package:fitirun/com/fitirun/model/user_model.dart';
+import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:pedometer/pedometer.dart';
 
 class PedometerUtil{
@@ -15,6 +18,7 @@ class PedometerUtil{
 
   PedometerUtil(){
     initPlatformState().then((value) => value);
+    _registBackgroundListner();
   }
 
   Future<void> initPlatformState() async {
@@ -55,5 +59,14 @@ class PedometerUtil{
       if(func!=null)
         func(error);
     }
+  }
+
+  void _registBackgroundListner() {
+    onStepCountListeners[this] = ((step){
+      print("STEP!!! "+step.steps.toString()+" time: "+step.timeStamp.toString());
+      DateTime date = new DateTime.utc(step.timeStamp.year,step.timeStamp.month,step.timeStamp.day);
+      Warehouse().userModel.steps[date] = step.steps;
+      DatabaseService().addOrUpdateUser(Warehouse().userModel);
+    });
   }
 }
