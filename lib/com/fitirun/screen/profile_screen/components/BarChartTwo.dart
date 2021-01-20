@@ -25,7 +25,7 @@ class BarChartTwoState extends State<BarChartTwo> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 400,
+      height: 200,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18.0),
         color: const Color(0xff2c4260),
