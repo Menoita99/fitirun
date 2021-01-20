@@ -137,10 +137,12 @@ class _HealthScreenState extends State<HealthScreen> {
                 Expanded(
                     child: Container(
                       height: 35,
-                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                       child: TextField(
                         onChanged: (value) => {
-                          print(value)
+                          setState((){
+                            search = value;
+                          })
                         },
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(5.0),
@@ -163,10 +165,6 @@ class _HealthScreenState extends State<HealthScreen> {
                             fillColor: Colors.white.withOpacity(0.88)),
                       ),
                     )),
-                IconButton(
-                  icon: Icon(Icons.filter_list),
-                  onPressed: () {  },
-                ),
               ],
             ),
           ],
@@ -182,26 +180,31 @@ class _HealthScreenState extends State<HealthScreen> {
         if (snapshot.hasError) {
           return Text('Something went wrong');
         }
-
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading");
+          return Center(child: Text("Loading..."));
+        }
+        List<FoodModel> filteredFoods = List();
+        for(int i = 0; i<snapshot.data.docs.length; i++){
+          FoodModel food = FoodModel.fromDoc(snapshot.data.docs[i]);
+          if(food.title.contains(search))
+            filteredFoods.add(food);
         }
 
-        return GridView.builder(
-          itemCount: snapshot.data.docs.length,
+        return filteredFoods.isNotEmpty ? GridView.builder(
+          itemCount: filteredFoods.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: 20,
               crossAxisSpacing: 0,
               childAspectRatio: 0.85),
           itemBuilder: (context, index) => HealthItem(
-              food: FoodModel.fromDoc(snapshot.data.docs[index]),
+              food: filteredFoods[index],
               onPress: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetailsHealthScreen(item: FoodModel.fromDoc(snapshot.data.docs[index])),
+                    builder: (context) => DetailsHealthScreen(item: filteredFoods[index]),
                   ))),
-        );
+        ): Center(child: Text("No foods found"),);
       },
     );
   }
@@ -214,23 +217,29 @@ class _HealthScreenState extends State<HealthScreen> {
           return Text('Something went wrong');
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading");
+          return Center(child: Text("Loading..."));
         }
-        return GridView.builder(
-          itemCount: snapshot.data.docs.length,
+        List<TrainModel> filteredWorkouts = List();
+        for(int i = 0; i<snapshot.data.docs.length; i++){
+          TrainModel workout = TrainModel.fromDoc(snapshot.data.docs[i]);
+          if(workout.title.contains(search))
+            filteredWorkouts.add(workout);
+        }
+        return filteredWorkouts.isNotEmpty ? GridView.builder(
+          itemCount: filteredWorkouts.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: 20,
               crossAxisSpacing: 0,
               childAspectRatio: 0.85),
           itemBuilder: (context, index) => WorkoutItem(
-              workout: TrainModel.fromDoc(snapshot.data.docs[index]),
+              workout: filteredWorkouts[index],
               onPress: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetailsTrainScreen(item: TrainModel.fromDoc(snapshot.data.docs[index])),
+                    builder: (context) => DetailsTrainScreen(item: filteredWorkouts[index]),
                   ))),
-        );
+        ) : Center(child: Text("No workouts found"),);
       },
     );
   }
