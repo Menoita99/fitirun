@@ -47,7 +47,7 @@ class RunManager{
   WorkoutData workOutKey;
 
   void start(){
-
+    print("Entrei no start");
     if(model == null || model.exercises.isEmpty) throw("Workout null or workout exercises are empty");
     isActive = true;
 

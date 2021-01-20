@@ -40,18 +40,19 @@ class RunModel{
 
   RunModel.fromMap(Map doc){
     title = doc['title'];
-    shortDescription = doc['shortDescription'];
-    totalDuration = doc['totalDuration'];
+    shortDescription = doc['short description'];
+    totalDuration = doc['total duration'];
     //exercises = (doc['exercises'] as List<dynamic>).map((e) => e.toString()).toList();
-    difficulty = doc['difficulty'];
+    difficulty = doc['Difficulty'];
   }
 
   RunModel.fromDoc(DocumentSnapshot doc){
     title = doc['title'];
-    shortDescription = doc.data()['shortDescription'];
-    totalDuration = doc.data()['totalDuration'];
-    //exercises = (doc.data()['exercises'] as List<dynamic>).map((e) => e.toString()).toList();
-    difficulty = doc.data()['difficulty'];
+    shortDescription = doc.data()['short description'];
+    totalDuration = doc.data()['total duration'];
+    exercises = (doc.data()['exercises'] as List<dynamic>).map((e) => ExerciseRunModel.fromMap(e)).toList();
+
+    difficulty = doc.data()['Difficulty'];
   }
 
 
@@ -83,6 +84,12 @@ class ExerciseRunModel{
     duration = faker.randomGenerator.integer(200) + 30;
     title = faker.lorem.words(4).join(" ").capitalize();
     description = faker.lorem.sentences(faker.randomGenerator.integer(5) + 1).join(".\n");
+  }
+
+  ExerciseRunModel.fromMap(Map doc){
+    duration = int.parse(doc['duration']);
+    title = doc['title'];
+    description = doc['description'];
   }
 
   String getFormatedDuration(){

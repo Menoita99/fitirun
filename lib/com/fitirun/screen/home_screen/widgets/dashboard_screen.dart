@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
@@ -24,6 +23,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final int displayedItems = 10; //Items displayed on popular workouts and foods
 
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Warehouse().listeners.add((userModel) => setState((){}));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,12 +43,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-
-
   Widget _buildDashboardCards() {
-
     UserModel user = Warehouse().userModel;
-
     num runtrg = 2500;//get goals from user
     num stptrg = 4000;//get goals from user
     num runach = getMetric(user, 'running');
@@ -55,30 +58,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
         ),
-        child: Column(
-          children: [
-            HeadingWidget(text1: 'ACTIVITY', text2: 'Show All',),
-            _buildCard(
-                color1: CustomColors.kLightPinkColor,
-                color2: CustomColors.kCyanColor,
-                color3: CustomColors.kYellowColor,
-                color4: CustomColors.kPurpleColor,
-                metricAchieved: runach.toString(),
-                metricTarget: runtrg.toString(),
-                value: runach/runtrg,
-                iconPath: 'assets/icons/running.png',
-                metricType: 'Running',),
-            _buildCard(
-                color1: CustomColors.kCyanColor,
-                color2: CustomColors.kYellowColor,
-                color3: CustomColors.kPurpleColor,
-                color4: CustomColors.kLightPinkColor,
-                metricAchieved: stpach.toString(),
-                metricTarget: stptrg.toString(),
-                value: stpach/stptrg,
-                iconPath: 'assets/icons/footprints.png',
-                metricType: 'Steps',),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              HeadingWidget(text1: 'ACTIVITY', text2: 'Show All',),
+              _buildCard(
+                  color1: CustomColors.kLightPinkColor,
+                  color2: CustomColors.kCyanColor,
+                  color3: CustomColors.kYellowColor,
+                  color4: CustomColors.kPurpleColor,
+                  metricAchieved: runach.toString(),
+                  metricTarget: runtrg.toString(),
+                  value: runach/runtrg,
+                  iconPath: 'assets/icons/running.png',
+                  metricType: 'Running',),
+              _buildCard(
+                  color1: CustomColors.kCyanColor,
+                  color2: CustomColors.kYellowColor,
+                  color3: CustomColors.kPurpleColor,
+                  color4: CustomColors.kLightPinkColor,
+                  metricAchieved: stpach.toString(),
+                  metricTarget: stptrg.toString(),
+                  value: stpach/stptrg,
+                  iconPath: 'assets/icons/footprints.png',
+                  metricType: 'Steps',),
+              HeadingWidget(text1: 'Popular Workouts', text2: '',),
+              getWorkoutItems(),
+              HeadingWidget(text1: 'Popular Foods', text2: '',),
+              getFoodItems(),
+            ],
+
+          ),
         ),
       ),
     );
@@ -114,11 +124,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           TrainModel workout = TrainModel.fromDoc(snapshot.data.docs[i]);
             allWorkouts.add(workout);
         }
-        for(int i = 0; i< displayedItems; i++){
-          int r = Random().nextInt(allWorkouts.length);
-          featuredWorkouts.add(allWorkouts[r]);
-          allWorkouts.removeAt(r);
-        }
+        if(allWorkouts.length > 0){
+          for(int i = 0; i< displayedItems; i++){
+            int r = Random().nextInt(allWorkouts.length);
+            featuredWorkouts.add(allWorkouts[r]);
+            allWorkouts.removeAt(r);
+        }}
 
         return featuredWorkouts.isNotEmpty ? Container(
           height: 200,
@@ -142,10 +153,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget buildPopularFoods(){
+  Widget buildPopularFoods() {
     return StreamBuilder<QuerySnapshot>(
       stream: DatabaseService().foods,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Text('Something went wrong');
         }
@@ -154,55 +165,60 @@ class _DashboardScreenState extends State<DashboardScreen> {
         }
         List<FoodModel> allFoods = List();
         List<FoodModel> featuredFoods = List();
-        for(int i = 0; i<snapshot.data.docs.length; i++){
+        for (int i = 0; i < snapshot.data.docs.length; i++) {
           FoodModel food = FoodModel.fromDoc(snapshot.data.docs[i]);
           allFoods.add(food);
         }
-        for(int i = 0; i< displayedItems; i++){
+        if(allFoods.length > 0){
+        for (int i = 0; i < displayedItems; i++) {
           int r = Random().nextInt(allFoods.length);
           featuredFoods.add(allFoods[r]);
           allFoods.removeAt(r);
-        }
+        }}
 
         return featuredFoods.isNotEmpty ? Container(
           height: 200,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: featuredFoods.length,
-            itemBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: HealthItem(
-                  food: featuredFoods[index],
-                  onPress: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailsHealthScreen(item: featuredFoods[index]),
-                      ))),
-            ),
+            itemBuilder: (context, index) =>
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: HealthItem(
+                      food: featuredFoods[index],
+                      onPress: () =>
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailsHealthScreen(
+                                        item: featuredFoods[index]),
+                              ))),
+                ),
           ),
-        ) : Center(child: Text("No popular workouts"),);
+        ) : Center(child: Text("No popular foods"),);
       },
 
     );
-
+  }
   num getMetric(UserModel user, String s) {
     int sum = 0;
     var now = new DateTime.now();
     switch (s) {
       case 'running':
-        if (user.steps.length > 0) {
-          for (int i; i < user.steps.length; i++) {
-            if (user.steps[i].time.day == now.day)
-              sum += user.steps[i].steps;
-            else
-              break;
-          }
-          return sum;
-        } else
-          return 1000;
+          if (user != null && user.steps.length > 0) {
+            for (int i; i < user.steps.length; i++) {
+              if (user.steps[i].time.day == now.day)
+                sum += user.steps[i].steps;
+              else
+                break;
+            }
+            return sum;
+          } else
+            return 1000;
         break;
       case 'steps':
-        if (user.statistics.length > 0) {
+        if (user != null && user.statistics.length > 0) {
           // for(int i; i < user.statistics.length; i++) {
           //   if (user.statistics[i].time.day==now.day)
           //     sum+=user.statistics[i];

@@ -14,7 +14,7 @@ class DatabaseService{
   final CollectionReference exerciseCollection = FirebaseFirestore.instance.collection('Exercises');
   final CollectionReference trainCollection = FirebaseFirestore.instance.collection('Trains'); //workouts
   final CollectionReference usersCollection = FirebaseFirestore.instance.collection('Users');
-  final CollectionReference runModelsCollection = FirebaseFirestore.instance.collection('Runs');
+  final CollectionReference runsCollection = FirebaseFirestore.instance.collection('Runs');
 
 
   //get UserModel
@@ -65,11 +65,11 @@ class DatabaseService{
 
   //add Train
   Future<void> addRun(RunModel runModel) {
-    return trainCollection.add(
+    return runsCollection.add(
         runModel.toJson()
     )
-        .then((value) => print("Train Added: $value"))
-        .catchError((error) => print("Failed to add Train: $error"));
+        .then((value) => print("Run Added: $value"))
+        .catchError((error) => print("Failed to add Run: $error"));
   }
 
   //get Food Stream
@@ -84,7 +84,7 @@ class DatabaseService{
 
   //get Run Stream
   Stream<QuerySnapshot> get runs {
-    return runModelsCollection.snapshots();
+    return runsCollection.snapshots();
   }
   
 
