@@ -282,7 +282,6 @@ class _FavFoodViewState extends State<FavFoodView> {
   Widget build(BuildContext context) {
    Size size = MediaQuery.of(context).size;
    UserModel user = Warehouse().userModel;
-   print(user.favFoods.length);
    return user.favFoods.isNotEmpty ?ListView.builder(
      itemCount: user.favFoods.length,
      itemBuilder: (context, index) {
@@ -375,13 +374,41 @@ class _StatisticsViewState extends State<StatisticsView> {//with AutomaticKeepAl
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    UserModel user = Warehouse().userModel;
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.only(top:35),
         child: Column(
           children: [
-            Center(
-              child: WeeklyBarChartWidget(weeklyData: [1,5,6,5,9,6,6],maximumValueOnYAxis: 15,),
+            Container(
+              width: 0.9 * size.width,
+              height: 150,
+              decoration: BoxDecoration(
+                color: white,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                boxShadow:[BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 3,
+                  blurRadius: 5,
+                  offset: Offset(0, 2), // changes position of shadow
+                )],
+              ),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text('Calories burnt this week',style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                    ),
+                  ),
+                  Center(child: Container(
+                      height: 100,
+                      child: WeeklyBarChartWidget(weeklyData: [1,5,6,5,9,6,6],maximumValueOnYAxis: 15,
+                      ))),
+                ],
+              ),
             )
           ],
         ),
