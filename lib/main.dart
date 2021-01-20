@@ -16,6 +16,7 @@ import 'com/fitirun/util/PedometerUtil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   GetIt.I.registerSingleton<PedometerUtil>(PedometerUtil());
   GetIt.I.registerSingleton<RunManager>(RunManager());
 

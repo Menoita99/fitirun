@@ -1,3 +1,5 @@
+import 'package:fitirun/com/fitirun/screen/login_screen/components/or_divider.dart';
+import 'package:fitirun/com/fitirun/screen/login_screen/components/social_icon.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'background.dart';
@@ -74,6 +76,24 @@ class _BodyState extends State<Body> {
               press: () {
                 Navigator.popAndPushNamed(context, '/signup');
               },
+            ),
+            OrDivider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SocalIcon(
+                  iconSrc: "assets/icons/facebook.png",
+                  press: () {},
+                ),
+                SocalIcon(
+                  iconSrc: "assets/icons/twitter.png",
+                  press: () {},
+                ),
+                SocalIcon(
+                  iconSrc: "assets/icons/google-plus.png",
+                  press: () {},
+                ),
+              ],
             ),
           ],
         ),

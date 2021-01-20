@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:fitirun/com/fitirun/model/armazem.dart';
+import 'package:fitirun/com/fitirun/model/warehouse.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:pedometer/pedometer.dart';

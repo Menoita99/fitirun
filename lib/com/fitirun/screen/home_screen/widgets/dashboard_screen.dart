@@ -11,6 +11,8 @@ import 'package:fitirun/com/fitirun/screen/details_screen/detailsTrainScreen.dar
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/healthItem.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/workoutItem.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
+import 'package:fitirun/com/fitirun/model/user_model.dart';
+import 'package:fitirun/com/fitirun/model/warehouse.dart';
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -37,6 +39,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
 
   Widget _buildDashboardCards() {
+
+    UserModel user = Warehouse().userModel;
+
+    num runtrg = 2500;//get goals from user
+    num stptrg = 4000;//get goals from user
+    num runach = getMetric(user, 'running');
+    num stpach = getMetric(user, 'steps');
+
     return Expanded(
       child: Container(
         width: double.infinity,
@@ -45,36 +55,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              HeadingWidget(text1: 'ACTIVITY', text2: 'Show All'),
-              _buildCard(
-                  color1: CustomColors.kLightPinkColor,
-                  color2: CustomColors.kCyanColor,
-                  color3: CustomColors.kYellowColor,
-                  color4: CustomColors.kPurpleColor,
-                  value: 0.6,
-                  iconPath: 'assets/icons/running.png',
-                  metricType: 'Running',
-                  metricAchieved: '2500',
-                  metricTarget: '4000'),
-              _buildCard(
-                  color1: CustomColors.kCyanColor,
-                  color2: CustomColors.kYellowColor,
-                  color3: CustomColors.kPurpleColor,
-                  color4: CustomColors.kLightPinkColor,
-                  value: 0.8,
-                  iconPath: 'assets/icons/footprints.png',
-                  metricType: 'Steps',
-                  metricAchieved: '3500',
-                  metricTarget: '4500'),
-              HeadingWidget(text1: 'Popular Workouts', text2: ''),
-              getWorkoutItems(),
-              HeadingWidget(text1: 'Popular Foods', text2: ''),
-              getFoodItems(),
-            ],
-          ),
+        child: Column(
+          children: [
+            HeadingWidget(text1: 'ACTIVITY', text2: 'Show All',),
+            _buildCard(
+                color1: CustomColors.kLightPinkColor,
+                color2: CustomColors.kCyanColor,
+                color3: CustomColors.kYellowColor,
+                color4: CustomColors.kPurpleColor,
+                metricAchieved: runach.toString(),
+                metricTarget: runtrg.toString(),
+                value: runach/runtrg,
+                iconPath: 'assets/icons/running.png',
+                metricType: 'Running',),
+            _buildCard(
+                color1: CustomColors.kCyanColor,
+                color2: CustomColors.kYellowColor,
+                color3: CustomColors.kPurpleColor,
+                color4: CustomColors.kLightPinkColor,
+                metricAchieved: stpach.toString(),
+                metricTarget: stptrg.toString(),
+                value: stpach/stptrg,
+                iconPath: 'assets/icons/footprints.png',
+                metricType: 'Steps',),
+          ],
         ),
       ),
     );
@@ -180,6 +184,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
       },
 
     );
+
+  num getMetric(UserModel user, String s) {
+    int sum = 0;
+    var now = new DateTime.now();
+    switch (s) {
+      case 'running':
+        if (user.steps.length > 0) {
+          for (int i; i < user.steps.length; i++) {
+            if (user.steps[i].time.day == now.day)
+              sum += user.steps[i].steps;
+            else
+              break;
+          }
+          return sum;
+        } else
+          return 1000;
+        break;
+      case 'steps':
+        if (user.statistics.length > 0) {
+          // for(int i; i < user.statistics.length; i++) {
+          //   if (user.statistics[i].time.day==now.day)
+          //     sum+=user.statistics[i];
+          //   else
+          //     break;
+          // }
+          return sum;
+        } else
+          return 1000;
+        break;
+    }
+
   }
 
   Container _buildCard(
@@ -254,7 +289,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: Row(
                 children: [
                   Text(
-                    metricTarget,
+                    metricTarget.toString(),
                     style: CustomTextStyle.metricTextStyle,
                   ),
                   Text(

@@ -46,12 +46,13 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
     UserModel userModel = Provider.of<UserModel>(context, listen: false);
     manager.restart();
     manager.onTotalTick = ((tick){
-      if (!mounted) return;
+      if (!mounted)
         setState(() {});
     });
 
     manager.onExerciseTick = ((tick){
-      if(tick <= 3 * 1000) vibrate(200);
+      if (!mounted)
+        if(tick <= 3 * 1000) vibrate(200);
     });
 
     manager.onExerciseDone = ((exerciseDone) {
@@ -59,10 +60,11 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
     });
 
     manager.onTotalDone = ((){
-      if(manager.isWorkoutFinish()) {
-        showFinishDialog();
-        manager.saveStats(userModel);
-        manager.restart();
+      if (!mounted)
+        if(manager.isWorkoutFinish()) {
+          showFinishDialog();
+          manager.saveStats(userModel);
+          manager.restart();
       }else
         print("O workout não foi terminado");
     });
@@ -191,8 +193,8 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
 
   @override
   void dispose() {
-    if (_locationSubscription != null)
-      _locationSubscription.cancel();
+  //  if (_locationSubscription != null)
+  //    _locationSubscription.cancel();
     super.dispose();
   }
 
