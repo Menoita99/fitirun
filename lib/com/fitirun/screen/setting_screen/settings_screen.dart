@@ -23,9 +23,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.grey,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black12,
         elevation: 0,
         title: Text("Settings"),
         leading: FlatButton(
@@ -46,11 +46,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
     ),
     body: getBody(),
+      persistentFooterButtons: [
+        TextButton.icon(onPressed: (){
+          print(ageAux);
+          print(nameAux);
+          print(auxHeight);
+          print(auxWeight);
+
+        }, icon: Icon(Icons.save_alt_sharp, color: Colors.black,), label: Text("Save and continue", style: TextStyle(fontSize: 20, color: Colors.black),))
+      ],
     );
   }
 
   Widget getBody() {
-    print(age);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -64,8 +72,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               hintText: name == "" ? "Enter your name" : name,
               onChanged: (value) {
                 setState(() {
-                  name = value;
-                  print(name);
+                  nameAux = value;
                 });
                },
             )
@@ -77,7 +84,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             RoundedInputFieldCustomIcon(
               type: TextInputType.number,
               icon: Icons.drive_file_rename_outline,
-              hintText: age == 0 ? "Enter your age" : age,
+              hintText: age == 0 ? "Enter your age" : age.toString(),
               onChanged: (value) {
                 setState(() {
                   ageAux = int.parse(value);
@@ -95,7 +102,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               hintText: height == 0 ? "Enter your height" : height,
               onChanged: (value) {
                 setState(() {
-                  name = value;
+                  auxHeight = int.parse(value);
                 });
               },
             )
@@ -103,13 +110,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         Row(
           children: [
-            Text("Name: ", style: TextStyle(fontSize: 20),),
+            Text("Weight: ", style: TextStyle(fontSize: 20),),
             RoundedInputFieldCustomIcon(
+              type: TextInputType.numberWithOptions(decimal: false),
               icon: Icons.drive_file_rename_outline,
-              hintText: name == "" ? "Enter your name" : name,
+              hintText: weight == 0 ? "Enter your weight" : weight,
               onChanged: (value) {
                 setState(() {
-                  name = value;
+                  auxWeight = int.parse(value);
                 });
               },
             )
