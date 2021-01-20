@@ -254,16 +254,23 @@ class FavFoodView extends StatefulWidget {
 
 class _FavFoodViewState extends State<FavFoodView> {
 
+
+
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+   Size size = MediaQuery.of(context).size;
    UserModel user = Warehouse().userModel;
-   print(user.toJson());
+   print(user.favFoods.length);
    return user.favFoods.isNotEmpty ?ListView.builder(
      itemCount: user.favFoods.length,
      itemBuilder: (context, index) {
        return GestureDetector(
-         onTap: () => (Navigator.push( context, MaterialPageRoute( builder: (context) => DetailsHealthScreen(item: user.favFoods[index],)))),
+         onTap: () => (
+             Navigator.push( context, MaterialPageRoute( builder: (context) => DetailsHealthScreen(item: user.favFoods[index],))).then((value) {
+              setState(() {});
+             })
+         ),
          child: Container(
            margin: EdgeInsets.only(top:25,left: 15,right: 15),
            height:230,
@@ -349,43 +356,46 @@ class _StatisticsViewState extends State<StatisticsView> {//with AutomaticKeepAl
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-            height: 0.3 * size.height,
-            width: 0.9 * size.width,
-            decoration: BoxDecoration(
-              color: dark_blue,
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-            ),
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    height: size.height*0.12,
-                    width: size.width*0.23,
-                    decoration: BoxDecoration(
-                      color: suave_pink,
-                      borderRadius: BorderRadius.only(topRight: Radius.circular(20),bottomLeft: Radius.circular(130)),
+      child: Container(
+        margin: EdgeInsets.only(top:35),
+        child: Column(
+          children: [
+            Container(
+              height: 0.3 * size.height,
+              width: 0.9 * size.width,
+              decoration: BoxDecoration(
+                color: dark_blue,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      height: size.height*0.12,
+                      width: size.width*0.23,
+                      decoration: BoxDecoration(
+                        color: suave_pink,
+                        borderRadius: BorderRadius.only(topRight: Radius.circular(20),bottomLeft: Radius.circular(130)),
+                      ),
                     ),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    height: size.height*0.12,
-                    width: size.width*0.12,
-                    decoration: BoxDecoration(
-                      color: pastel_brown_orange,
-                      borderRadius: BorderRadius.only(topRight: Radius.circular(130),bottomRight: Radius.circular(130)),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      height: size.height*0.12,
+                      width: size.width*0.12,
+                      decoration: BoxDecoration(
+                        color: pastel_brown_orange,
+                        borderRadius: BorderRadius.only(topRight: Radius.circular(130),bottomRight: Radius.circular(130)),
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
