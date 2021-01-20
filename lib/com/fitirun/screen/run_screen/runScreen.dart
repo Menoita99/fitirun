@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitirun/com/fitirun/model/runModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
@@ -30,6 +31,22 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
 
   RunManager manager = GetIt.I<RunManager>();
 
+  List<String> motivationalSpeak = [
+    'You can do it.',
+    'lets go',
+    'you got this',
+    'never give up',
+    'run mother fucker',
+    'This nuts'
+  ];
+
+  FlutterTts tts = FlutterTts();
+  Future speak(String text) async {
+    await tts.setSpeechRate(1);
+    await tts.setPitch(1);
+    await tts.speak(text);
+  }
+
 
   @override
   void initState() {
@@ -59,8 +76,17 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
 
 
     manager.onExerciseTick = ((tick){
+      if(tick == 10 * 1000)
+        speak("10 seconds to finish");
+      if(tick == 60 * 1000)
+        speak("1 minute left,"+motivationalSpeak[Random().nextInt(motivationalSpeak.length)]);
+      if(tick == 30 * 1000)
+        speak("30 seconds to finish,"+motivationalSpeak[Random().nextInt(motivationalSpeak.length)]);
       //if (!mounted)
-        if(tick <= 3 * 1000) vibrate(200);
+        if(tick <= 5 * 1000 && tick > 0) {
+          speak((tick/1000).toInt().toString());
+          vibrate(200);
+        }
     });
 
     manager.onExerciseDone = ((exerciseDone) {
@@ -409,6 +435,8 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
   void askForPermission() async {
     if (! await  Permission.activityRecognition.request().isGranted)
       return _showPermissionDialog('Can\'t access to your location','Location services are disabled.','Please enable location use for this app');
+    if (! await  Permission.location.request().isGranted)
+      return _showPermissionDialog('Can\'t access to your location','Location services are disabled.','Please enable location use for this app');
     if(await _location.serviceEnabled())
       return;
     if(!await _location.requestService())
@@ -519,7 +547,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
         return runs.isNotEmpty ? Container(
           height: size.height,
           child: ListView.builder(
-
+            //shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             itemCount: runs.length,
             itemBuilder: (context, index) => Padding(
@@ -916,12 +944,12 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
     );
   }
 
-  void speak() async {
-    await tts.speak("Speak mother fucker");
+  Future speak() async {
+    await tts.setSpeechRate(1);
+    await tts.setPitch(1);
+    await tts.speak("3");
   }
 }
-
-
 
 
 
@@ -932,17 +960,28 @@ class CountdownText extends StatefulWidget {
 }
 
 class _CountdownTextState extends State<CountdownText> {
-  int count = 3;
+  int count = 4;
   Timer t;
+
+  FlutterTts tts = FlutterTts();
+  Future speak(String text) async {
+    await tts.setSpeechRate(1);
+    await tts.setPitch(1);
+    await tts.speak(text);
+  }
 
   @override
   Widget build(BuildContext context) {
     if(t == null) {
       t = Timer.periodic(Duration(seconds: 1), (timer) async{
-        if (await Vibration.hasVibrator()) {
+        if ((count-1)>0 && await Vibration.hasVibrator()) {
           Vibration.vibrate(duration: 200);
         }
         this.setState(() {
+          if((count-1)>0) {
+            tts.speak((count - 1).toString());
+          }else if ((count-1) == 0)
+            tts.speak("Start");
           count--;
           if (count <= 0) {
             SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -961,7 +1000,7 @@ class _CountdownTextState extends State<CountdownText> {
         shape: BoxShape.circle,
       ),
       child: Center(
-        child: Text(count.toString(), style: TextStyle(color: Colors.white,fontSize: 55,fontWeight: FontWeight.bold),
+        child: Text(min(count,3).toString(), style: TextStyle(color: Colors.white,fontSize: 55,fontWeight: FontWeight.bold),
         ),
       ),
     );
