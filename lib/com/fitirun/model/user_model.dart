@@ -42,7 +42,9 @@ class UserModel{
   String uid;
   String name;
   String email;
-  int age;
+  String age;
+  String weight;
+  String height;
   List<TrainModel> favWorkouts = List();
   List<FoodModel> favFoods = List();
   List<StepModel> steps = List();
@@ -56,7 +58,8 @@ class UserModel{
     age = doc.data()['age'];
     email = doc.data()['email'];
     name = doc.data()['name'];
-
+    weight = doc.data()['weight'];
+    height = doc.data()['height'];
     var auxFoods = doc.data()['fav foods'] as List;
     if(auxFoods != null)
       auxFoods.forEach((e) => favFoods.add(FoodModel.fromMap(e)));
@@ -98,7 +101,7 @@ class UserModel{
 
     statistics.forEach((element) {
       if(element != null) {
-        workoutAux.add(element.toJson());
+        statisticsAux.add(element.toJson());
       }
     });
 
@@ -117,6 +120,8 @@ class UserModel{
       'name' : name,
       'age' : age,
       'steps' : steps,
+      'height' : height,
+      'weight' : weight
     };
   }
 

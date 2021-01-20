@@ -1,7 +1,9 @@
 import 'package:fitirun/com/fitirun/model/armazem.dart';
+import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
 import 'package:fitirun/com/fitirun/util/rounded_input_field_costum_icon.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
+import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -10,14 +12,11 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  UserModel userModel = Warehouse().userModel;
   String name = Warehouse().userModel.name == null ? "" : Warehouse().userModel.name;
-  String nameAux = "";
-  int age =  Warehouse().userModel.age == null ? 0 : Warehouse().userModel.age;
-  int ageAux = 0;
-  int weight = 0;
-  int auxWeight = 0;
-  int height = 0;
-  int auxHeight = 0;
+  String age =  Warehouse().userModel.age == null ? "0" : Warehouse().userModel.age;
+  String height = Warehouse().userModel.height == null ? "160" : Warehouse().userModel.height;
+  String weight = Warehouse().userModel.weight == null ? "50" : Warehouse().userModel.weight;
 
 
   @override
@@ -27,10 +26,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.black12,
         elevation: 0,
-        title: Text("Settings"),
+        title: Align(
+          alignment: Alignment.center,
+            child: Text("Settings", style: TextStyle(fontSize: 20, color: Colors.black),)),
         leading: FlatButton(
           textColor: Colors.white,
-          child: Icon(Icons.arrow_back, color: Colors.blueAccent),
+          child: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
@@ -42,17 +43,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       builder: (BuildContext context) => WelcomeScreen()),
                       (route) => false);
             });
-          }, icon: Icon(Icons.logout, color: Colors.blueAccent,), label: Text("Logout"))
+          }, icon: Icon(Icons.logout, color: Colors.black,), label: Text("Logout", style: TextStyle(fontSize: 20, color: Colors.black),))
         ],
     ),
     body: getBody(),
       persistentFooterButtons: [
         TextButton.icon(onPressed: (){
-          print(ageAux);
-          print(nameAux);
-          print(auxHeight);
-          print(auxWeight);
+          userModel.name = name;
+          userModel.age = age;
+          userModel.weight = weight;
+          userModel.height = height;
+          DatabaseService().addOrUpdateUser(userModel);
 
+          Navigator.pop(context);
         }, icon: Icon(Icons.save_alt_sharp, color: Colors.black,), label: Text("Save and continue", style: TextStyle(fontSize: 20, color: Colors.black),))
       ],
     );
@@ -64,60 +67,79 @@ class _SettingsScreenState extends State<SettingsScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text("Name: ", style: TextStyle(fontSize: 20),),
-            RoundedInputFieldCustomIcon(
-              type: TextInputType.name,
-              icon: Icons.drive_file_rename_outline,
-              hintText: name == "" ? "Enter your name" : name,
-              onChanged: (value) {
-                setState(() {
-                  nameAux = value;
-                });
-               },
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Text("Name: ", style: TextStyle(fontSize: 20),)
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: RoundedInputFieldCustomIcon(
+                type: TextInputType.name,
+                icon: Icons.drive_file_rename_outline,
+                hintText: name == "" ? "Enter your name" : name,
+                onChanged: (value) {
+                  setState(() {
+                    name = value;
+                  });
+                 },
+              ),
             )
           ],
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text("Age: ", style: TextStyle(fontSize: 20),),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Text("Age: ", style: TextStyle(fontSize: 20),),
+            ),
             RoundedInputFieldCustomIcon(
               type: TextInputType.number,
               icon: Icons.drive_file_rename_outline,
-              hintText: age == 0 ? "Enter your age" : age.toString(),
+              hintText: age == ""? "Enter your age" : age,
               onChanged: (value) {
                 setState(() {
-                  ageAux = int.parse(value);
+                  age = value.toString();
                 });
               },
             )
           ],
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text("Height: ", style: TextStyle(fontSize: 20),),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Text("Height: ", style: TextStyle(fontSize: 20),),
+            ),
             RoundedInputFieldCustomIcon(
               type: TextInputType.numberWithOptions(decimal: false),
               icon: Icons.drive_file_rename_outline,
-              hintText: height == 0 ? "Enter your height" : height,
+              hintText: height == "" ? "Enter your height" : height,
               onChanged: (value) {
                 setState(() {
-                  auxHeight = int.parse(value);
+                  height = value.toString();
                 });
               },
             )
           ],
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text("Weight: ", style: TextStyle(fontSize: 20),),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Text("Weight: ", style: TextStyle(fontSize: 20),),
+            ),
             RoundedInputFieldCustomIcon(
               type: TextInputType.numberWithOptions(decimal: false),
               icon: Icons.drive_file_rename_outline,
-              hintText: weight == 0 ? "Enter your weight" : weight,
+              hintText: weight == "" ? "Enter your weight" : weight,
               onChanged: (value) {
                 setState(() {
-                  auxWeight = int.parse(value);
+                  weight = value.toString();
                 });
               },
             )
