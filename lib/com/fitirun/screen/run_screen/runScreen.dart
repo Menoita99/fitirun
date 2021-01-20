@@ -26,6 +26,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
 
   RunManager manager = GetIt.I<RunManager>();
 
+
   @override
   void initState() {
     super.initState();
@@ -193,8 +194,8 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
 
   @override
   void dispose() {
-  //  if (_locationSubscription != null)
-  //    _locationSubscription.cancel();
+    if (_locationSubscription != null)
+      _locationSubscription.cancel();
     super.dispose();
   }
 
@@ -461,7 +462,6 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
   List<RunModel> _availableWorkouts = List();
 
 
-
   @override
   void initState(){
     super.initState();
@@ -576,9 +576,9 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
             physics: ScrollPhysics(),
           controller: _controller,
             children: [getTimerScreen(size),
-              getChartScreen(size,strong_pink,pastel_pink,widget.manager.getDistanceData(),'Distance'),
-              getChartScreen(size,strong_orange,pastel_salmon,widget.manager.getSpeedData(),'Speed'),
-              getChartScreen(size,pastel_dark_grey,suave_pink,widget.manager.getCaloriesData(),'Calories'),
+              getChartScreen(size,Color(0xFF88a9bc),Colors.grey[200],widget.manager.getDistanceData(),'Distance'),
+              getChartScreen(size,Color(0xFFd9bcb8),Colors.grey[200],widget.manager.getSpeedData(),'Speed'),
+              getChartScreen(size,Colors.grey[400],Colors.grey[200],widget.manager.getCaloriesData(),'Calories'),
             ],
           ),
         ),
@@ -624,7 +624,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
                           children: [
                             RoundButton(
                               title: "Start workout",
-                              color: pastel_green,
+                              color: Color(0xff9edbde),
                               textColor: Colors.white,
                               height: 50,
                               fontWeight: FontWeight.bold,
@@ -637,7 +637,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
                             ),
                             RoundButton(
                                 title: "Close workout",
-                                color: pastel_red,
+                                color: Color(0xffe76361),
                                 textColor: Colors.white,
                                 height: 50,
                                 fontWeight: FontWeight.bold,
@@ -662,7 +662,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
       margin: const EdgeInsets.only(left: 20,right: 20,top: 15,bottom: 10),
         height: 0.35 * size.height,
         decoration: BoxDecoration(
-          color: dark_blue,
+          color: Color(0xFF9edbde),
           borderRadius: BorderRadius.all(Radius.circular(25)),
           boxShadow: [
             BoxShadow(

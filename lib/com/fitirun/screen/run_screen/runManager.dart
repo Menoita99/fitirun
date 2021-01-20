@@ -3,6 +3,7 @@ import 'package:fitirun/com/fitirun/model/runModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/util/PedometerUtil.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
+import 'package:fitirun/com/fitirun/util/text_to_speak.dart';
 import 'package:fitirun/com/fitirun/util/timer.dart';
 import 'package:get_it/get_it.dart';
 import 'package:latlong/latlong.dart';
@@ -71,6 +72,7 @@ class RunManager{
       if(isActive)
         totalSteps += event.steps - initSteps - totalSteps
     });
+
   }
 
   bool hasModel(){

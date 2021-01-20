@@ -90,12 +90,12 @@ class RunData {
    }
 
    RunData.fromMap(Map doc){
-     time = doc['time'];
-     steps = doc['steps'];
+     time =  DateTime.parse(doc['time']);
+     steps = int.parse(doc['steps']);
      print("RunModel "+doc['distance']);
-     distance = doc['distance'];
-     speed = doc['speed'];
-     calories = doc['calories'];
+     distance = double.parse(doc['distance']).toDouble();
+     speed = double.parse(doc['speed']);
+     calories = double.parse(doc['calories']).toDouble();
    }
 
 

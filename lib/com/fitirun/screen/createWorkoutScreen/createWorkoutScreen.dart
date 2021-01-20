@@ -1,6 +1,6 @@
 
-import 'package:fitirun/com/fitirun/costum_widget/inputBox.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
+import 'package:fitirun/com/fitirun/util/costum_widget/inputBox.dart';
 import 'package:flutter/material.dart';
 
 class CreateWorkoutScreen extends StatefulWidget {
