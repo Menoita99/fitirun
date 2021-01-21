@@ -1,7 +1,7 @@
 import 'package:fitirun/com/fitirun/model/warehouse.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
-import 'package:fitirun/com/fitirun/util/rounded_input_field_costum_icon.dart';
+import 'file:///C:/Users/rui.menoita/StudioProjects/fitirun/lib/com/fitirun/util/costum_widget/rounded_input_field_costum_icon.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter/material.dart';

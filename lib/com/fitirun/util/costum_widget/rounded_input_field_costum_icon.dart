@@ -1,7 +1,6 @@
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fitirun/com/fitirun/screen/setting_screen/components/text_field_container_size_ajustable.dart';
 import 'package:flutter/material.dart';
-import 'text_field_container.dart';
 
 class RoundedInputFieldCustomIcon extends StatelessWidget {
   final String hintText;

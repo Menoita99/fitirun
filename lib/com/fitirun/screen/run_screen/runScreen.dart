@@ -33,7 +33,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
   RunManager manager = GetIt.I<RunManager>();
 
   List<String> motivationalSpeak = [
-    'You can do it.',
+    'you can do it.',
     'lets go',
     'you got this',
     'never give up',
@@ -73,15 +73,12 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
     manager.onExerciseTick = ((tick){
       print(tick);
       if(tick == 10 * 1000) {
-        print("10 seconds to finish");
         speak("10 seconds to finish");
       }
       if(tick%(60 * 1000) == 1) {
-        print("1 minute left");
         speak("1 minute left," + motivationalSpeak[Random().nextInt(motivationalSpeak.length)]);
       }
       if(tick == 30 * 1000) {
-        print("30 seconds to finish");
         speak("30 seconds to finish," + motivationalSpeak[Random().nextInt(motivationalSpeak.length)]);
       }
 
@@ -98,16 +95,17 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
     });
 
     manager.onExerciseDone = ((exerciseDone) {
-      if(manager.isWorkoutFinish()){
-          manager.saveStats(userModel);
-          manager.restart();
-          setState(() {});
-          print("FInish bitch");
-          showFinishDialog().then((boos) => print("ATÃO CARALHO"));
-        }else
-          print("O workout $exerciseDone não foi terminado");
       print("DONE $exerciseDone");
     });
+
+    manager.onTotalDone = () {
+      if(manager.isWorkoutFinish()){
+        manager.saveStats(userModel);
+        manager.restart();
+        setState(() {});
+        showFinishDialog();
+      }
+    };
   }
   @override
   Widget build(BuildContext context) {
@@ -405,6 +403,7 @@ class _MapScreenState extends State<MapScreen>  with AutomaticKeepAliveClientMix
                 bearing: position.heading,
                 target: loc,
                 zoom: 17,)));
+          print(widget.manager.isActive.toString() +" IS ACTIVE");
           if (widget.manager.isActive) {
             widget.manager.updateStats(position);
             setState(() {
