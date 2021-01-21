@@ -46,7 +46,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildDashboardCards() {
     UserModel user = Warehouse().userModel;
     num runtrg = 2500;//get goals from user
-    num stptrg = 4000;//get goals from user
+    num stptrg = 10000;//get goals from user
     num runach = getMetric(user, 'running');
     num stpach = getMetric(user, 'steps');
 
@@ -69,6 +69,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   color4: CustomColors.kPurpleColor,
                   metricAchieved: runach.toString(),
                   metricTarget: runtrg.toString(),
+                  isStep: false,
                   value: runach/runtrg,
                   iconPath: 'assets/icons/running.png',
                   metricType: 'Running',),
@@ -79,6 +80,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   color4: CustomColors.kLightPinkColor,
                   metricAchieved: stpach.toString(),
                   metricTarget: stptrg.toString(),
+                  isStep: true,
                   value: stpach/stptrg,
                   iconPath: 'assets/icons/footprints.png',
                   metricType: 'Steps',),
@@ -219,7 +221,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           }
           return sum;
         } else
-          return 1000;
+          return 0;
         break;
       case 'steps':
         int sum1 = 0;
@@ -234,7 +236,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           }
           return sum1;
         } else
-          return 1000;
+          return 0;
         break;
     }
   }
@@ -248,7 +250,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         String metricAchieved,
         String metricTarget,
         double value,
-        String iconPath}) {
+        String iconPath,
+      bool isStep}) {
     return Container(
       height: SizeConfig.blockSizeVertical * 30,
       width: SizeConfig.blockSizeHorizontal * 85,
@@ -313,9 +316,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Text(
                     metricTarget.toString(),
                     style: CustomTextStyle.metricTextStyle,
-                  ),
+                  ), isStep ?
                   Text(
-                    ' m',
+                    'steps',
+                    style: TextStyle(color: CustomColors.kLightColor),
+                  ) : Text(
+                    'm',
                     style: TextStyle(color: CustomColors.kLightColor),
                   )
                 ],
