@@ -86,6 +86,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               getWorkoutItems(),
               HeadingWidget(text1: 'Popular Foods', text2: '',),
               getFoodItems(),
+              SizedBox(height: 20,)
             ],
 
           ),
