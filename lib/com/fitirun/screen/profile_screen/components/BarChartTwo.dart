@@ -66,7 +66,7 @@ class BarChartTwoState extends State<BarChartTwo> {
     var now = new DateTime.now();
     switch (str) {
       case 'Steps Walked':
-        if (user.steps.length > 0) {
+        if (user.steps.length > 0 && user.steps!= null && user.steps.length > 0) {
           for(int d = 0; d < week.length; d++){
             for (int i = 0; i < user.steps.length; i++) {
               if (user.steps[i].time.isAfter(now.subtract(new Duration(days: 6-d)))) { //to do alter function to work with dd/mm/yyyy
@@ -87,8 +87,8 @@ class BarChartTwoState extends State<BarChartTwo> {
           for(int d = 0; d < week.length; d++){
             for (int i = 0; i < user.statistics.length; i++) {
               for(int j = 0; j < user.statistics[i].data.length; j++) {
-                if (user.steps[i].time.isAfter(now.subtract(new Duration(days: 6-d)))) { //to do alter function to work with dd/mm/yyyy
-                  if (user.steps[i].time.isBefore(now.subtract(new Duration(days: 5-d))) || d==6) {
+                if (user.statistics[i].data[j].time.isAfter(now.subtract(new Duration(days: 6-d)))) { //to do alter function to work with dd/mm/yyyy
+                  if (user.statistics[i].data[j].time.isBefore(now.subtract(new Duration(days: 5-d))) || d==6) {
                     week[d] += user.statistics[i].data[j].distance;
                   }
                 } else
