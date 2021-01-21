@@ -1,10 +1,9 @@
 import 'package:fitirun/com/fitirun/model/warehouse.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
-import 'file:///C:/Users/rui.menoita/StudioProjects/fitirun/lib/com/fitirun/util/size_config.dart';
-import 'package:fitirun/com/fitirun/screen/welcome_screen/welcomeScreen.dart';
 import 'package:fitirun/com/fitirun/screen/home_screen/widgets/dashboard_screen.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
+import 'package:fitirun/com/fitirun/util/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 

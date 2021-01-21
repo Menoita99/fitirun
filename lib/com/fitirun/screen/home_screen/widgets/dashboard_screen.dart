@@ -2,17 +2,16 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
-import 'package:fitirun/com/fitirun/model/StatisticsModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
-import 'file:///C:/Users/rui.menoita/StudioProjects/fitirun/lib/com/fitirun/util/size_config.dart';
-import 'file:///C:/Users/rui.menoita/StudioProjects/fitirun/lib/com/fitirun/util/costum_widget/heading_widget.dart';
 import 'package:fitirun/com/fitirun/screen/details_screen/detailsHealthScreen.dart';
 import 'package:fitirun/com/fitirun/screen/details_screen/detailsTrainScreen.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/healthItem.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/widgets/workoutItem.dart';
+import 'package:fitirun/com/fitirun/util/costum_widget/heading_widget.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/model/warehouse.dart';
+import 'package:fitirun/com/fitirun/util/size_config.dart';
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatefulWidget {
