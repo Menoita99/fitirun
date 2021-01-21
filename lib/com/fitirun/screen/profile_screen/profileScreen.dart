@@ -403,8 +403,8 @@ class _StatisticsViewState extends State<StatisticsView> {//with AutomaticKeepAl
         margin: EdgeInsets.only(top:5),
         child: Column(
           children: [
-            BarChartTwo(),
-            BarChartTwo(),
+            BarChartTwo('Meters Run'),
+            BarChartTwo('Steps Walked'),
             SizedBox(height: 20,),
             SizedBox(height: 20,),
             SizedBox(height: 20,),

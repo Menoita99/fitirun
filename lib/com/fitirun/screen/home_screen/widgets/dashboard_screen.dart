@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/workoutModel.dart';
+import 'package:fitirun/com/fitirun/model/StatisticsModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fitirun/com/fitirun/resource/size_config.dart';
 import 'package:fitirun/com/fitirun/resource/heading_widget.dart';
@@ -202,35 +203,40 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
   num getMetric(UserModel user, String s) {
-    int sum = 0;
     var now = new DateTime.now();
     switch (s) {
       case 'running':
-          if (user != null && user.steps!= null &&  user.steps.length > 0) {
-            for (int i = 0; i < user.steps.length; i++) {
-              if (user.steps[i].time.day == now.day)
-                sum += user.steps[i].steps;
+        double sum = 0;
+        if (user != null && user.statistics!= null && user.statistics.length > 0) {
+          for(int i = 0; i < user.statistics.length; i++) {
+            for(int j = 0; j < user.statistics[i].data.length; j++) {
+              if (user.statistics[i].data[j].time.day ==
+                  now.day) //to do alter function to work with dd/mm/yyyy
+                sum += user.statistics[i].data[j].distance;
               else
                 break;
             }
-            return sum;
-          } else
-            return 1000;
-        break;
-      case 'steps':
-        if (user != null && user.statistics.length > 0) {
-          // for(int i; i < user.statistics.length; i++) {
-          //   if (user.statistics[i].time.day==now.day)
-          //     sum+=user.statistics[i];
-          //   else
-          //     break;
-          // }
+          }
           return sum;
         } else
           return 1000;
         break;
+      case 'steps':
+        int sum1 = 0;
+        if (user != null && user.steps!= null && user.steps.length > 0) {
+          for (int i = 0; i < user.steps.length; i++) {
+            if (user.steps[i].time.day == now.day) { //to do alter function to work with dd/mm/yyyy
+              print(user.steps[i].steps);
+              sum1 += user.steps[i].steps;
+            }
+            else
+              break;
+          }
+          return sum1;
+        } else
+          return 1000;
+        break;
     }
-
   }
 
   Container _buildCard(
