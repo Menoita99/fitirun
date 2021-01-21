@@ -72,11 +72,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           GestureDetector(
                             onTap: ((){
                               //Navigator.push( context, MaterialPageRoute( builder: (context) => SettingsScreen())).then((value) => setState(() {}));
-                              for(int i = 0; i < 10; i++) {
+                              /* for(int i = 0; i < 6; i++) {
                                 DatabaseService().addRun(RunModel.fakeModel());
                                 //DatabaseService().addTrain(TrainModel.fakeModel());
                               }
-                              print('Done');
+                              print('Done');*/
                             }),
                             child: Container(
                               width: 125,

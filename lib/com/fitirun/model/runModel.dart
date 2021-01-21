@@ -79,13 +79,14 @@ class ExerciseRunModel{
   String title;
   String description;
 
-  ExerciseRunModel(this.duration,this.title,this.description);
+  ExerciseRunModel(this.duration,this.title,this.description, this.shortDescription);
 
   ExerciseRunModel.fakeModel(){
     Faker faker = new Faker();
     duration = faker.randomGenerator.integer(200) + 30;
     title = faker.lorem.words(4).join(" ").capitalize();
     description = faker.lorem.sentences(faker.randomGenerator.integer(5) + 1).join(".\n");
+    shortDescription = faker.lorem.sentence();
   }
 
   ExerciseRunModel.fromMap(Map doc){
