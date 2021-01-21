@@ -64,7 +64,7 @@ class _HealthScreenState extends State<HealthScreen> {
 
   Container getWorkoutButton() {
     return Container(
-      width: 120,
+      width: 125,
       decoration: BoxDecoration(
         color: isFoodSelected ? Colors.transparent : workout_color,
         borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -85,7 +85,7 @@ class _HealthScreenState extends State<HealthScreen> {
 
   Container getFoodButton() {
     return Container(
-      width: 120,
+      width: 125,
       decoration: BoxDecoration(
         color: isFoodSelected ? health_food_color : Colors.transparent,
         borderRadius: BorderRadius.all(Radius.circular(30)),

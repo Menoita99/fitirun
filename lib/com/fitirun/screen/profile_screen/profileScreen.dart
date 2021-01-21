@@ -1,17 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fitirun/com/fitirun/model/runModel.dart';
 import 'package:fitirun/com/fitirun/model/warehouse.dart';
-import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
-import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fitirun/com/fitirun/screen/details_screen/detailsHealthScreen.dart';
 import 'package:fitirun/com/fitirun/screen/details_screen/detailsTrainScreen.dart';
 import 'package:fitirun/com/fitirun/screen/profile_screen/components/BarChartTwo.dart';
-import 'package:fitirun/com/fitirun/screen/profile_screen/components/PieChart.dart';
 import 'package:fitirun/com/fitirun/screen/setting_screen/settings_screen.dart';
-import 'package:fitirun/com/fitirun/util/services/database.dart';
-import 'package:fl_chart/fl_chart.dart';
+//import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -25,7 +20,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   PageController _controller = PageController(initialPage: 0);
 
-  DatabaseService _databaseService = DatabaseService();
+  //DatabaseService _databaseService = DatabaseService();
 
   @override
   Widget build(BuildContext context) {
@@ -396,8 +391,8 @@ class _StatisticsViewState extends State<StatisticsView> {//with AutomaticKeepAl
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    UserModel user = Warehouse().userModel;
+    //Size size = MediaQuery.of(context).size;
+    //UserModel user = Warehouse().userModel;
     return SingleChildScrollView(
       child: Container(
         margin: EdgeInsets.only(top:5),
@@ -424,7 +419,7 @@ class _StatisticsViewState extends State<StatisticsView> {//with AutomaticKeepAl
 
 
 
-  List<PieChartSectionData> _buildPieChartCurves() {
+  /* List<PieChartSectionData> _buildPieChartCurves() {
     return List.generate(3, (i) {
 
       // Ideally this data come from API and then returned, or you can modify it any way as per the data arranged in your app :)
@@ -501,5 +496,5 @@ class ChartContainer extends StatelessWidget {
       ),
     );
   }
-
+*/
 }
