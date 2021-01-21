@@ -1,6 +1,7 @@
 import 'package:fitirun/com/fitirun/model/statisticsModel.dart';
 import 'package:fitirun/com/fitirun/model/runModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
+import 'package:fitirun/com/fitirun/model/warehouse.dart';
 import 'package:fitirun/com/fitirun/util/PedometerUtil.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:fitirun/com/fitirun/util/text_to_speak.dart';
@@ -48,7 +49,6 @@ class RunManager{
   WorkoutData workOutKey;
 
   void start(){
-    print("Entrei no start");
     if(model == null || model.exercises.isEmpty) throw("Workout null or workout exercises are empty");
     isActive = true;
 
@@ -181,8 +181,10 @@ class RunManager{
   }
 
   double calculateCalories(double speed) {
+    UserModel userModel = Warehouse().userModel;
+    double weightAux = userModel.weight != null ? double.parse(userModel.weight) : weight;
    // return ((0.26*speed+1.6) * weight * height) /1000 / 60;
-    return 0.0005 * weight * speed + 0.0035;
+    return 0.0005 * weightAux * speed + 0.0035;
   }
 
   List<double> getDistanceData() {

@@ -503,7 +503,6 @@ class ManagerScreen extends StatefulWidget {
 
 class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveClientMixin{
   PageController _controller = PageController(initialPage: 0);
-  List<RunModel> _availableWorkouts = List();
   FlutterTts tts = FlutterTts();
 
   @override
@@ -530,7 +529,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
               child: Text('Speak mother fucker'),
               onPressed: () => speak()),
           buildRuns(),
-          SizedBox(height: 10),
+          SizedBox(height: 20),
         ],
       ),
     );
@@ -558,7 +557,6 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
           child: ListView.builder(
             //shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
             itemCount: runs.length,
             itemBuilder: (context, index) => Padding(
               padding: const EdgeInsets.all(8.0),
@@ -572,7 +570,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
   }
 
    Widget _makeContainer(RunModel e){
-     Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: (){
         setState(() {

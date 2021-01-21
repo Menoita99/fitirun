@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fitirun/com/fitirun/model/runModel.dart';
 import 'package:fitirun/com/fitirun/model/warehouse.dart';
 import 'package:fitirun/com/fitirun/model/foodModel.dart';
 import 'package:fitirun/com/fitirun/model/user_model.dart';
+import 'package:fitirun/com/fitirun/model/workoutModel.dart';
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:fitirun/com/fitirun/screen/details_screen/detailsHealthScreen.dart';
 import 'package:fitirun/com/fitirun/screen/details_screen/detailsTrainScreen.dart';
@@ -69,13 +71,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           GestureDetector(
                             onTap: ((){
-                              Navigator.push( context, MaterialPageRoute( builder: (context) => SettingsScreen())).then((value) => setState(() {}));
-                              /*
-                              for(int i = 0; i < 50; i++) {
-                                DatabaseService().addFood(FoodModel.fakeFood());
-                                DatabaseService().addTrain(TrainModel.fakeModel());
+                              //Navigator.push( context, MaterialPageRoute( builder: (context) => SettingsScreen())).then((value) => setState(() {}));
+                              for(int i = 0; i < 10; i++) {
+                                DatabaseService().addRun(RunModel.fakeModel());
+                                //DatabaseService().addTrain(TrainModel.fakeModel());
                               }
-                              print('Done');*/
+                              print('Done');
                             }),
                             child: Container(
                               width: 125,
