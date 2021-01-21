@@ -92,7 +92,10 @@ class RunManager{
 
 
   void restart(){
-    stop();
+    if(exerciseTimer != null)
+      exerciseTimer.timer.cancel();
+    if(totalTimer != null)
+      totalTimer.timer.cancel();
     totalTimer = null;
     exerciseTimer = null;
     model = null;
@@ -222,4 +225,5 @@ class RunManager{
         output.add(d.speed);
     return output;
   }
+
 }

@@ -42,9 +42,13 @@ class CustomTimer{
   }
 
   void stop() {
-    isActive=false;
-    if(timer != null && timer.isActive)
-      timer.cancel();
+    try {
+      isActive = false;
+      onFinish();
+    }finally{
+      if (timer != null && timer.isActive)
+        timer.cancel();
+    }
   }
 
   String getFormattedCurrentTime(){
