@@ -61,7 +61,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              HeadingWidget(text1: 'ACTIVITY', text2: 'Show All',),
+              HeadingWidget(text1: 'ACTIVITY', text2: '',),
               _buildCard(
                   color1: CustomColors.kLightPinkColor,
                   color2: CustomColors.kCyanColor,

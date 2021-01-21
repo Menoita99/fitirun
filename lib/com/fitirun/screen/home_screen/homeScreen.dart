@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>{
+class _HomeScreenState extends State<HomeScreen> {
   int loginStreak = 15;
   int currentWeight = 65;
   final AuthService _auth = AuthService();
@@ -29,11 +29,11 @@ class _HomeScreenState extends State<HomeScreen>{
   void initState() {
     super.initState();
 
-      Warehouse().addListener((userModel) => {
-          if(!mounted)
-            setState(() =>this.userModel = userModel)
+    Warehouse().addListener((userModel) =>
+    {
+      if(!mounted)
+        setState(() => this.userModel = userModel)
     });
-
   }
 
 
@@ -60,198 +60,32 @@ class _HomeScreenState extends State<HomeScreen>{
       ),
       width: double.infinity,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+            child: Text(
+              'Today',
+              style: CustomTextStyle.dayTabBarStyleActive,
+            ),
+          ), /*
           Text(
-            'Today',
-            style: CustomTextStyle.dayTabBarStyleActive,
-          ),
-          Text(
-            'Week',
+            '',
             style: CustomTextStyle.dayTabBarStyleInactive,
           ),
           Text(
-            'Month',
+            '',
             style: CustomTextStyle.dayTabBarStyleInactive,
-          ),
-          Text(
-            'Year',
-            style: CustomTextStyle.dayTabBarStyleInactive,
+          ), */
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+            child: Text(
+              'Chase your goals!',
+              style: CustomTextStyle.dayTabBarStyleInactive,
+            ),
           )
         ],
       ),
     );
   }
-  /*
-  Widget getBody() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        //Text
-        Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: Text(
-            "Be the best\nVersion of yourself.",
-            style: TextStyle(
-              fontSize: 25,
-              color: homeScreen_color,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        //Chart
-        Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: ChartContainer(fillData()),
-        ),
-        //Random buttons
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              getWorkoutButton(),
-              getRecipeButton(),
-            ],
-          ),
-        ),
-        //Workouts
-        Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: Text("Popular workouts",
-              style: TextStyle(
-                  fontSize: 25,
-                  letterSpacing: 0.5,
-                  fontStyle: FontStyle.italic,
-                  color: homeScreen_purple_color,
-                  fontWeight: FontWeight.bold)),
-        ),
-        Container(
-            height: 200.0,
-            child: ListView.separated(
-              itemBuilder: (BuildContext context, int index) => SizedBox(
-                  width: 180, child: WorkoutItem(workout: getRandomWorkOut())),
-              itemCount: 10,
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  width: 10,
-                );
-              },
-              padding: EdgeInsets.only(left: 5),
-              scrollDirection: Axis.horizontal,
-            )),
-        //recipes
-        Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: Text("Popular recipes",
-              style: TextStyle(
-                  fontSize: 25,
-                  letterSpacing: 0.5,
-                  fontStyle: FontStyle.italic,
-                  color: homeScreen_purple_color,
-                  fontWeight: FontWeight.bold)),
-        ),
-        Container(
-            height: 200.0,
-            child: ListView.separated(
-              itemBuilder: (BuildContext context, int index) => SizedBox(
-                  width: 180, child: HealthItem(food: FoodModel.fakeFood())),
-              itemCount: 10,
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  width: 10,
-                );
-              },
-              padding: EdgeInsets.only(left: 5),
-              scrollDirection: Axis.horizontal,
-            )),
-      ],
-    );
-  }
-
-  getWorkoutButton() {
-    return Container(
-      decoration: BoxDecoration(
-          color: workout_color,
-          borderRadius: BorderRadius.all(Radius.circular(20))),
-      child: FlatButton.icon(
-        onPressed: () {
-          print("nothing");
-        },
-        icon: Icon(Icons.fitness_center),
-        label: Text(
-          "Random Workout",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-        ),
-      ),
-    );
-  }
-
-  getRecipeButton() {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          color: health_food_color),
-      child: FlatButton.icon(
-        onPressed: () {
-          print("Nothing");
-        },
-        icon: Icon(Icons.favorite),
-        label: Text(
-          "Random recipe",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-        ),
-      ),
-    );
-  }
-
-  List<double> fillData() {
-    List<double> data = new List(7);
-    var rng = new Random();
-    for (int i = 0; i < 7; i++) {
-      data[i] = 2000.0 + rng.nextDouble() * 1000;
-    }
-    return data;
-  }
-  */
-
 }
-
-/*
-// ignore: must_be_immutable
-class ChartContainer extends StatefulWidget {
-  List<double> data = new List(7);
-
-  ChartContainer(this.data);
-
-  @override
-  _ChartContainerState createState() => _ChartContainerState();
-}
-
-class _ChartContainerState extends State<ChartContainer> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(0, 10, 10, 0),
-      child: Container(
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-            color: Color(0xffbedbbb),
-            border: Border.all(color: Color(0xffbedbbb), width: 3),
-            borderRadius: BorderRadius.all(Radius.circular(20))),
-        child: new Sparkline(
-          data: widget.data,
-          fillMode: FillMode.below,
-          fillGradient:
-              LinearGradient(colors: [Color(0xff70e1f5), Color(0xffffd194)]),
-          pointsMode: PointsMode.all,
-          pointColor: homeScreen_purple_color,
-          pointSize: 10.0,
-        ),
-      ),
-    );
-  }
-
-}
-
- */

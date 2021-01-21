@@ -52,7 +52,6 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      print("Entrei no initState");
       initManagerListeners();
     });
   }
