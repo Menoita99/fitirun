@@ -216,7 +216,7 @@ class RunManager{
     print("ExerciseIndex $exerciseIndex");
     exerciseIndex++;
     if(exerciseIndex < model.exercises.length) {
-      exerciseTimer = CustomTimer(startAt: model.exercises[0].duration * 1000, stopAt: 0,onFinish:() => exerciseDone(),onTick: onExerciseTick);
+      exerciseTimer = CustomTimer(startAt: model.exercises[exerciseIndex].duration * 1000, stopAt: 0,onFinish:() => exerciseDone(),onTick: onExerciseTick);
       print("Start");
       if(exerciseTimer.timer != null){
         exerciseTimer.timer.cancel();
