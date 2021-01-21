@@ -7,6 +7,7 @@ import 'package:fitirun/com/fitirun/model/warehouse.dart';
 import 'package:fitirun/com/fitirun/screen/run_screen/runManager.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -75,7 +76,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
         print("10 seconds to finish");
         speak("10 seconds to finish");
       }
-      if(tick%(60 * 1000) == 0) {
+      if(tick%(60 * 1000) == 1) {
         print("1 minute left");
         speak("1 minute left," + motivationalSpeak[Random().nextInt(motivationalSpeak.length)]);
       }
@@ -84,10 +85,10 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
         speak("30 seconds to finish," + motivationalSpeak[Random().nextInt(motivationalSpeak.length)]);
       }
 
-      if(tick == 20 * 1000){
+      if(tick == 15 * 1000){
         RunModel model  = manager.model;
-        speak("The next exercise will be.");
-        speak(model.exercises[manager.exerciseIndex].shortDescription);
+        if(manager.exerciseIndex+1<manager.model.exercises.length)
+          speak("The next exercise will be. "+model.exercises[manager.exerciseIndex+1].shortDescription);
       }
       //if (!mounted)
         if(tick <= 5 * 1000 && tick > 0) {
@@ -97,17 +98,15 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
     });
 
     manager.onExerciseDone = ((exerciseDone) {
-      print("DONE $exerciseDone");
-    });
-
-    manager.onTotalDone = ((){
-      //if (!mounted)
-        if(manager.isWorkoutFinish()) {
-          showFinishDialog();
+      if(manager.isWorkoutFinish()){
           manager.saveStats(userModel);
           manager.restart();
-      }else
-        print("O workout não foi terminado");
+          setState(() {});
+          print("FInish bitch");
+          showFinishDialog().then((boos) => print("ATÃO CARALHO"));
+        }else
+          print("O workout $exerciseDone não foi terminado");
+      print("DONE $exerciseDone");
     });
   }
   @override
@@ -171,8 +170,7 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        speak("Congratulations you have completed your workout successfully!!!");
-        speak("You ran "+manager.totalDistance.toString()+" meters!");
+        speak("Congratulations you have completed your workout successfully!!!\nYou ran "+manager.totalDistance.toInt().toString()+" meters!");
         return AlertDialog(
           title: Text('Congratulations!!!'),
           content: Container(
@@ -525,9 +523,6 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
             padding: const EdgeInsets.all(10.0),
             child: Text('Choose your workout',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
           ),
-          RaisedButton(
-              child: Text('Speak mother fucker'),
-              onPressed: () => speak()),
           buildRuns(),
           SizedBox(height: 20),
         ],
@@ -553,7 +548,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
         }
 
         return runs.isNotEmpty ? Container(
-          height: size.height,
+          height: runs.isNotEmpty ? ((155) * (runs.length)).toDouble(): size.height,
           child: ListView.builder(
             //shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
@@ -772,16 +767,20 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.sports_football,color: Colors.white),
-                    SizedBox(width: 10),
+                    Image.asset(
+                      'assets/icons/footprints.png',height: 20,
+                    ),
+                    SizedBox(width: 5),
                     Text(widget.manager.totalSteps.toString()+ " steps",style: TextStyle(color: Colors.white),)
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.wifi_sharp,color: Colors.white,),
-                    SizedBox(width: 10),
+                    SvgPicture.asset(
+                      'assets/icons/distance.svg',height: 15,color: white,
+                    ),
+                    SizedBox(width: 5),
                     Text(widget.manager.totalDistance.toString()+ " meters",style: TextStyle(color: Colors.white))
                   ],
                 ),
@@ -789,7 +788,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.local_fire_department_outlined,color: Colors.white),
-                    SizedBox(width: 10),
+                    SizedBox(width: 5),
                     Text(widget.manager.totalCalories.toInt().toString()+" kca",style: TextStyle(color: Colors.white))
                   ],
                 ),
@@ -807,7 +806,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
       child: Padding(
         padding: const EdgeInsets.only(left: 20, bottom: 10, right: 20),
         child: Container(
-          height: 50,
+          height: 57,
           width: size.width - 10,
           padding: EdgeInsets.all(5),
           decoration: BoxDecoration(

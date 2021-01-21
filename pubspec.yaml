@@ -46,6 +46,7 @@ dependencies:
   latlong: ^0.6.1
   permission_handler: ^5.0.1+1
   numberpicker: ^1.3.0
+  flutter_svg: ^0.18.0
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,7 @@ flutter:
   assets:
     - assets/mapStyle/style.json
     - assets/icons/facebook.png
+    - assets/icons/distance.svg
     - assets/icons/google-plus.png
     - assets/icons/twitter.png
     - assets/icons/footprints.png
