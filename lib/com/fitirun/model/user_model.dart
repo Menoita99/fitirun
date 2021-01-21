@@ -22,7 +22,7 @@ class StepModel{
 
   Map<String, dynamic> toJson() {
     return {
-      'time' : time,
+      'time' : time.toString(),
       'steps' : steps,
     };
   }
@@ -118,7 +118,7 @@ class UserModel{
       'statistics' : statisticsAux,
       'name' : name,
       'age' : age,
-      'steps' : steps,
+      'steps' : stepsAux,
       'height' : height,
       'weight' : weight
     };

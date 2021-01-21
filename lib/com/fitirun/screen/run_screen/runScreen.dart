@@ -494,7 +494,6 @@ class ManagerScreen extends StatefulWidget {
 
 class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveClientMixin{
   PageController _controller = PageController(initialPage: 0);
-  List<RunModel> _availableWorkouts = List();
   FlutterTts tts = FlutterTts();
 
   @override
@@ -521,7 +520,7 @@ class _ManagerScreenState extends State<ManagerScreen> with AutomaticKeepAliveCl
               child: Text('Speak mother fucker'),
               onPressed: () => speak()),
           buildRuns(),
-          SizedBox(height: 100),
+          SizedBox(height: 20),
         ],
       ),
     );
