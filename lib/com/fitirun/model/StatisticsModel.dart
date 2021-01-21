@@ -48,18 +48,6 @@ class StatisticsModel{
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 class RunData {
 
    DateTime time;
@@ -117,18 +105,6 @@ class RunData {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 class WorkoutData{

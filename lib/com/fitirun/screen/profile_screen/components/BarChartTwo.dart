@@ -1,7 +1,14 @@
+import 'package:fitirun/com/fitirun/model/days.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:fitirun/com/fitirun/model/user_model.dart';
+import 'package:fitirun/com/fitirun/model/warehouse.dart';
 
 class BarChartTwo extends StatefulWidget {
+  String _value;
+  BarChartTwo(String value){
+    this._value=value;
+  }
   @override
   State<StatefulWidget> createState() => BarChartTwoState();
 }
@@ -11,19 +18,14 @@ class BarChartTwoState extends State<BarChartTwo> {
   final Color rightBarColor = const Color(0xffff5182);
   final double width = 7;
   int touchedGroupIndex;
+  List<double> weeklyData;
 
-  final List<List<double>> weeklyData = [
-    [5, 12],
-    [16, 12],
-    [18, 5],
-    [20, 16],
-    [17, 6],
-    [19, 1.5],
-    [10, 1.5]
-  ];
 
   @override
   Widget build(BuildContext context) {
+    String value= widget._value;
+    weeklyData = getWeeklyData(value);
+
     return Container(
       height: 200,
       decoration: BoxDecoration(
@@ -38,7 +40,7 @@ class BarChartTwoState extends State<BarChartTwo> {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Text(
-            'Transactions',
+            value,
             style: TextStyle(color: Colors.white, fontSize: 22),
           ),
           const SizedBox(
@@ -57,9 +59,60 @@ class BarChartTwoState extends State<BarChartTwo> {
     );
   }
 
+
+  List<double> getWeeklyData(String str) {
+    UserModel user = Warehouse().userModel;
+    List<double> week = [0,0,0,0,0,0,0];
+    var now = new DateTime.now();
+    switch (str) {
+      case 'Steps Walked':
+        if (user.steps.length > 0 && user.steps!= null && user.steps.length > 0) {
+          for(int d = 0; d < week.length; d++){
+            for (int i = 0; i < user.steps.length; i++) {
+              if (user.steps[i].time.isAfter(now.subtract(new Duration(days: 6-d)))) { //to do alter function to work with dd/mm/yyyy
+                if (user.steps[i].time.isBefore(now.subtract(new Duration(days: 5-d)))) {
+                  week[d] += user.steps[i].steps;
+                }
+              }
+              else
+                break;
+            }
+            return week;
+          }
+        } else
+          return [569,200,320,700,200,212,1000];
+        break;
+      case 'Meters Run':
+        if (user != null && user.statistics!= null && user.statistics.length > 0) {
+          for(int d = 0; d < week.length; d++){
+            for (int i = 0; i < user.statistics.length; i++) {
+              for(int j = 0; j < user.statistics[i].data.length; j++) {
+                if (user.statistics[i].data[j].time.isAfter(now.subtract(new Duration(days: 6-d)))) { //to do alter function to work with dd/mm/yyyy
+                  if (user.statistics[i].data[j].time.isBefore(now.subtract(new Duration(days: 5-d))) || d==6) {
+                    week[d] += user.statistics[i].data[j].distance;
+                  }
+                } else
+                break;
+              }
+            }
+            return week;
+          }
+        } else
+          return [554,343,785,453,1432,124,423];
+    }
+  }
+
+  double getWeeklyMax() {
+    double max = 10;
+    for(int i = 0; i < weeklyData.length; i++) {
+      if (weeklyData[i]>max)
+        max = (weeklyData[i]*1.1);
+    }
+  }
+
   BarChartData _mainBarData() {
     return BarChartData(
-      maxY: 20,
+      maxY: getWeeklyMax(),
       titlesData: _buildAxes(),
       borderData: FlBorderData(
         show: false,
@@ -128,12 +181,12 @@ class BarChartTwoState extends State<BarChartTwo> {
   List<BarChartGroupData> _buildAllBars() {
     return List.generate(
       weeklyData.length, // y1                 // y2
-          (index) => _buildBar(index, weeklyData[index][0], weeklyData[index][1]),
+          (index) => _buildBar(index, weeklyData[index]),
     );
   }
 
   // Function to define how to bar would look like.
-  BarChartGroupData _buildBar(int x, double y1, double y2) {
+  BarChartGroupData _buildBar(int x, double y1) {
     return BarChartGroupData(
       barsSpace: 5,
       x: x,
@@ -143,12 +196,9 @@ class BarChartTwoState extends State<BarChartTwo> {
           colors: [leftBarColor],
           width: width,
         ),
-        BarChartRodData(
-          y: y2,
-          colors: [rightBarColor],
-          width: width,
-        ),
       ],
     );
   }
+
+
 }
