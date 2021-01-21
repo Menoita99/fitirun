@@ -403,14 +403,14 @@ class _StatisticsViewState extends State<StatisticsView> {//with AutomaticKeepAl
             SizedBox(height: 20,),
             SizedBox(height: 20,),
             SizedBox(height: 20,),
-            Padding(
+            /*Padding(
               padding: const EdgeInsets.only(left:20.0),
               child: Align(
                  alignment: Alignment.centerLeft,
                  child: Text('Run history',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
               ),
-            ),
-            SizedBox(height: 400,)
+            ), */
+           // SizedBox(height: 400,)
           ],
         ),
       ),
