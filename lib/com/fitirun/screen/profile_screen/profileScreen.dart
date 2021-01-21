@@ -6,7 +6,6 @@ import 'package:fitirun/com/fitirun/screen/details_screen/detailsHealthScreen.da
 import 'package:fitirun/com/fitirun/screen/details_screen/detailsTrainScreen.dart';
 import 'package:fitirun/com/fitirun/screen/profile_screen/components/BarChartTwo.dart';
 import 'package:fitirun/com/fitirun/screen/setting_screen/settings_screen.dart';
-//import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
