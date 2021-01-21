@@ -1,7 +1,7 @@
 import 'package:fitirun/com/fitirun/resource/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:fitirun/com/fitirun/screen/welcome_screen/components/background.dart';
-import 'package:fitirun/com/fitirun/util/rounded_button.dart';
+import 'file:///C:/Users/rui.menoita/StudioProjects/fitirun/lib/com/fitirun/util/costum_widget/rounded_button.dart';
 
 
 class Body extends StatelessWidget {

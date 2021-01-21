@@ -1,4 +1,3 @@
-import 'package:fitirun/com/fitirun/screen/createWorkoutScreen/createWorkoutScreen.dart';
 import 'package:fitirun/com/fitirun/screen/health_screen/healthScreen.dart';
 import 'package:fitirun/com/fitirun/screen/login_screen/login_screen.dart';
 import 'package:fitirun/com/fitirun/screen/profile_screen/profileScreen.dart';
@@ -20,7 +19,6 @@ getRoutes() {
     '/login': (context) => LoginScreen(),
     '/register': (context) => SignUpScreen(),
     '/profile': (context) => ProfileScreen(),
-    '/createWorkout': (context) => CreateWorkoutScreen(),
     '/settings': (context) => SettingsScreen(),
   };
 }

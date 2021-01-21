@@ -4,7 +4,6 @@ import 'package:fitirun/com/fitirun/model/user_model.dart';
 import 'package:fitirun/com/fitirun/model/warehouse.dart';
 import 'package:fitirun/com/fitirun/util/PedometerUtil.dart';
 import 'package:fitirun/com/fitirun/util/services/database.dart';
-import 'package:fitirun/com/fitirun/util/text_to_speak.dart';
 import 'package:fitirun/com/fitirun/util/timer.dart';
 import 'package:get_it/get_it.dart';
 import 'package:latlong/latlong.dart';
@@ -55,8 +54,8 @@ class RunManager{
     workOutKey = WorkoutData(DateTime.now(),model);
     statistics = new StatisticsModel(workOutKey);
 
-    totalTimer = CustomTimer(startAt: 0,onFinish:onTotalDone,onTick: onTotalTick);
-    exerciseTimer = CustomTimer(startAt: model.exercises[0].duration * 1000, stopAt: 0,onFinish:() => exerciseDone(),onTick: onExerciseTick);
+    totalTimer = CustomTimer(startAt: 1,onFinish:onTotalDone,onTick: onTotalTick);
+    exerciseTimer = CustomTimer(startAt: model.exercises[0].duration * 1000, stopAt: 1,onFinish:() => exerciseDone(),onTick: onExerciseTick);
 
     if(onTotalStart!=null)
       onTotalStart();
@@ -92,9 +91,9 @@ class RunManager{
 
 
   void restart(){
-    if(exerciseTimer != null)
+    if(exerciseTimer != null && exerciseTimer.timer != null)
       exerciseTimer.timer.cancel();
-    if(totalTimer != null)
+    if(totalTimer != null && totalTimer.timer != null)
       totalTimer.timer.cancel();
     totalTimer = null;
     exerciseTimer = null;
@@ -110,25 +109,8 @@ class RunManager{
   }
 
 
-  void exerciseDone(){
-    if(onExerciseDone!=null)
-      onExerciseDone(exerciseIndex);
-
-    exerciseIndex++;
-    if(exerciseIndex < model.exercises.length) {
-      exerciseTimer = CustomTimer(
-          startAt: model.exercises[exerciseIndex].duration * 1000,
-          stopAt: 0,
-          onFinish: () => exerciseDone(),
-          onTick: onExerciseTick);
-      exerciseTimer.start();
-    }else{
-      totalTimer.stop();
-    }
-  }
-
   bool isWorkoutFinish(){
-    return exerciseIndex >= model.exercises.length;
+    return model == null || model.exercises == null || exerciseIndex >= model.exercises.length;
   }
 
   double completePercentage(){
@@ -224,6 +206,31 @@ class RunManager{
       for (RunData d in statistics.data)
         output.add(d.speed);
     return output;
+  }
+
+
+  void exerciseDone(){
+    if(onExerciseDone!=null)
+      onExerciseDone(exerciseIndex);
+
+    print("ExerciseIndex $exerciseIndex");
+    exerciseIndex++;
+    if(exerciseIndex < model.exercises.length) {
+      exerciseTimer = CustomTimer(startAt: model.exercises[0].duration * 1000, stopAt: 0,onFinish:() => exerciseDone(),onTick: onExerciseTick);
+      print("Start");
+      if(exerciseTimer.timer != null){
+        exerciseTimer.timer.cancel();
+        exerciseTimer.timer = null;
+      }
+      exerciseTimer.start();
+      print("Finish");
+    }else{
+      isActive =  false;
+      totalTimer.stop();
+      totalTimer = null;
+      exerciseTimer = null;
+      model = null;
+    }
   }
 
 }

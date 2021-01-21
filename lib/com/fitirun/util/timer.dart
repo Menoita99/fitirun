@@ -30,8 +30,6 @@ class CustomTimer{
     timer = Timer.periodic(Duration(milliseconds: tick), (timer) {
       currentTick = direction ? currentTick + tick : currentTick - tick;
       if((currentTick >= stopAt && direction && stopAt > 0) || (currentTick <= stopAt && !direction)) {
-        if(onFinish!=null)
-          onFinish();
         stop();
       }
 
@@ -42,13 +40,9 @@ class CustomTimer{
   }
 
   void stop() {
-    try {
+      timer.cancel();
       isActive = false;
       onFinish();
-    }finally{
-      if (timer != null && timer.isActive)
-        timer.cancel();
-    }
   }
 
   String getFormattedCurrentTime(){

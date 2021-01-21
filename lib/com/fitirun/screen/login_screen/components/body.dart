@@ -1,12 +1,12 @@
 import 'package:fitirun/com/fitirun/screen/login_screen/components/or_divider.dart';
 import 'package:fitirun/com/fitirun/screen/login_screen/components/social_icon.dart';
+import 'package:fitirun/com/fitirun/util/costum_widget/rounded_input_field.dart';
 import 'package:fitirun/com/fitirun/util/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'background.dart';
-import 'package:fitirun/com/fitirun/util/already_have_an_account_acheck.dart';
-import 'package:fitirun/com/fitirun/util/rounded_button.dart';
-import 'package:fitirun/com/fitirun/util/rounded_input_field.dart';
-import 'package:fitirun/com/fitirun/util/rounded_password_field.dart';
+import 'file:///C:/Users/rui.menoita/StudioProjects/fitirun/lib/com/fitirun/util/costum_widget/already_have_an_account_acheck.dart';
+import 'file:///C:/Users/rui.menoita/StudioProjects/fitirun/lib/com/fitirun/util/costum_widget/rounded_button.dart';
+import 'file:///C:/Users/rui.menoita/StudioProjects/fitirun/lib/com/fitirun/util/costum_widget/rounded_password_field.dart';
 
 class Body extends StatefulWidget {
   @override
