@@ -66,23 +66,23 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
     UserModel userModel = Warehouse().userModel;
     manager.restart();
     manager.onTotalTick = ((tick){
-      //if (!mounted)
-        setState(() {
-        });
+        setState(() {});
     });
-
-    manager.onExerciseStart((){
-
-    });
-
 
     manager.onExerciseTick = ((tick){
-      if(tick == 10 * 1000)
+      print(tick);
+      if(tick == 10 * 1000) {
+        print("10 seconds to finish");
         speak("10 seconds to finish");
-      if(tick == 60 * 1000)
-        speak("1 minute left,"+motivationalSpeak[Random().nextInt(motivationalSpeak.length)]);
-      if(tick == 30 * 1000)
-        speak("30 seconds to finish,"+motivationalSpeak[Random().nextInt(motivationalSpeak.length)]);
+      }
+      if(tick%(60 * 1000) == 0) {
+        print("1 minute left");
+        speak("1 minute left," + motivationalSpeak[Random().nextInt(motivationalSpeak.length)]);
+      }
+      if(tick == 30 * 1000) {
+        print("30 seconds to finish");
+        speak("30 seconds to finish," + motivationalSpeak[Random().nextInt(motivationalSpeak.length)]);
+      }
 
       if(tick == 20 * 1000){
         RunModel model  = manager.model;
@@ -171,6 +171,8 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
+        speak("Congratulations you have completed your workout successfully!!!");
+        speak("You ran "+manager.totalDistance.toString()+" meters!");
         return AlertDialog(
           title: Text('Congratulations!!!'),
           content: Container(
