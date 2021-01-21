@@ -66,10 +66,6 @@ class _BodyState extends State<Body> {
                 }
               },
             ),
-            RoundedButton(
-              text: "Home",
-              press: () => Navigator.popAndPushNamed(context, '/home')
-            ),
             SizedBox(height: size.height * 0.03),
             Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0),),
             AlreadyHaveAnAccountCheck(

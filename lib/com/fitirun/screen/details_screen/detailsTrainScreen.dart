@@ -68,20 +68,21 @@ class _DetailsTrainScreenState extends State<DetailsTrainScreen> {
             ),
           ),
           DraggableScrollableSheet(
-              initialChildSize: 0.5,
-              minChildSize: 0.5,
+              initialChildSize: 0.55,
+              minChildSize: 0.55,
               maxChildSize: 0.89,
               builder: (context, controller) {
                 return SingleChildScrollView(
                   controller: controller,
                   child: Container(
+                    padding:  EdgeInsets.only(top: 15, ),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(30),
                             topRight: Radius.circular(30)),
                         color: Colors.white),
                     child: SafeArea(
-                      child: Padding(
+                      child: Container(
                         padding: const EdgeInsets.only(left: 15, right: 15),
                         child: Column(
                           children: [
@@ -89,6 +90,7 @@ class _DetailsTrainScreenState extends State<DetailsTrainScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
+
                                   padding: EdgeInsets.all(5),
                                   decoration: BoxDecoration(
                                       color: TrainModel.getDifficultyColor(
