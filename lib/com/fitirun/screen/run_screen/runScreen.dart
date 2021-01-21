@@ -36,8 +36,6 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
     'lets go',
     'you got this',
     'never give up',
-    'run mother fucker',
-    'This nuts'
   ];
 
   FlutterTts tts = FlutterTts();
@@ -52,7 +50,6 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      print("Entrei no initState");
       initManagerListeners();
     });
   }
@@ -74,6 +71,10 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
         });
     });
 
+    manager.onExerciseStart((){
+
+    });
+
 
     manager.onExerciseTick = ((tick){
       if(tick == 10 * 1000)
@@ -82,6 +83,12 @@ class _RunScreenState extends State<RunScreen> with AutomaticKeepAliveClientMixi
         speak("1 minute left,"+motivationalSpeak[Random().nextInt(motivationalSpeak.length)]);
       if(tick == 30 * 1000)
         speak("30 seconds to finish,"+motivationalSpeak[Random().nextInt(motivationalSpeak.length)]);
+
+      if(tick == 20 * 1000){
+        RunModel model  = manager.model;
+        speak("The next exercise will be.");
+        speak(model.exercises[manager.exerciseIndex].shortDescription);
+      }
       //if (!mounted)
         if(tick <= 5 * 1000 && tick > 0) {
           speak((tick/1000).toInt().toString());
@@ -979,9 +986,9 @@ class _CountdownTextState extends State<CountdownText> {
           Vibration.vibrate(duration: 200);
         }
         this.setState(() {
-          if((count-1)>0) {
+          if((count-1)>0)
             tts.speak((count - 1).toString());
-          }else if ((count-1) == 0)
+          if ((count-1) == 0)
             tts.speak("Start");
           count--;
           if (count <= 0) {

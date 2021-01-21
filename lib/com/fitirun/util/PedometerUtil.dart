@@ -68,7 +68,11 @@ class PedometerUtil{
       if(Warehouse().userModel.steps.contains(st))
         Warehouse().userModel.steps.remove(st);
       Warehouse().userModel.steps.add(st);
-      DatabaseService().addOrUpdateUser(Warehouse().userModel);
+      try {
+        DatabaseService().addOrUpdateUser(Warehouse().userModel);
+      }catch(e){
+        print(e);
+      }
     });
   }
 }

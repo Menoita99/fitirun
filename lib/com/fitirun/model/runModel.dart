@@ -11,10 +11,10 @@ extension StringExtension on String {
 }
 class RunModel{
   String title;
-  String shortDescription;
   int totalDuration = 0;
   List<ExerciseRunModel> exercises= List();
   int difficulty;
+  String shortDescription;
 
   RunModel(this.title,this.exercises){
     for (var i=0; i<exercises.length; i++)
@@ -41,10 +41,10 @@ class RunModel{
   RunModel.fromMap(Map doc){
     if(doc != null) {
       title = doc['title'];
-      shortDescription = doc['short description'];
       totalDuration = doc['total duration'];
-      //exercises = (doc['exercises'] as List<dynamic>).map((e) => e.toString()).toList();
+      exercises = (doc['exercises'] as List<dynamic>).map((e) => ExerciseRunModel.fromMap(e)).toList();
       difficulty = doc['Difficulty'];
+      shortDescription = doc['short description'];
     }
   }
 
@@ -53,7 +53,6 @@ class RunModel{
     shortDescription = doc.data()['short description'];
     totalDuration = doc.data()['total duration'];
     exercises = (doc.data()['exercises'] as List<dynamic>).map((e) => ExerciseRunModel.fromMap(e)).toList();
-
     difficulty = doc.data()['Difficulty'];
   }
 
@@ -65,9 +64,9 @@ class RunModel{
     return {
       'title': title,
       'Difficulty': difficulty,
-      'short description': shortDescription,
       'exercises': auxExercises,
       'total duration': totalDuration,
+      'short description': shortDescription,
     };
   }
 
@@ -76,6 +75,7 @@ class RunModel{
 
 class ExerciseRunModel{
   int duration;
+  String shortDescription;
   String title;
   String description;
 
@@ -92,6 +92,7 @@ class ExerciseRunModel{
     duration = int.parse(doc['duration']);
     title = doc['title'];
     description = doc['description'];
+    shortDescription = doc['short description'];
   }
 
   String getFormatedDuration(){
@@ -106,6 +107,7 @@ class ExerciseRunModel{
       'duration' : duration.toString(),
       'title' : title,
       'description' : description,
+      'short description': shortDescription,
     };
   }
 }
